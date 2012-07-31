@@ -1,0 +1,21 @@
+{
+    "name": "autocomplete",
+    "version": "0.1.0",
+    "description": "",
+    "homepage": "",
+    "author": "",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "bugs": {
+        "url": ""
+    },
+    "license": "",
+    "dependencies": {
+    },
+    "tests": ["autocomplete"],
+    "output": {
+        "autocomplete.js": "."
+    }
+}
