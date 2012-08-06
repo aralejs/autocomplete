@@ -24,12 +24,19 @@ define(function(require, exports, module) {
             // 默认模版和数据
             template: template,
             filter: 'startsWith',
+            resultsLocator:'',
             // 数据源，支持 Array, URL
             // TODO Object, Function
             dataSource: [],
             // 以下仅为组件使用
             inputValue: '',
             data: {}
+        },
+
+        templateHelpers: {
+            highlightItem: function() {
+                return this.value;
+            }
         },
 
         parseElement: function() {
@@ -67,7 +74,15 @@ define(function(require, exports, module) {
 
         // 过滤数据
         _filterData: function(data) {
-            var filter = this.get('filter');
+            var filter = this.get('filter'),
+                source = this.dataSource,
+                locator = this.get('resultsLocator');
+
+            if (source.get('type') === 'url') {
+                // 如果是异步请求，则需要通过 resultsLocator 找到需要的数据
+                data = locateResult(locator, data);
+            }
+
             // 如果 filter 不是 `function`，则从组件内置的 FILTER 获取
             if (!$.isFunction(filter)) {
                 filter = Filter[filter];
@@ -92,4 +107,37 @@ define(function(require, exports, module) {
 
     module.exports = Autocomplete;
 
+    function isString(str) {
+        return Object.prototype.toString.call(str) === '[object String]';
+    }
+    
+    // 通过 locator 找到 data 中的某个属性的值
+    // locator 支持 function，函数返回值为结果
+    // locator 支持 string，而且支持点操作符寻址
+    //     data {
+    //       a: {
+    //         b: 'c'
+    //       }
+    //     }
+    //     locator 'a.b'
+    // 最后的返回值为 c
+    function locateResult (locator, data) {
+        if (!locator) {
+            return data;
+        }
+        if ($.isFunction(locator)) {
+            return locator.call(this, data);
+        } else if (isString(locator)) {
+            var s = locator.split('.'), p = data, o;
+            while (s.length) {
+                var v = s.shift();
+                p = p[v];
+                if (!p) {
+                    break;
+                }
+            }
+            return p;
+        }
+        return data;
+    }
 });

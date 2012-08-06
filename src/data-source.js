@@ -37,7 +37,7 @@ define(function(require, exports, module) {
             }).success(function(data) {
                 this.trigger('data', data);
             }).error(function(data) {
-
+                this.trigger('data', {});
             });
         },
 
