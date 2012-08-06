@@ -1,7 +1,7 @@
-<div class="ui-autocomplete">
-    <ul data-role="list">
+<div class="{{prefix}}">
+    <ul class="{{prefix}}-ctn" data-role="list">
         {{#each list}}
-            <li>{{highlightItem}}</li>
+            <li class="{{../prefix}}-item">{{highlightItem ../prefix}}</li>
         {{/each}}
     </ul>
 </div>

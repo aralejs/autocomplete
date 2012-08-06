@@ -15,6 +15,7 @@
     "dependencies": {
         "$":"$",
         "base":"0.9.16",
+        "handlebars":"1.0.0",
         "templatable":"widget/0.9.16/templatable",
         "overlay":"0.9.8"
     },

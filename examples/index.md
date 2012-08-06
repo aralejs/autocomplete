@@ -1,3 +1,22 @@
+<style>
+.ui-autocomplete{
+    border: 1px solid #CCC;
+    background:#fff;
+    padding: 2px 0;
+}
+.ui-autocomplete-ctn{
+    margin:0;
+    padding:0;
+}
+.ui-autocomplete-item{
+    padding: 4px 10px;
+    list-style: none;
+}
+.ui-autocomplete-hl {
+    background: #ff0;
+}
+</style>
+
 <script>
 seajs.config({
     map: [
@@ -13,7 +32,7 @@ seajs.config({
 seajs.use('../src/autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger',
-        dataSource: ''
+        dataSource: ['abc', 'abd', 'abe']
     }).render();
 });
 ```

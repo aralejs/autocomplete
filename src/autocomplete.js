@@ -1,8 +1,9 @@
 define(function(require, exports, module) {
 
+    var $ = require('$');
     var Overlay = require('overlay');
     var Templatable = require('templatable');
-    var $ = require('$');
+    var Handlebars = require('handlebars');
     var DataSource = require('./data-source');
     var Filter = require('./filter');
 
@@ -34,7 +35,30 @@ define(function(require, exports, module) {
         },
 
         templateHelpers: {
-            highlightItem: function() {
+            // 将匹配的文字加上 hl 的样式
+            highlightItem: function(prefix) {
+                var index = this.highlightIndex, cursor = 0, v = this.value, h = '';
+                if ($.isArray(index)) {
+                    for (var i = 0, l = index.length; i < l; i++) {
+                        var j = index[i], start, length;
+                        if ($.isArray(j)) {
+                            start = j[0];
+                            length = j[1] - j[0];
+                        } else {
+                            start = j;
+                            length = 1;
+                        }
+                        if (start -  cursor > 0) {
+                            h += v.substring(cursor, start);
+                        }
+                        h += '<span class="' + prefix +  '-hl">' + v.substr(start, length) + '</span>';
+                        cursor = start + length;
+                    }
+                    if (v.length - cursor > 0) {
+                        h += v.substring(cursor, v.length);
+                    }
+                    return new Handlebars.SafeString(h);
+                }
                 return this.value;
             }
         },
@@ -55,17 +79,37 @@ define(function(require, exports, module) {
         },
 
         setup: function() {
-            var trigger = this.get('trigger'), that = this;
+            Autocomplete.superclass.setup.call(this);
 
+            var trigger = this.get('trigger'), that = this;
             trigger.on('keyup', function(e) {
                 // 获取输入的值
                 var v = that._getCurrentValue();
-                this.set('inputValue', v);
+                that.set('inputValue', v);
             }).on('focus', function(e) {
 
             }).on('blur', function(e) {
 
             });
+
+            this._tweakAlignDefaultValue();
+        },
+
+        // 调整 align 属性的默认值
+        _tweakAlignDefaultValue: function() {
+            var align = this.get('align');
+
+            // 默认坐标在目标元素左下角
+            if (align.baseXY.toString() === [0, 0].toString()) {
+                align.baseXY = [0, '100%'];
+            }
+
+            // 默认基准定位元素为 trigger
+            if (align.baseElement._id === 'VIEWPORT') {
+                align.baseElement = this.get('trigger');
+            }
+
+            this.set('align', align);
         },
 
         _getCurrentValue: function() {
@@ -78,8 +122,8 @@ define(function(require, exports, module) {
                 source = this.dataSource,
                 locator = this.get('resultsLocator');
 
+            // 如果是异步请求，则需要通过 resultsLocator 找到需要的数据
             if (source.get('type') === 'url') {
-                // 如果是异步请求，则需要通过 resultsLocator 找到需要的数据
                 data = locateResult(locator, data);
             }
 
@@ -88,17 +132,27 @@ define(function(require, exports, module) {
                 filter = Filter[filter];
             }
             if (filter && $.isFunction(filter)) {
-                data = filter.call(this, query, data);
+                data = filter.call(this, this.get('inputValue'), data);
             }
             this.set('data', data);
         },
 
         _onRenderInputValue: function(val) {
+            // 无输入值则隐藏
+            if (!val) {
+                this.hide();
+                return;
+            }
             // 根据输入值获取数据
             this.dataSource.getData(val);
         },
 
         _onRenderData: function(val) {
+            // 渲染无数据则隐藏
+            if (!val.length) {
+                this.hide();
+                return;
+            }
             this.model.list = val;
             this.renderPartial('[data-role=list]');
             this.show();

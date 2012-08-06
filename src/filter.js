@@ -6,7 +6,7 @@ define(function(require, exports, module) {
         startsWith : function(query, data) {
             var result = [], l = query.length,
                 reg = new RegExp('^' + query),
-                highlightIndex = (l === 1 ? [0] : [[0, l - 1]]);
+                highlightIndex = (l === 1 ? [0] : [[0, l]]);
             $.each(data, function(index, value) {
                 var o = {};
                 if (reg.test(value)) {

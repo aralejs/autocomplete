@@ -30,14 +30,15 @@ define(function(require, exports, module) {
         },
 
         _getUrlData : function(query) {
+            var that = this;
             var url = this.get('source')
                 .replace(/{{query}}/g, query ? query : '');
             $.ajax(url, {
                 dataType: 'jsonp'
             }).success(function(data) {
-                this.trigger('data', data);
+                that.trigger('data', data);
             }).error(function(data) {
-                this.trigger('data', {});
+                that.trigger('data', {});
             });
         },
 

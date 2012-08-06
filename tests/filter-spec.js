@@ -35,7 +35,7 @@ define(function(require) {
                 expect(result[0].value).toBe('but');
                 var index = result[0].highlightIndex[0];
                 expect(index[0]).toBe(0);
-                expect(index[1]).toBe(1);
+                expect(index[1]).toBe(2);
                 expect(result[1].value).toBe('buffter');
             });
 
