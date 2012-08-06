@@ -12,6 +12,9 @@
     padding: 4px 10px;
     list-style: none;
 }
+.ui-autocomplete-item-hover{
+    background:#0f0;
+}
 .ui-autocomplete-hl {
     background: #ff0;
 }
@@ -55,7 +58,7 @@ seajs.use('../src/data-source', function(DataSource) {
 ```javascript
 seajs.use('../src/data-source', function(DataSource) {
     var source = new DataSource({
-        source: 'http://www.alipay.com/test.json?v={{query}}'
+        source: './test.json?v={{query}}'
     }).on('data', function(source) {
         console.log('data change')
         console.log(source);

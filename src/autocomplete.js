@@ -26,12 +26,27 @@ define(function(require, exports, module) {
             template: template,
             filter: 'startsWith',
             resultsLocator:'',
+            selectedIndex: '',
+            // TODO 是否循环选择
+            circular: false,
             // 数据源，支持 Array, URL
             // TODO Object, Function
             dataSource: [],
             // 以下仅为组件使用
             inputValue: '',
             data: {}
+        },
+
+        events: {
+            'click [data-role=item]': function(e) {
+                this.selectItem();
+                e.preventDefault();
+            },
+            'mouseenter [data-role=item]': function(e) {
+                var i = this.list.index(e.currentTarget);
+                this.currentItem
+                this.set('selectedIndex', i);
+            }
         },
 
         templateHelpers: {
@@ -86,6 +101,35 @@ define(function(require, exports, module) {
                 // 获取输入的值
                 var v = that._getCurrentValue();
                 that.set('inputValue', v);
+            }).on('keydown', function(e) {
+                var currentIndex = that.get('selectedIndex');
+
+                // top arrow
+                if (e.which === 38) {
+                    (currentIndex > 0) && that.set('selectedIndex', currentIndex - 1);
+                    e.preventDefault();
+                }
+                // bottom arrow
+                if (e.which === 40) {
+                    (currentIndex < that.list.length - 1) && that.set('selectedIndex', currentIndex + 1);
+                }
+                // left arrow
+                if (e.which === 37) {
+
+                }
+                // right arrow
+                if (e.which === 39) {
+
+                }
+
+                // enter
+                if (e.which === 13) {
+                    that.selectItem();
+                }
+                // delete
+                if (e.which === 8) {
+
+                }
             }).on('focus', function(e) {
 
             }).on('blur', function(e) {
@@ -93,6 +137,20 @@ define(function(require, exports, module) {
             });
 
             this._tweakAlignDefaultValue();
+        },
+
+        show: function() {
+            Autocomplete.superclass.show.call(this);
+            this._blurHide([this.get('trigger')]);            
+        },
+
+        selectItem: function() {
+            var value = this.currentItem.data('value');
+            this.get('trigger').val(value);
+            this.set('inputValue', value);
+            this.get('trigger').focus();
+            this.trigger('item_selected', trigger, value);
+            this.hide();
         },
 
         // 调整 align 属性的默认值
@@ -138,8 +196,10 @@ define(function(require, exports, module) {
         },
 
         _onRenderInputValue: function(val) {
-            // 无输入值则隐藏
-            if (!val) {
+            // 两种情况下会不显示下拉框
+            // 1. 设置的值为空
+            // 2. 设置的值和输入框中的相同
+            if (!val && this.get('trigger').val() === val) {
                 this.hide();
                 return;
             }
@@ -153,10 +213,33 @@ define(function(require, exports, module) {
                 this.hide();
                 return;
             }
+            // 清除下拉状态
+            this.list = null;
+            this.set('selectedIndex', -1);
+
+            // 渲染下拉
             this.model.list = val;
             this.renderPartial('[data-role=list]');
+
+            // 初始化下拉的状态
+            this.list = this.$('[data-role=list]').children();
+            this.set('selectedIndex', 0);
+
             this.show();
-        }
+        },
+
+        _onRenderSelectedIndex: function(val) {
+            if (val === -1) return;
+            var className = this.get('prefix') + '-item-hover';
+            if (this.currentItem) {
+                this.currentItem.removeClass(className);
+            }
+            this.currentItem = this.list
+                .eq(val)
+                .addClass(className);
+            
+            this.show();
+        },
     });
 
     module.exports = Autocomplete;
@@ -194,4 +277,5 @@ define(function(require, exports, module) {
         }
         return data;
     }
+
 });

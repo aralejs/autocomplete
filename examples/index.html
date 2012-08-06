@@ -45,6 +45,9 @@
     padding: 4px 10px;
     list-style: none;
 }
+.ui-autocomplete-item-hover{
+    background:#0f0;
+}
 .ui-autocomplete-hl {
     background: #ff0;
 }
@@ -103,7 +106,7 @@ seajs.use('../src/data-source', function(DataSource) {
 </script>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/data-source&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">DataSource</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">source</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DataSource</span><span class="p">({</span>
-        <span class="nx">source</span><span class="o">:</span> <span class="s1">&#39;http://www.alipay.com/test.json?v={{query}}&#39;</span>
+        <span class="nx">source</span><span class="o">:</span> <span class="s1">&#39;./test.json?v={{query}}&#39;</span>
     <span class="p">}).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">source</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;data change&#39;</span><span class="p">)</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">source</span><span class="p">);</span>
@@ -116,7 +119,7 @@ seajs.use('../src/data-source', function(DataSource) {
 <script type="text/javascript">
 seajs.use('../src/data-source', function(DataSource) {
     var source = new DataSource({
-        source: 'http://www.alipay.com/test.json?v={{query}}'
+        source: './test.json?v={{query}}'
     }).on('data', function(source) {
         console.log('data change')
         console.log(source);
