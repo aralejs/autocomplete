@@ -13,6 +13,10 @@
     },
     "license": "",
     "dependencies": {
+        "$":"$",
+        "base":"0.9.16",
+        "templatable":"widget/0.9.16/templatable",
+        "overlay":"0.9.8"
     },
     "tests": ["autocomplete"],
     "output": {
