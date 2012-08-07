@@ -26,7 +26,7 @@ define(function(require, exports, module) {
             template: template,
             filter: 'startsWith',
             resultsLocator:'',
-            selectedIndex: '',
+            selectedIndex: undefined,
             // TODO 是否循环选择
             circular: false,
             // 数据源，支持 Array, URL
@@ -134,7 +134,7 @@ define(function(require, exports, module) {
 
             }).on('blur', function(e) {
 
-            });
+            }).attr('autocomplete', 'off');
 
             this._tweakAlignDefaultValue();
         },
@@ -149,7 +149,7 @@ define(function(require, exports, module) {
             this.get('trigger').val(value);
             this.set('inputValue', value);
             this.get('trigger').focus();
-            this.trigger('item_selected', trigger, value);
+            this.trigger('item_selected', value);
             this.hide();
         },
 
