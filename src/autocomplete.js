@@ -49,7 +49,7 @@ define(function(require, exports, module) {
         },
 
         templateHelpers: {
-            // 将匹配的文字加上 hl 的样式
+            // 将匹配的高亮文字加上 hl 的样式
             highlightItem: function(prefix) {
                 var index = this.highlightIndex, cursor = 0, v = this.value, h = '';
                 if ($.isArray(index)) {
@@ -65,7 +65,7 @@ define(function(require, exports, module) {
                         if (start -  cursor > 0) {
                             h += v.substring(cursor, start);
                         }
-                        h += '<span class="' + prefix +  '-hl">' + v.substr(start, length) + '</span>';
+                        h += '<span class="' + prefix +  '-item-hl">' + v.substr(start, length) + '</span>';
                         cursor = start + length;
                     }
                     if (v.length - cursor > 0) {

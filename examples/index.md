@@ -15,7 +15,7 @@
 .ui-autocomplete-item-hover{
     background:#0f0;
 }
-.ui-autocomplete-hl {
+.ui-autocomplete-item-hl {
     background: #ff0;
 }
 </style>
