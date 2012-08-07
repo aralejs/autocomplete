@@ -9,6 +9,17 @@ define(function(require, exports, module) {
 
     var template = require('./autocomplete.tpl')
 
+    // keyCode
+    var KEY = {
+        UP: 38,
+        DOWN: 40,
+        LEFT: 37,
+        RIGHT: 39,
+        ENTER: 13,
+        ESC: 27,
+        BACKSPACE: 8
+    };
+
     var Autocomplete = Overlay.extend({
 
         Implements: Templatable,
@@ -96,51 +107,51 @@ define(function(require, exports, module) {
             Autocomplete.superclass.setup.call(this);
 
             var trigger = this.get('trigger'), that = this;
-            trigger.on('keyup', function(e) {
+            trigger.on('keyup.autocomplete', function(e) {
                 // 获取输入的值
                 var v = that._getCurrentValue();
                 that.set('inputValue', v);
-            }).on('keydown', function(e) {
+            }).on('keydown.autocomplete', function(e) {
                 var currentIndex = that.get('selectedIndex');
 
-                // top arrow
-                if (e.which === 38) {
-                    (currentIndex > 0) && that.set('selectedIndex', currentIndex - 1);
-                    e.preventDefault();
-                }
-                // bottom arrow
-                if (e.which === 40) {
-                    (currentIndex < that.items.length - 1) && that.set('selectedIndex', currentIndex + 1);
-                }
-                // left arrow
-                if (e.which === 37) {
+                switch (e.which) {
+                    // top arrow
+                    case KEY.UP:
+                        e.preventDefault();
+                        (currentIndex > 0) && that.set('selectedIndex', currentIndex - 1);
+                        break;
 
+                    // bottom arrow
+                    case KEY.DOWN:
+                        e.preventDefault();
+                        (currentIndex < that.items.length - 1) && that.set('selectedIndex', currentIndex + 1);
+                        break;
+
+                    // left arrow
+                    case KEY.LEFT:
+                        break;
+
+                    // right arrow
+                    case KEY.RIGHT:
+                        break;
+
+                    // enter
+                    case KEY.ENTER:
+                        that.selectItem();
+                        break;
                 }
-                // right arrow
-                if (e.which === 39) {
 
-                }
+            }).on('focus.autocomplete', function(e) {
 
-                // enter
-                if (e.which === 13) {
-                    that.selectItem();
-                }
-                // delete
-                if (e.which === 8) {
-
-                }
-            }).on('focus', function(e) {
-
-            }).on('blur', function(e) {
-
+            }).on('blur.autocomplete', function(e) {
+                // 当选中某一项时，输入框的焦点会移向浮层，这时也会触发 blur 事件
+                // blur 优先于 click，浮层隐藏了就无法选中了，所以 400ms 后再触发
+                setTimeout(function () {
+                    that.hide();
+                }, 400);
             }).attr('autocomplete', 'off');
 
             this._tweakAlignDefaultValue();
-        },
-
-        show: function() {
-            Autocomplete.superclass.show.call(this);
-            this._blurHide([this.get('trigger')]);            
         },
 
         selectItem: function() {
@@ -218,7 +229,6 @@ define(function(require, exports, module) {
 
             // 渲染下拉
             this.model.items = val;
-            console.log(this.model)
             this.renderPartial('[data-role=items]');
 
             // 初始化下拉的状态
