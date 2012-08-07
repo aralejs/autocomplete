@@ -44,7 +44,6 @@ define(function(require, exports, module) {
             },
             'mouseenter [data-role=item]': function(e) {
                 var i = this.list.index(e.currentTarget);
-                this.currentItem
                 this.set('selectedIndex', i);
             }
         },
