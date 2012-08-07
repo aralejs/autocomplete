@@ -133,6 +133,7 @@ define(function(require, exports, module) {
 
                     // right arrow
                     case KEY.RIGHT:
+                        that.selectItem();
                         break;
 
                     // enter
