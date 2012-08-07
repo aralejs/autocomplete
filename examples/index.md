@@ -23,8 +23,9 @@
 <script>
 seajs.config({
     map: [
-        ['overlay.js', 'overlay-debug.js'],
-        ['widget.js', 'widget-debug.js']
+        //[/(\d(?:\/dist)?\/[a-z]+)\.js$/, '$1-debug.js']
+        //['overlay.js', 'overlay-debug.js'],
+        //['templatable.js', 'templatable-debug.js']
     ]
 })
 </script>

@@ -43,7 +43,7 @@ define(function(require, exports, module) {
                 e.preventDefault();
             },
             'mouseenter [data-role=item]': function(e) {
-                var i = this.list.index(e.currentTarget);
+                var i = this.items.index(e.currentTarget);
                 this.set('selectedIndex', i);
             }
         },
@@ -80,7 +80,7 @@ define(function(require, exports, module) {
         parseElement: function() {
             this.model = {
                 prefix: this.get('prefix'),
-                list: []
+                items: []
             };
 
             Autocomplete.superclass.parseElement.call(this);
@@ -110,7 +110,7 @@ define(function(require, exports, module) {
                 }
                 // bottom arrow
                 if (e.which === 40) {
-                    (currentIndex < that.list.length - 1) && that.set('selectedIndex', currentIndex + 1);
+                    (currentIndex < that.items.length - 1) && that.set('selectedIndex', currentIndex + 1);
                 }
                 // left arrow
                 if (e.which === 37) {
@@ -213,15 +213,16 @@ define(function(require, exports, module) {
                 return;
             }
             // 清除下拉状态
-            this.list = null;
+            this.items = null;
             this.set('selectedIndex', -1);
 
             // 渲染下拉
-            this.model.list = val;
-            this.renderPartial('[data-role=list]');
+            this.model.items = val;
+            console.log(this.model)
+            this.renderPartial('[data-role=items]');
 
             // 初始化下拉的状态
-            this.list = this.$('[data-role=list]').children();
+            this.items = this.$('[data-role=items]').children();
             this.set('selectedIndex', 0);
 
             this.show();
@@ -233,7 +234,7 @@ define(function(require, exports, module) {
             if (this.currentItem) {
                 this.currentItem.removeClass(className);
             }
-            this.currentItem = this.list
+            this.currentItem = this.items
                 .eq(val)
                 .addClass(className);
             
