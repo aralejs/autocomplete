@@ -45,7 +45,7 @@ define(function(require, exports, module) {
             dataSource: [],
             // 以下仅为组件使用
             inputValue: '',
-            data: {}
+            data: []
         },
 
         events: {
@@ -119,12 +119,14 @@ define(function(require, exports, module) {
                     case KEY.UP:
                         e.preventDefault();
                         (currentIndex > 0) && that.set('selectedIndex', currentIndex - 1);
+                        that.show();
                         break;
 
                     // bottom arrow
                     case KEY.DOWN:
                         e.preventDefault();
                         (currentIndex < that.items.length - 1) && that.set('selectedIndex', currentIndex + 1);
+                        that.show();
                         break;
 
                     // left arrow
@@ -181,6 +183,7 @@ define(function(require, exports, module) {
             this.set('align', align);
         },
 
+        // TODO 只获取光标前面的值
         _getCurrentValue: function() {
             return this.get('trigger').val();
         },
@@ -206,7 +209,15 @@ define(function(require, exports, module) {
             this.set('data', data);
         },
 
+        _clear: function(attribute) {
+            this.$('[data-role=items]').empty();
+            this.items = null;
+            this.set('selectedIndex', -1);
+        },
+
         _onRenderInputValue: function(val) {
+            !val && this._clear();
+
             // 两种情况下会不显示下拉框
             // 1. 设置的值为空
             // 2. 设置的值和输入框中的相同
@@ -248,8 +259,6 @@ define(function(require, exports, module) {
             this.currentItem = this.items
                 .eq(val)
                 .addClass(className);
-            
-            this.show();
         },
     });
 
