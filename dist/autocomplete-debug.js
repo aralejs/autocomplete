@@ -1,4 +1,4 @@
-define("#autocomplete/0.1.0/data-source-debug", ["#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
+define("#autocomplete/0.7.9/data-source-debug", ["#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
 
     var Base = require('#base/1.0.0/base-debug');
     var $ = require('$-debug');
@@ -80,7 +80,7 @@ define("#autocomplete/0.1.0/data-source-debug", ["#base/1.0.0/base-debug", "#cla
 
 
 
-define("#autocomplete/0.1.0/filter-debug", ["$-debug"], function(require, exports, module) {
+define("#autocomplete/0.7.9/filter-debug", ["$-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
 
@@ -107,7 +107,7 @@ define("#autocomplete/0.1.0/filter-debug", ["$-debug"], function(require, export
 
 
 
-define("#autocomplete/0.1.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "#overlay/0.9.9/overlay-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.0/widget-debug", "#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.0/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "#overlay/0.9.9/overlay-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.0/widget-debug", "#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.0/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
     var Overlay = require('#overlay/0.9.9/overlay-debug');
