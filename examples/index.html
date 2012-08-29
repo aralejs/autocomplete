@@ -6,9 +6,10 @@
 <title>Autocomplete</title>
 <link rel="stylesheet" href="http://aralejs.org/assets/base.css">
 <link rel="stylesheet" href="http://aralejs.org/assets/style.css">
-
+<link rel="stylesheet" href="http://aralejs.org/assets/pygments.css">
 <script src="http://seajs.org/dist/sea.js"></script>
 <script src="http://aralejs.org/tools/seajs-helper.js"></script>
+
 
 <!--[if lt IE 9]>
 <script src="http://aralejs.org/assets/html5shiv.js"></script>
@@ -19,24 +20,26 @@
     <div class="container fn-clear">
 
     <a href="../" >Autocomplete</a>
-    <a href="../examples/" class="current">Examples</a>
+    <a href="../examples/" class="current">演示</a>
     
     
-    <a id="nav-test" href="../tests/runner.html">Tests</a>
+    <a id="nav-test" href="../tests/runner.html">用例</a>
     
 
 
         <nav role="navigation" id="nav">
-            <a class="icon-home" title="Home" href="/" id="logo">Home</a>
-            <a class="icon-github" href="https://github.com/aralejs/autocomplete">Code</a>
+            <a title="Home" class="icon-home" href="/" id="logo">首页</a>
+            <a id="code-link" class="icon-github" href="https://github.com/aralejs/autocomplete">源码</a>
         </nav>
     </div>
 </header>
 
 <div id="main">
     <div class="container">
+<div class="document-body">
+  
 
-<div class="markdown-body">
+  <div class="markdown-body">
     <style>
 .ui-autocomplete{
     border: 1px solid #CCC;
@@ -76,15 +79,6 @@ seajs.config({
     <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
 <span class="p">});</span>
 </pre></div>
-
-<script type="text/javascript">
-seajs.use('../src/autocomplete', function(AutoComplete) {
-    new AutoComplete({
-        trigger: '#acTrigger',
-        dataSource: ['abc', 'abd', 'abe']
-    }).render();
-});
-</script>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/data-source&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">DataSource</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">source</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DataSource</span><span class="p">({</span>
         <span class="nx">source</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">]</span>
@@ -97,20 +91,6 @@ seajs.use('../src/autocomplete', function(AutoComplete) {
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
-
-<script type="text/javascript">
-seajs.use('../src/data-source', function(DataSource) {
-    var source = new DataSource({
-        source: ['a', 'b', 'c']
-    }).on('data', function(source) {
-        console.log('data change')
-        console.log(source);
-    });
-
-    var data = source.getData();
-    console.log(data);
-});
-</script>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/data-source&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">DataSource</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">source</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DataSource</span><span class="p">({</span>
         <span class="nx">source</span><span class="o">:</span> <span class="s1">&#39;./test.json?v={{query}}&#39;</span>
@@ -123,25 +103,12 @@ seajs.use('../src/data-source', function(DataSource) {
 <span class="p">});</span>
 </pre></div>
 
-<script type="text/javascript">
-seajs.use('../src/data-source', function(DataSource) {
-    var source = new DataSource({
-        source: './test.json?v={{query}}'
-    }).on('data', function(source) {
-        console.log('data change')
-        console.log(source);
-    });
-
-    var data = source.getData();
-});
-</script>
-
+  </div>
 </div>
 
     </div>
 </div>
 <hr class="end">
-<link rel="stylesheet" href="http://aralejs.org/assets/pygments.css">
-<link rel="stylesheet" href="http://aralejs.org/assets/fontawesome/css/font-awesome.css">
+<script src="http://aralejs.org/tools/nico-helper.js"></script>
 </body>
 </html>
