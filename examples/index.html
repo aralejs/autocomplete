@@ -72,6 +72,15 @@ seajs.config({
 })
 </script>
 <p><input id="acTrigger" type="text" value="" /></p>
+
+<script>
+seajs.use('../src/autocomplete', function(AutoComplete) {
+    new AutoComplete({
+        trigger: '#acTrigger',
+        dataSource: ['abc', 'abd', 'abe']
+    }).render();
+});
+</script>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/autocomplete&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">AutoComplete</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">new</span> <span class="nx">AutoComplete</span><span class="p">({</span>
         <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#acTrigger&#39;</span><span class="p">,</span>
@@ -79,6 +88,20 @@ seajs.config({
     <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
 <span class="p">});</span>
 </pre></div>
+
+<script>
+seajs.use('../src/data-source', function(DataSource) {
+    var source = new DataSource({
+        source: ['a', 'b', 'c']
+    }).on('data', function(source) {
+        console.log('data change')
+        console.log(source);
+    });
+
+    var data = source.getData();
+    console.log(data);
+});
+</script>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/data-source&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">DataSource</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">source</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DataSource</span><span class="p">({</span>
         <span class="nx">source</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">]</span>
@@ -91,6 +114,19 @@ seajs.config({
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
+
+<script>
+seajs.use('../src/data-source', function(DataSource) {
+    var source = new DataSource({
+        source: './test.json?v={{query}}'
+    }).on('data', function(source) {
+        console.log('data change')
+        console.log(source);
+    });
+
+    var data = source.getData();
+});
+</script>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/data-source&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">DataSource</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">source</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DataSource</span><span class="p">({</span>
         <span class="nx">source</span><span class="o">:</span> <span class="s1">&#39;./test.json?v={{query}}&#39;</span>

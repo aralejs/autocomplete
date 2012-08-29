@@ -1,4 +1,4 @@
-define("#autocomplete/0.7.9/data-source-debug", ["#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
+define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
 
     var Base = require('#base/1.0.0/base-debug');
     var $ = require('$-debug');
@@ -80,7 +80,7 @@ define("#autocomplete/0.7.9/data-source-debug", ["#base/1.0.0/base-debug", "#cla
 
 
 
-define("#autocomplete/0.7.9/filter-debug", ["$-debug"], function(require, exports, module) {
+define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
 
@@ -107,7 +107,7 @@ define("#autocomplete/0.7.9/filter-debug", ["$-debug"], function(require, export
 
 
 
-define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "#overlay/0.9.9/overlay-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.0/widget-debug", "#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.0/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "#overlay/0.9.9/overlay-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.0/widget-debug", "#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.0/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
     var Overlay = require('#overlay/0.9.9/overlay-debug');
@@ -116,7 +116,7 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
     var DataSource = require('./data-source-debug');
     var Filter = require('./filter-debug');
 
-    var template = '<div class="{{prefix}}"><ul class="{{prefix}}-ctn" data-role="items">{{#each items}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}">{{highlightItem ../prefix}}</li>{{/each}}</ul></div>'
+    var template = '<div class="{{prefix}}"><ul class="{{prefix}}-ctn" data-role="items">{{#each items}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}">{{highlightItem ../prefix}}</li>{{/each}}</ul></div>';
 
     // keyCode
     var KEY = {
@@ -145,10 +145,8 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
             // 默认模版和数据
             template: template,
             filter: 'startsWith',
-            resultsLocator:'',
+            resultsLocator: '',
             selectedIndex: undefined,
-            // TODO 是否循环选择
-            circular: false,
             // 数据源，支持 Array, URL
             // TODO Object, Function
             dataSource: [],
@@ -171,7 +169,8 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
         templateHelpers: {
             // 将匹配的高亮文字加上 hl 的样式
             highlightItem: function(prefix) {
-                var index = this.highlightIndex, cursor = 0, v = this.value, h = '';
+                var index = this.highlightIndex,
+                    cursor = 0, v = this.value, h = '';
                 if ($.isArray(index)) {
                     for (var i = 0, l = index.length; i < l; i++) {
                         var j = index[i], start, length;
@@ -182,10 +181,12 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
                             start = j;
                             length = 1;
                         }
-                        if (start -  cursor > 0) {
+                        if (start - cursor > 0) {
                             h += v.substring(cursor, start);
                         }
-                        h += '<span class="' + prefix +  '-item-hl">' + v.substr(start, length) + '</span>';
+                        h += '<span class="' + prefix + '-item-hl">' +
+                            v.substr(start, length) +
+                            '</span>';
                         cursor = start + length;
                     }
                     if (v.length - cursor > 0) {
@@ -227,14 +228,22 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
                     // top arrow
                     case KEY.UP:
                         e.preventDefault();
-                        (currentIndex > 0) && that.set('selectedIndex', currentIndex - 1);
+                        if (currentIndex > 0) {
+                            that.set('selectedIndex', currentIndex - 1);
+                        } else {
+                            that.set('selectedIndex', that.items.length - 1);
+                        }
                         that.show();
                         break;
 
                     // bottom arrow
                     case KEY.DOWN:
                         e.preventDefault();
-                        (currentIndex < that.items.length - 1) && that.set('selectedIndex', currentIndex + 1);
+                        if (currentIndex < that.items.length - 1) {
+                            that.set('selectedIndex', currentIndex + 1);
+                        } else {
+                            that.set('selectedIndex', 0);
+                        }
                         that.show();
                         break;
 
@@ -258,7 +267,7 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
             }).on('blur.autocomplete', function(e) {
                 // 当选中某一项时，输入框的焦点会移向浮层，这时也会触发 blur 事件
                 // blur 优先于 click，浮层隐藏了就无法选中了，所以 400ms 后再触发
-                setTimeout(function () {
+                setTimeout(function() {
                     that.hide();
                 }, 400);
             }).attr('autocomplete', 'off');
@@ -368,7 +377,7 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
             this.currentItem = this.items
                 .eq(val)
                 .addClass(className);
-        },
+        }
     });
 
     module.exports = Autocomplete;
@@ -376,7 +385,7 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
     function isString(str) {
         return Object.prototype.toString.call(str) === '[object String]';
     }
-    
+
     // 通过 locator 找到 data 中的某个属性的值
     // locator 支持 function，函数返回值为结果
     // locator 支持 string，而且支持点操作符寻址
@@ -387,7 +396,7 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
     //     }
     //     locator 'a.b'
     // 最后的返回值为 c
-    function locateResult (locator, data) {
+    function locateResult(locator, data) {
         if (!locator) {
             return data;
         }

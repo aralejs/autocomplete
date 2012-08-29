@@ -32,16 +32,16 @@ seajs.config({
 
 <input id="acTrigger" type="text" value="" />
 
-```javascript
+````javascript
 seajs.use('../src/autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger',
         dataSource: ['abc', 'abd', 'abe']
     }).render();
 });
-```
+````
 
-```javascript
+````javascript
 seajs.use('../src/data-source', function(DataSource) {
     var source = new DataSource({
         source: ['a', 'b', 'c']
@@ -53,10 +53,10 @@ seajs.use('../src/data-source', function(DataSource) {
     var data = source.getData();
     console.log(data);
 });
-```
+````
 
 
-```javascript
+````javascript
 seajs.use('../src/data-source', function(DataSource) {
     var source = new DataSource({
         source: './test.json?v={{query}}'
@@ -67,6 +67,6 @@ seajs.use('../src/data-source', function(DataSource) {
 
     var data = source.getData();
 });
-```
+````
 
 

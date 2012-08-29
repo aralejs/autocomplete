@@ -7,7 +7,7 @@ define(function(require, exports, module) {
     var DataSource = require('./data-source');
     var Filter = require('./filter');
 
-    var template = require('./autocomplete.tpl')
+    var template = require('./autocomplete.tpl');
 
     // keyCode
     var KEY = {
@@ -36,10 +36,8 @@ define(function(require, exports, module) {
             // 默认模版和数据
             template: template,
             filter: 'startsWith',
-            resultsLocator:'',
+            resultsLocator: '',
             selectedIndex: undefined,
-            // TODO 是否循环选择
-            circular: false,
             // 数据源，支持 Array, URL
             // TODO Object, Function
             dataSource: [],
@@ -62,7 +60,8 @@ define(function(require, exports, module) {
         templateHelpers: {
             // 将匹配的高亮文字加上 hl 的样式
             highlightItem: function(prefix) {
-                var index = this.highlightIndex, cursor = 0, v = this.value, h = '';
+                var index = this.highlightIndex,
+                    cursor = 0, v = this.value, h = '';
                 if ($.isArray(index)) {
                     for (var i = 0, l = index.length; i < l; i++) {
                         var j = index[i], start, length;
@@ -73,10 +72,12 @@ define(function(require, exports, module) {
                             start = j;
                             length = 1;
                         }
-                        if (start -  cursor > 0) {
+                        if (start - cursor > 0) {
                             h += v.substring(cursor, start);
                         }
-                        h += '<span class="' + prefix +  '-item-hl">' + v.substr(start, length) + '</span>';
+                        h += '<span class="' + prefix + '-item-hl">' +
+                            v.substr(start, length) +
+                            '</span>';
                         cursor = start + length;
                     }
                     if (v.length - cursor > 0) {
@@ -118,14 +119,22 @@ define(function(require, exports, module) {
                     // top arrow
                     case KEY.UP:
                         e.preventDefault();
-                        (currentIndex > 0) && that.set('selectedIndex', currentIndex - 1);
+                        if (currentIndex > 0) {
+                            that.set('selectedIndex', currentIndex - 1);
+                        } else {
+                            that.set('selectedIndex', that.items.length - 1);
+                        }
                         that.show();
                         break;
 
                     // bottom arrow
                     case KEY.DOWN:
                         e.preventDefault();
-                        (currentIndex < that.items.length - 1) && that.set('selectedIndex', currentIndex + 1);
+                        if (currentIndex < that.items.length - 1) {
+                            that.set('selectedIndex', currentIndex + 1);
+                        } else {
+                            that.set('selectedIndex', 0);
+                        }
                         that.show();
                         break;
 
@@ -149,7 +158,7 @@ define(function(require, exports, module) {
             }).on('blur.autocomplete', function(e) {
                 // 当选中某一项时，输入框的焦点会移向浮层，这时也会触发 blur 事件
                 // blur 优先于 click，浮层隐藏了就无法选中了，所以 400ms 后再触发
-                setTimeout(function () {
+                setTimeout(function() {
                     that.hide();
                 }, 400);
             }).attr('autocomplete', 'off');
@@ -259,7 +268,7 @@ define(function(require, exports, module) {
             this.currentItem = this.items
                 .eq(val)
                 .addClass(className);
-        },
+        }
     });
 
     module.exports = Autocomplete;
@@ -267,7 +276,7 @@ define(function(require, exports, module) {
     function isString(str) {
         return Object.prototype.toString.call(str) === '[object String]';
     }
-    
+
     // 通过 locator 找到 data 中的某个属性的值
     // locator 支持 function，函数返回值为结果
     // locator 支持 string，而且支持点操作符寻址
@@ -278,7 +287,7 @@ define(function(require, exports, module) {
     //     }
     //     locator 'a.b'
     // 最后的返回值为 c
-    function locateResult (locator, data) {
+    function locateResult(locator, data) {
         if (!locator) {
             return data;
         }
