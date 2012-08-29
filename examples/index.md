@@ -41,6 +41,20 @@ seajs.use('../src/autocomplete', function(AutoComplete) {
 });
 ````
 
+
+<input id="acTrigger1" type="text" value="" />
+
+````javascript
+seajs.use('../src/autocomplete', function(AutoComplete) {
+    new AutoComplete({
+        trigger: '#acTrigger1',
+        dataSource: {
+            da : ['abc', 'abd', 'abe']
+        }
+    }).render();
+});
+````
+
 ````javascript
 seajs.use('../src/data-source', function(DataSource) {
     var source = new DataSource({

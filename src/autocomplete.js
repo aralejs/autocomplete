@@ -35,13 +35,13 @@ define(function(require, exports, module) {
             prefix: 'ui-autocomplete',
             // 默认模版和数据
             template: template,
-            filter: 'startsWith',
-            resultsLocator: '',
-            selectedIndex: undefined,
             // 数据源，支持 Array, URL
             // TODO Object, Function
             dataSource: [],
+            resultsLocator: '',
+            filter: 'startsWith',
             // 以下仅为组件使用
+            selectedIndex: undefined,
             inputValue: '',
             data: []
         },
@@ -171,7 +171,7 @@ define(function(require, exports, module) {
             this.get('trigger').val(value);
             this.set('inputValue', value);
             this.get('trigger').focus();
-            this.trigger('itemSelected', value);
+            this.trigger('itemSelect', value);
             this.hide();
         },
 
@@ -203,10 +203,8 @@ define(function(require, exports, module) {
                 source = this.dataSource,
                 locator = this.get('resultsLocator');
 
-            // 如果是异步请求，则需要通过 resultsLocator 找到需要的数据
-            if (source.get('type') === 'url') {
-                data = locateResult(locator, data);
-            }
+            // 获取目标数据
+            data = locateResult(locator, data);
 
             // 如果 filter 不是 `function`，则从组件内置的 FILTER 获取
             if (!$.isFunction(filter)) {
