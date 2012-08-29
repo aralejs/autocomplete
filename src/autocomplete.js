@@ -20,7 +20,7 @@ define(function(require, exports, module) {
         BACKSPACE: 8
     };
 
-    var Autocomplete = Overlay.extend({
+    var AutoComplete = Overlay.extend({
 
         Implements: Templatable,
 
@@ -95,7 +95,7 @@ define(function(require, exports, module) {
                 items: []
             };
 
-            Autocomplete.superclass.parseElement.call(this);
+            AutoComplete.superclass.parseElement.call(this);
         },
 
         initProps: function(attribute) {
@@ -105,7 +105,7 @@ define(function(require, exports, module) {
         },
 
         setup: function() {
-            Autocomplete.superclass.setup.call(this);
+            AutoComplete.superclass.setup.call(this);
 
             var trigger = this.get('trigger'), that = this;
             trigger.on('keyup.autocomplete', function(e) {
@@ -271,7 +271,7 @@ define(function(require, exports, module) {
         }
     });
 
-    module.exports = Autocomplete;
+    module.exports = AutoComplete;
 
     function isString(str) {
         return Object.prototype.toString.call(str) === '[object String]';
