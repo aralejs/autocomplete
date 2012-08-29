@@ -171,7 +171,7 @@ define(function(require, exports, module) {
             this.get('trigger').val(value);
             this.set('inputValue', value);
             this.get('trigger').focus();
-            this.trigger('item_selected', value);
+            this.trigger('itemSelected', value);
             this.hide();
         },
 
