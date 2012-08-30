@@ -51,7 +51,6 @@ seajs.use('../src/autocomplete', function(AutoComplete) {
 seajs.use('../src/autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger1',
-        resultsLocator: 'data',
         dataSource: {
             data : ['abc', 'abd', 'abe']
         }

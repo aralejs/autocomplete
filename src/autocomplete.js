@@ -38,7 +38,7 @@ define(function(require, exports, module) {
             // 数据源，支持 Array, URL
             // TODO Object, Function
             dataSource: [],
-            resultsLocator: '',
+            resultsLocator: 'data',
             filter: 'startsWith',
             // 以下仅为组件使用
             selectedIndex: undefined,
@@ -302,10 +302,10 @@ define(function(require, exports, module) {
             var s = locator.split('.'), p = data, o;
             while (s.length) {
                 var v = s.shift();
-                p = p[v];
-                if (!p) {
+                if (!p[v]) {
                     break;
                 }
+                p = p[v];
             }
             return p;
         }
