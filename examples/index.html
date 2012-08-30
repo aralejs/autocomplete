@@ -94,8 +94,9 @@ seajs.use('../src/autocomplete', function(AutoComplete) {
 seajs.use('../src/autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger1',
+        resultsLocator: 'data',
         dataSource: {
-            da : ['abc', 'abd', 'abe']
+            data : ['abc', 'abd', 'abe']
         }
     }).render();
 });
@@ -103,8 +104,9 @@ seajs.use('../src/autocomplete', function(AutoComplete) {
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/autocomplete&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">AutoComplete</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">new</span> <span class="nx">AutoComplete</span><span class="p">({</span>
         <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#acTrigger1&#39;</span><span class="p">,</span>
+        <span class="nx">resultsLocator</span><span class="o">:</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span>
         <span class="nx">dataSource</span><span class="o">:</span> <span class="p">{</span>
-            <span class="nx">da</span> <span class="o">:</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="s1">&#39;abd&#39;</span><span class="p">,</span> <span class="s1">&#39;abe&#39;</span><span class="p">]</span>
+            <span class="nx">data</span> <span class="o">:</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="s1">&#39;abd&#39;</span><span class="p">,</span> <span class="s1">&#39;abe&#39;</span><span class="p">]</span>
         <span class="p">}</span>
     <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
 <span class="p">});</span>

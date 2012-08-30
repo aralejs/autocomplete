@@ -29,7 +29,7 @@ define(function(require, exports, module) {
             return this['_get' + capitalize(this.get('type')) + 'Data']();
         },
 
-        _getUrlData : function(query) {
+        _getUrlData: function(query) {
             var that = this;
             var url = this.get('source')
                 .replace(/{{query}}/g, query ? query : '');
@@ -42,18 +42,21 @@ define(function(require, exports, module) {
             });
         },
 
-        _getArrayData : function() {
+        _getArrayData: function() {
+            var source = this.get('source');
+            this.trigger('data', source);
+            return source;
+        },
+
+        _getObjectData: function(query) {
             var source = this.get('source');
             this.trigger('data', source);
             return source;
         },
 
         // TODO 暂时没需求
-        _getObjectData : function(query) {
-            
-        },
-        _getFunctionData : function(query) {
-            
+        _getFunctionData: function(query) {
+
         }
 
     });
@@ -65,13 +68,13 @@ define(function(require, exports, module) {
         return Object.prototype.toString.call(str) === '[object String]';
     }
 
-    function capitalize (str) {
+    function capitalize(str) {
         if (!str) {
             return '';
         }
         return str.replace(
             /^([a-z])/,
-            function(f, m){
+            function(f, m) {
                 return m.toUpperCase();
             }
         );
