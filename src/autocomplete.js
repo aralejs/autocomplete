@@ -33,8 +33,8 @@ define(function(require, exports, module) {
                 }
             },
             prefix: 'ui-autocomplete',
-            // 默认模版和数据
             template: template,
+            submitOnEnter: true, // 默认行为，回车会提交表单
             // 数据源，支持 Array, URL
             // TODO Object, Function
             dataSource: [],
@@ -149,6 +149,13 @@ define(function(require, exports, module) {
 
                     // enter
                     case KEY.ENTER:
+                        // 阻止回车提交表单
+                        if (!that.get('submitOnEnter')) {
+                            e.preventDefault();
+                        }
+                        if (!that.get('visible')) {
+                            return false;
+                        }
                         that.selectItem();
                         break;
                 }

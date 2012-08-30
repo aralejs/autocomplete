@@ -30,12 +30,15 @@ seajs.config({
 })
 </script>
 
-<input id="acTrigger" type="text" value="" />
+<form name="" action="">
+    <input id="acTrigger" type="text" value="" />
+</form>
 
 ````javascript
 seajs.use('../src/autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger',
+        submitOnEnter: false,
         dataSource: ['abc', 'abd', 'abe']
     }).render();
 });
