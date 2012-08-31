@@ -266,6 +266,11 @@ define("#autocomplete/0.7.9/autocomplete-debug", ["./data-source-debug", "./filt
             this._tweakAlignDefaultValue();
         },
 
+        show: function() {
+            this._setPosition();
+            Autocomplete.superclass.show.call(this);
+        },
+
         selectItem: function() {
             var value = this.currentItem.data('value');
             this.get('trigger').val(value);

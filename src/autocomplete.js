@@ -157,6 +157,11 @@ define(function(require, exports, module) {
             this._tweakAlignDefaultValue();
         },
 
+        show: function() {
+            this._setPosition();
+            Autocomplete.superclass.show.call(this);
+        },
+
         selectItem: function() {
             var value = this.currentItem.data('value');
             this.get('trigger').val(value);
