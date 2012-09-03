@@ -87,3 +87,22 @@ seajs.use('../src/data-source', function(DataSource) {
 ````
 
 
+<input id="example" type="text" value="" />
+
+````javascript
+seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
+    var data = [
+        '163.com',
+        '126.com',
+        'gmail.com'
+    ];
+    new AutoComplete({
+        trigger: '#example',
+        dataSource: function(query) {
+            return $.map(data, function(v, i) {
+                return query + '@' + v;
+            });
+        }
+    }).render();
+});
+````

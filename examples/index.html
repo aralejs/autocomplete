@@ -164,6 +164,41 @@ seajs.use('../src/data-source', function(DataSource) {
     <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">source</span><span class="p">.</span><span class="nx">getData</span><span class="p">();</span>
 <span class="p">});</span>
 </pre></div>
+<p><input id="example" type="text" value="" /></p>
+
+<script>
+seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
+    var data = [
+        '163.com',
+        '126.com',
+        'gmail.com'
+    ];
+    new AutoComplete({
+        trigger: '#example',
+        dataSource: function(query) {
+            return $.map(data, function(v, i) {
+                return query + '@' + v;
+            });
+        }
+    }).render();
+});
+</script>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/autocomplete&#39;</span><span class="p">,</span> <span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">AutoComplete</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;163.com&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;126.com&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gmail.com&#39;</span>
+    <span class="p">];</span>
+    <span class="k">new</span> <span class="nx">AutoComplete</span><span class="p">({</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#example&#39;</span><span class="p">,</span>
+        <span class="nx">dataSource</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">query</span> <span class="o">+</span> <span class="s1">&#39;@&#39;</span> <span class="o">+</span> <span class="nx">v</span><span class="p">;</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
 
   </div>
 </div>

@@ -20,13 +20,15 @@ define(function(require, exports, module) {
                 this.set('type', 'array');
             } else if ($.isPlainObject(source)) {
                 this.set('type', 'object');
+            } else if ($.isFunction(source)) {
+                this.set('type', 'function');
             } else {
-                throw 'Source Type Error';
+                throw new Error('Source Type Error');
             }
         },
 
-        getData: function(value, callback) {
-            return this['_get' + capitalize(this.get('type')) + 'Data']();
+        getData: function(query) {
+            return this['_get' + capitalize(this.get('type')) + 'Data'](query);
         },
 
         _getUrlData: function(query) {
@@ -54,11 +56,10 @@ define(function(require, exports, module) {
             return source;
         },
 
-        // TODO 暂时没需求
         _getFunctionData: function(query) {
-
+            var func = this.get('source');
+            this.trigger('data', func.call(this, query));
         }
-
     });
 
 
