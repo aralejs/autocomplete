@@ -35,11 +35,10 @@ define(function(require, exports, module) {
             prefix: 'ui-autocomplete',
             template: template,
             submitOnEnter: true, // 默认行为，回车会提交表单
-            // 数据源，支持 Array, URL
-            // TODO Object, Function
-            dataSource: [],
+            dataSource: [], //数据源，支持 Array, URL, Object, Function
             resultsLocator: 'data',
             filter: 'startsWith',
+            inputFilter: defaultInputFilter,
             // 以下仅为组件使用
             selectedIndex: undefined,
             inputValue: '',
@@ -111,6 +110,7 @@ define(function(require, exports, module) {
             trigger.on('keyup.autocomplete', function(e) {
                 // 获取输入的值
                 var v = that._getCurrentValue();
+                that.realValue = that.get('inputFilter').call(this, v);
                 that.set('inputValue', v);
             }).on('keydown.autocomplete', function(e) {
                 var currentIndex = that.get('selectedIndex');
@@ -199,7 +199,6 @@ define(function(require, exports, module) {
             this.set('align', align);
         },
 
-        // TODO 只获取光标前面的值
         _getCurrentValue: function() {
             return this.get('trigger').val();
         },
@@ -218,7 +217,9 @@ define(function(require, exports, module) {
                 filter = Filter[filter];
             }
             if (filter && $.isFunction(filter)) {
-                data = filter.call(this, this.get('inputValue'), data);
+                data = filter.call(this, this.realValue, data);
+            } else {
+                data = defaultOutputFilter.call(this, data);
             }
             this.set('data', data);
         },
@@ -240,7 +241,7 @@ define(function(require, exports, module) {
                 return;
             }
             // 根据输入值获取数据
-            this.dataSource.getData(val);
+            this.dataSource.getData(this.realValue);
         },
 
         _onRenderData: function(val) {
@@ -312,4 +313,15 @@ define(function(require, exports, module) {
         return data;
     }
 
+    function defaultInputFilter(v) {
+        return v;
+    }
+
+    function defaultOutputFilter(data) {
+        var result = [];
+        $.each(data, function(index, value) {
+            result.push({value: value});
+        });
+        return result;
+    }
 });

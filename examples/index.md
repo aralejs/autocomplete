@@ -102,6 +102,10 @@ seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
             return $.map(data, function(v, i) {
                 return query + '@' + v;
             });
+        },
+        filter: '',
+        inputFilter: function(v){
+            return v.replace(/^(.*)@.*$/,'$1');
         }
     }).render();
 });

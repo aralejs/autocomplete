@@ -179,6 +179,10 @@ seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
             return $.map(data, function(v, i) {
                 return query + '@' + v;
             });
+        },
+        filter: '',
+        inputFilter: function(v){
+            return v.replace(/^(.*)@.*$/,'$1');
         }
     }).render();
 });
@@ -195,6 +199,10 @@ seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
             <span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">return</span> <span class="nx">query</span> <span class="o">+</span> <span class="s1">&#39;@&#39;</span> <span class="o">+</span> <span class="nx">v</span><span class="p">;</span>
             <span class="p">});</span>
+        <span class="p">},</span>
+        <span class="nx">filter</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="nx">inputFilter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+            <span class="k">return</span> <span class="nx">v</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^(.*)@.*$/</span><span class="p">,</span><span class="s1">&#39;$1&#39;</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
 <span class="p">});</span>
