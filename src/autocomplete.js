@@ -33,6 +33,9 @@ define(function(require, exports, module) {
                 }
             },
             prefix: 'ui-autocomplete',
+            align: {
+                baseXY: [0, '100%']
+            },
             template: template,
             submitOnEnter: true, // 默认行为，回车会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
@@ -185,17 +188,7 @@ define(function(require, exports, module) {
         // 调整 align 属性的默认值
         _tweakAlignDefaultValue: function() {
             var align = this.get('align');
-
-            // 默认坐标在目标元素左下角
-            if (align.baseXY.toString() === [0, 0].toString()) {
-                align.baseXY = [0, '100%'];
-            }
-
-            // 默认基准定位元素为 trigger
-            if (align.baseElement._id === 'VIEWPORT') {
-                align.baseElement = this.get('trigger');
-            }
-
+            align.baseElement = this.get('trigger');
             this.set('align', align);
         },
 
