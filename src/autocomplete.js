@@ -32,7 +32,7 @@ define(function(require, exports, module) {
                     return $(val);
                 }
             },
-            prefix: 'ui-autocomplete',
+            classPrefix: 'ui-autocomplete',
             align: {
                 baseXY: [0, '100%']
             },
@@ -61,7 +61,7 @@ define(function(require, exports, module) {
 
         templateHelpers: {
             // 将匹配的高亮文字加上 hl 的样式
-            highlightItem: function(prefix) {
+            highlightItem: function(classPrefix) {
                 var index = this.highlightIndex,
                     cursor = 0, v = this.value, h = '';
                 if ($.isArray(index)) {
@@ -77,7 +77,7 @@ define(function(require, exports, module) {
                         if (start - cursor > 0) {
                             h += v.substring(cursor, start);
                         }
-                        h += '<span class="' + prefix + '-item-hl">' +
+                        h += '<span class="' + classPrefix + '-item-hl">' +
                             v.substr(start, length) +
                             '</span>';
                         cursor = start + length;
@@ -93,7 +93,7 @@ define(function(require, exports, module) {
 
         parseElement: function() {
             this.model = {
-                prefix: this.get('prefix'),
+                classPrefix: this.get('classPrefix'),
                 items: []
             };
 
@@ -260,7 +260,7 @@ define(function(require, exports, module) {
 
         _onRenderSelectedIndex: function(val) {
             if (val === -1) return;
-            var className = this.get('prefix') + '-item-hover';
+            var className = this.get('classPrefix') + '-item-hover';
             if (this.currentItem) {
                 this.currentItem.removeClass(className);
             }

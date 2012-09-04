@@ -120,7 +120,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
     var DataSource = require('./data-source-debug');
     var Filter = require('./filter-debug');
 
-    var template = '<div class="{{prefix}}"><ul class="{{prefix}}-ctn" data-role="items">{{#each items}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}">{{highlightItem ../prefix}}</li>{{/each}}</ul></div>';
+    var template = '<div class="{{classPrefix}}"><ul class="{{classPrefix}}-ctn" data-role="items">{{#each items}}<li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}">{{highlightItem ../classPrefix}}</li>{{/each}}</ul></div>';
 
     // keyCode
     var KEY = {
@@ -145,7 +145,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                     return $(val);
                 }
             },
-            prefix: 'ui-autocomplete',
+            classPrefix: 'ui-autocomplete',
             align: {
                 baseXY: [0, '100%']
             },
@@ -174,7 +174,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
 
         templateHelpers: {
             // 将匹配的高亮文字加上 hl 的样式
-            highlightItem: function(prefix) {
+            highlightItem: function(classPrefix) {
                 var index = this.highlightIndex,
                     cursor = 0, v = this.value, h = '';
                 if ($.isArray(index)) {
@@ -190,7 +190,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                         if (start - cursor > 0) {
                             h += v.substring(cursor, start);
                         }
-                        h += '<span class="' + prefix + '-item-hl">' +
+                        h += '<span class="' + classPrefix + '-item-hl">' +
                             v.substr(start, length) +
                             '</span>';
                         cursor = start + length;
@@ -206,7 +206,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
 
         parseElement: function() {
             this.model = {
-                prefix: this.get('prefix'),
+                classPrefix: this.get('classPrefix'),
                 items: []
             };
 
@@ -373,7 +373,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
 
         _onRenderSelectedIndex: function(val) {
             if (val === -1) return;
-            var className = this.get('prefix') + '-item-hover';
+            var className = this.get('classPrefix') + '-item-hover';
             if (this.currentItem) {
                 this.currentItem.removeClass(className);
             }
