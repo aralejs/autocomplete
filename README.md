@@ -1,14 +1,11 @@
 # AutoComplete
 
-// description
+自动补全组件
 
 ---
 
+## 使用说明
 
-    inputValue  --->  model
-                        ^
-                        |
-                      filter
                         
 
                         

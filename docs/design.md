@@ -1,0 +1,4 @@
+    inputValue  --->  model
+                        ^
+                        |
+                      filter
