@@ -169,9 +169,6 @@ define(function(require, exports, module) {
                         that.selectItem();
                         break;
                 }
-
-            }).on('focus.autocomplete', function(e) {
-
             }).on('blur.autocomplete', function(e) {
                 that.hide();
             }).attr('autocomplete', 'off');
