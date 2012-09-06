@@ -203,7 +203,6 @@ define(function(require, exports, module) {
         // 过滤数据
         _filterData: function(data) {
             var filter = this.get('filter'),
-                source = this.dataSource,
                 locator = this.get('resultsLocator');
 
             // 获取目标数据
