@@ -214,7 +214,7 @@ define(function(require, exports, module) {
                 filter = Filter[filter];
             }
             if (filter && $.isFunction(filter)) {
-                data = filter.call(this, this.realValue, data);
+                data = filter.call(this, data, this.realValue);
             } else {
                 data = defaultOutputFilter.call(this, data);
             }

@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     var $ = require('$');
 
     var Filter = {
-        startsWith : function(query, data) {
+        startsWith : function(data, query) {
             var result = [], l = query.length,
                 reg = new RegExp('^' + query),
                 highlightIndex = (l === 1 ? [0] : [[0, l]]);
