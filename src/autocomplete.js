@@ -53,6 +53,9 @@ define(function(require, exports, module) {
                 this.selectItem();
                 e.preventDefault();
             },
+            'mousedown': function(e) {
+                e.preventDefault();
+            },
             'mouseenter [data-role=item]': function(e) {
                 var i = this.items.index(e.currentTarget);
                 this.set('selectedIndex', i);
@@ -175,15 +178,19 @@ define(function(require, exports, module) {
             }).on('blur.autocomplete', function(e) {
                 // 当选中某一项时，输入框的焦点会移向浮层，这时也会触发 blur 事件
                 // blur 优先于 click，浮层隐藏了就无法选中了，所以 400ms 后再触发
-                setTimeout(function() {
-                    that.hide();
-                }, 400);
+                //setTimeout(function() {
+                //    that.hide();
+                //}, 400);
+                console.log(1)
             }).attr('autocomplete', 'off');
 
             this._tweakAlignDefaultValue();
         },
 
         selectItem: function() {
+            this.get('trigger').focus();
+            this.hide();
+
             var item = this.currentItem;
             if (item) {
                 var value = item.data('value');
@@ -191,9 +198,6 @@ define(function(require, exports, module) {
                 this.set('inputValue', value);
                 this.trigger('itemSelect', value);
             }
-
-            this.get('trigger').focus();
-            this.hide();
         },
 
         // 调整 align 属性的默认值
