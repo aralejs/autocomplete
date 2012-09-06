@@ -184,11 +184,15 @@ define(function(require, exports, module) {
         },
 
         selectItem: function() {
-            var value = this.currentItem.data('value');
-            this.get('trigger').val(value);
-            this.set('inputValue', value);
+            var item = this.currentItem;
+            if (item) {
+                var value = item.data('value');
+                this.get('trigger').val(value);
+                this.set('inputValue', value);
+                this.trigger('itemSelect', value);
+            }
+
             this.get('trigger').focus();
-            this.trigger('itemSelect', value);
             this.hide();
         },
 
@@ -260,6 +264,7 @@ define(function(require, exports, module) {
 
             // 初始化下拉的状态
             this.items = this.$('[data-role=items]').children();
+            this.currentItem = null;
 
             this.show();
         },
