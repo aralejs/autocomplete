@@ -37,14 +37,14 @@ define(function(require, exports, module) {
                 baseXY: [0, '100%']
             },
             template: template,
-            submitOnEnter: true, // 默认行为，回车会提交表单
+            submitOnEnter: true, // 回车是否会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             resultsLocator: 'data',
-            filter: 'startsWith',
-            inputFilter: defaultInputFilter,
+            filter: 'startsWith', // 输出过滤
+            inputFilter: defaultInputFilter, // 输入过滤
             // 以下仅为组件使用
             selectedIndex: undefined,
-            inputValue: '',
+            inputValue: '', // 同步输入框的 value
             data: []
         },
 
@@ -253,20 +253,21 @@ define(function(require, exports, module) {
 
             // 初始化下拉的状态
             this.items = this.$('[data-role=items]').children();
-            this.set('selectedIndex', 0);
 
             this.show();
         },
 
-        _onRenderSelectedIndex: function(val) {
-            if (val === -1) return;
+        _onRenderSelectedIndex: function(index) {
+            if (index === -1) return;
             var className = this.get('classPrefix') + '-item-hover';
             if (this.currentItem) {
                 this.currentItem.removeClass(className);
             }
             this.currentItem = this.items
-                .eq(val)
+                .eq(index)
                 .addClass(className);
+
+            this.trigger('indexChange', index);
         }
     });
 
