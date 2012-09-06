@@ -49,12 +49,9 @@ define(function(require, exports, module) {
         },
 
         events: {
-            'click [data-role=item]': function(e) {
+            // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
+            'mousedown [data-role=item]': function(e) {
                 this.selectItem();
-                e.preventDefault();
-            },
-            'mousedown': function(e) {
-                e.preventDefault();
             },
             'mouseenter [data-role=item]': function(e) {
                 var i = this.items.index(e.currentTarget);
@@ -176,12 +173,7 @@ define(function(require, exports, module) {
             }).on('focus.autocomplete', function(e) {
 
             }).on('blur.autocomplete', function(e) {
-                // 当选中某一项时，输入框的焦点会移向浮层，这时也会触发 blur 事件
-                // blur 优先于 click，浮层隐藏了就无法选中了，所以 400ms 后再触发
-                //setTimeout(function() {
-                //    that.hide();
-                //}, 400);
-                console.log(1)
+                that.hide();
             }).attr('autocomplete', 'off');
 
             this._tweakAlignDefaultValue();
