@@ -118,27 +118,34 @@ define(function(require, exports, module) {
             }).on('keydown.autocomplete', function(e) {
                 var currentIndex = that.get('selectedIndex');
 
+
                 switch (e.which) {
                     // top arrow
                     case KEY.UP:
                         e.preventDefault();
+                        if (!that.get('visible')) {
+                            that.show();
+                            return;
+                        }
                         if (currentIndex > 0) {
                             that.set('selectedIndex', currentIndex - 1);
                         } else {
                             that.set('selectedIndex', that.items.length - 1);
                         }
-                        that.show();
                         break;
 
                     // bottom arrow
                     case KEY.DOWN:
                         e.preventDefault();
+                        if (!that.get('visible')) {
+                            that.show();
+                            return;
+                        }
                         if (currentIndex < that.items.length - 1) {
                             that.set('selectedIndex', currentIndex + 1);
                         } else {
                             that.set('selectedIndex', 0);
                         }
-                        that.show();
                         break;
 
                     // left arrow
@@ -152,7 +159,7 @@ define(function(require, exports, module) {
 
                     // enter
                     case KEY.ENTER:
-                        // 阻止回车提交表单
+                        // 是否阻止回车提交表单
                         if (!that.get('submitOnEnter')) {
                             e.preventDefault();
                         }
