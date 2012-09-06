@@ -150,14 +150,14 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                 baseXY: [0, '100%']
             },
             template: template,
-            submitOnEnter: true, // 默认行为，回车会提交表单
+            submitOnEnter: true, // 回车是否会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             resultsLocator: 'data',
-            filter: 'startsWith',
-            inputFilter: defaultInputFilter,
+            filter: 'startsWith', // 输出过滤
+            inputFilter: defaultInputFilter, // 输入过滤
             // 以下仅为组件使用
             selectedIndex: undefined,
-            inputValue: '',
+            inputValue: '', // 同步输入框的 value
             data: []
         },
 
@@ -231,27 +231,34 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             }).on('keydown.autocomplete', function(e) {
                 var currentIndex = that.get('selectedIndex');
 
+
                 switch (e.which) {
                     // top arrow
                     case KEY.UP:
                         e.preventDefault();
+                        if (!that.get('visible')) {
+                            that.show();
+                            return;
+                        }
                         if (currentIndex > 0) {
                             that.set('selectedIndex', currentIndex - 1);
                         } else {
                             that.set('selectedIndex', that.items.length - 1);
                         }
-                        that.show();
                         break;
 
                     // bottom arrow
                     case KEY.DOWN:
                         e.preventDefault();
+                        if (!that.get('visible')) {
+                            that.show();
+                            return;
+                        }
                         if (currentIndex < that.items.length - 1) {
                             that.set('selectedIndex', currentIndex + 1);
                         } else {
                             that.set('selectedIndex', 0);
                         }
-                        that.show();
                         break;
 
                     // left arrow
@@ -265,7 +272,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
 
                     // enter
                     case KEY.ENTER:
-                        // 阻止回车提交表单
+                        // 是否阻止回车提交表单
                         if (!that.get('submitOnEnter')) {
                             e.preventDefault();
                         }
@@ -290,11 +297,15 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
         },
 
         selectItem: function() {
-            var value = this.currentItem.data('value');
-            this.get('trigger').val(value);
-            this.set('inputValue', value);
+            var item = this.currentItem;
+            if (item) {
+                var value = item.data('value');
+                this.get('trigger').val(value);
+                this.set('inputValue', value);
+                this.trigger('itemSelect', value);
+            }
+
             this.get('trigger').focus();
-            this.trigger('itemSelect', value);
             this.hide();
         },
 
@@ -366,20 +377,22 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
 
             // 初始化下拉的状态
             this.items = this.$('[data-role=items]').children();
-            this.set('selectedIndex', 0);
+            this.currentItem = null;
 
             this.show();
         },
 
-        _onRenderSelectedIndex: function(val) {
-            if (val === -1) return;
+        _onRenderSelectedIndex: function(index) {
+            if (index === -1) return;
             var className = this.get('classPrefix') + '-item-hover';
             if (this.currentItem) {
                 this.currentItem.removeClass(className);
             }
             this.currentItem = this.items
-                .eq(val)
+                .eq(index)
                 .addClass(className);
+
+            this.trigger('indexChange', index);
         }
     });
 
