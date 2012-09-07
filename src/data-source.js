@@ -58,7 +58,11 @@ define(function(require, exports, module) {
 
         _getFunctionData: function(query) {
             var func = this.get('source');
-            this.trigger('data', func.call(this, query));
+            // 如果返回 false 可阻止执行
+            var data = func.call(this, query);
+            if (data) {
+                this.trigger('data', data);
+            }
         }
     });
 
