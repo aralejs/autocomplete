@@ -187,8 +187,18 @@
 <h2>事件</h2>
 
 <h3>itemSelect</h3>
+<p>当选中某项时触发，value 为当前选中的值。</p>
 
-<h3>inputChange</h3>
+<pre><code>.on('itemSelect', function(value){
+    // code
+});</code></pre>
+
+<h3>indexChange</h3>
+<p>当选项切换时触发，可能是鼠标或键盘，index 为切换后的索引值。</p>
+
+<pre><code>.on('indexChange', function(index){
+    // code
+});</code></pre>
 
   </div>
 </div>
