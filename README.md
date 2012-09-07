@@ -196,4 +196,20 @@ new AutoComplete({
 
 ### itemSelect
 
-### inputChange
+当选中某项时触发，value 为当前选中的值。
+
+```
+.on('itemSelect', function(value){
+    // code
+});
+```
+
+### indexChange
+
+当选项切换时触发，可能是鼠标或键盘，index 为切换后的索引值。
+
+```
+.on('indexChange', function(index){
+    // code
+});
+```
