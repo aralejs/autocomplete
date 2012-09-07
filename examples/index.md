@@ -30,18 +30,35 @@ seajs.config({
 })
 </script>
 
-<input id="acTrigger" type="text" value="" />
+<form name="" action="">
+    <input id="acTrigger" type="text" value="" />
+</form>
 
-```javascript
+````javascript
 seajs.use('../src/autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger',
+        submitOnEnter: false,
         dataSource: ['abc', 'abd', 'abe']
     }).render();
 });
-```
+````
 
-```javascript
+
+<input id="acTrigger1" type="text" value="" />
+
+````javascript
+seajs.use('../src/autocomplete', function(AutoComplete) {
+    new AutoComplete({
+        trigger: '#acTrigger1',
+        dataSource: {
+            data : ['abc', 'abd', 'abe']
+        }
+    }).render();
+});
+````
+
+````javascript
 seajs.use('../src/data-source', function(DataSource) {
     var source = new DataSource({
         source: ['a', 'b', 'c']
@@ -53,10 +70,10 @@ seajs.use('../src/data-source', function(DataSource) {
     var data = source.getData();
     console.log(data);
 });
-```
+````
 
 
-```javascript
+````javascript
 seajs.use('../src/data-source', function(DataSource) {
     var source = new DataSource({
         source: './test.json?v={{query}}'
@@ -67,6 +84,29 @@ seajs.use('../src/data-source', function(DataSource) {
 
     var data = source.getData();
 });
-```
+````
 
 
+<input id="example" type="text" value="" />
+
+````javascript
+seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
+    var data = [
+        '163.com',
+        '126.com',
+        'gmail.com'
+    ];
+    new AutoComplete({
+        trigger: '#example',
+        dataSource: function(query) {
+            return $.map(data, function(v, i) {
+                return query + '@' + v;
+            });
+        },
+        filter: '',
+        inputFilter: function(v){
+            return v.replace(/^(.*)@.*$/,'$1');
+        }
+    }).render();
+});
+````

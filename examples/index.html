@@ -71,14 +71,63 @@ seajs.config({
     ]
 })
 </script>
-<p><input id="acTrigger" type="text" value="" /></p>
+
+<form name="" action="">
+    <input id="acTrigger" type="text" value="" />
+</form>
+
+<script>
+seajs.use('../src/autocomplete', function(AutoComplete) {
+    new AutoComplete({
+        trigger: '#acTrigger',
+        submitOnEnter: false,
+        dataSource: ['abc', 'abd', 'abe']
+    }).render();
+});
+</script>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/autocomplete&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">AutoComplete</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">new</span> <span class="nx">AutoComplete</span><span class="p">({</span>
         <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#acTrigger&#39;</span><span class="p">,</span>
+        <span class="nx">submitOnEnter</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
         <span class="nx">dataSource</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="s1">&#39;abd&#39;</span><span class="p">,</span> <span class="s1">&#39;abe&#39;</span><span class="p">]</span>
     <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
 <span class="p">});</span>
 </pre></div>
+<p><input id="acTrigger1" type="text" value="" /></p>
+
+<script>
+seajs.use('../src/autocomplete', function(AutoComplete) {
+    new AutoComplete({
+        trigger: '#acTrigger1',
+        dataSource: {
+            data : ['abc', 'abd', 'abe']
+        }
+    }).render();
+});
+</script>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/autocomplete&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">AutoComplete</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">new</span> <span class="nx">AutoComplete</span><span class="p">({</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#acTrigger1&#39;</span><span class="p">,</span>
+        <span class="nx">dataSource</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">data</span> <span class="o">:</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="s1">&#39;abd&#39;</span><span class="p">,</span> <span class="s1">&#39;abe&#39;</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+<script>
+seajs.use('../src/data-source', function(DataSource) {
+    var source = new DataSource({
+        source: ['a', 'b', 'c']
+    }).on('data', function(source) {
+        console.log('data change')
+        console.log(source);
+    });
+
+    var data = source.getData();
+    console.log(data);
+});
+</script>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/data-source&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">DataSource</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">source</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DataSource</span><span class="p">({</span>
         <span class="nx">source</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">]</span>
@@ -91,6 +140,19 @@ seajs.config({
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
+
+<script>
+seajs.use('../src/data-source', function(DataSource) {
+    var source = new DataSource({
+        source: './test.json?v={{query}}'
+    }).on('data', function(source) {
+        console.log('data change')
+        console.log(source);
+    });
+
+    var data = source.getData();
+});
+</script>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/data-source&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">DataSource</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">source</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DataSource</span><span class="p">({</span>
         <span class="nx">source</span><span class="o">:</span> <span class="s1">&#39;./test.json?v={{query}}&#39;</span>
@@ -100,6 +162,49 @@ seajs.config({
     <span class="p">});</span>
 
     <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">source</span><span class="p">.</span><span class="nx">getData</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+<p><input id="example" type="text" value="" /></p>
+
+<script>
+seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
+    var data = [
+        '163.com',
+        '126.com',
+        'gmail.com'
+    ];
+    new AutoComplete({
+        trigger: '#example',
+        dataSource: function(query) {
+            return $.map(data, function(v, i) {
+                return query + '@' + v;
+            });
+        },
+        filter: '',
+        inputFilter: function(v){
+            return v.replace(/^(.*)@.*$/,'$1');
+        }
+    }).render();
+});
+</script>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/autocomplete&#39;</span><span class="p">,</span> <span class="s1">&#39;$&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">AutoComplete</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;163.com&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;126.com&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gmail.com&#39;</span>
+    <span class="p">];</span>
+    <span class="k">new</span> <span class="nx">AutoComplete</span><span class="p">({</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#example&#39;</span><span class="p">,</span>
+        <span class="nx">dataSource</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">query</span> <span class="o">+</span> <span class="s1">&#39;@&#39;</span> <span class="o">+</span> <span class="nx">v</span><span class="p">;</span>
+            <span class="p">});</span>
+        <span class="p">},</span>
+        <span class="nx">filter</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="nx">inputFilter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+            <span class="k">return</span> <span class="nx">v</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^(.*)@.*$/</span><span class="p">,</span><span class="s1">&#39;$1&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
 <span class="p">});</span>
 </pre></div>
 

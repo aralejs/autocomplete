@@ -38,12 +38,169 @@
     <div class="container">
 <div class="document-body">
   
+  <nav id="side-nav">
+    <a href="./">README</a>
+    
+    <a href="./docs/data-source.html">data-source</a>
+    
+    <a href="./docs/design.html">design</a>
+    
+    <a href="./docs/filter.html">filter</a>
+    
+  </nav>
+  
 
   <div class="markdown-body">
-    <h1>Autocomplete</h1>
-<p>// description</p>
+    <h1>AutoComplete</h1>
+<p>自动补全组件</p>
 
 <hr/>
+
+<h2>使用说明</h2>
+
+<h2>属性</h2>
+
+<h3>trigger</h3>
+<p>输入框</p>
+
+<h3>template</h3>
+<p>模版，注意覆盖的时候不要缺少 <code>data-role</code></p>
+
+<h3>classPrefix</h3>
+<p>样式前缀，默认为 <code>ui-autocomplete</code></p>
+
+<h3>dataSource</h3>
+<p>提供的数据源，需要以数组的形式，以这个为基准进行筛选</p>
+<p>共支持 4 种方式</p>
+
+<ol>
+<li><p> Array</p>
+<p>提供一个简单的字符串数组</p>
+
+<pre><code>['10010', '10086', '10000']</code></pre></li>
+<li><p> Object</p>
+<p>提供一个对象，里面要包含数组，可以通过 <code>resultsLocator</code> 找到</p>
+
+<pre><code>{
+    data: ['10010', '10086', '10000']
+}</code></pre></li>
+<li><p> URL</p>
+<p>提供一个 URL，jsonp 的方式返回数据，返回的数据也可以通过 <code>resultsLocator</code> 找。</p>
+<p>URL 提供一个模版参数 <code>./test.json?v={{query}}</code>，query 是输入后过滤的值。</p></li>
+<li><p> Function</p>
+<p>提供一个自定义函数，根据自己的业务逻辑返回数组，这个自定义程度很高，可实现上面 3 中方式。</p>
+<p>可以每次输入都动态生成数据，如邮箱自动补完</p>
+
+<pre><code>dataSource: function(value) {
+    return [
+        value + '@gmail.com',
+        value + '@qq.com',
+        value + '@163.com'
+    ];
+}</code></pre>
+<p>也可以自己发送请求获取数据，return false 可阻止 data 事件，可查看 <a href="./docs/data-source.html">dataSource</a></p>
+
+<pre><code>dataSource: function(value) {
+    var that = this;
+    $.ajax('test.json?v+' + value, {
+        dataType: 'jsonp'
+    }).success(function(data) {
+        that.trigger('data', data);
+    })
+    return false;
+}</code></pre></li>
+</ol>
+
+<h3>locator</h3>
+<p>这个参数跟 dataSource 相关，一般情况 dataSource 会返回一个数组，filter 可以直接处理。但如果返回的是 Object，那么就需要找到这个需要的那个数组。</p>
+<p>这个参数可定位到需要的值，支持两种方式</p>
+
+<ol>
+<li><p> 字符串，默认为 &#39;data&#39;。如果为空字符串则返回原来的值。</p>
+
+<pre><code>{
+    data: ['10010', '10086', '10000']
+}</code></pre>
+<p>指定 <code>locator: &#39;data&#39;</code>，最终给 filter 的为 <code>[&#39;10010&#39;, &#39;10086&#39;, &#39;10000&#39;]</code></p>
+<p>还支持多层定位，如下可用 <code>locator: &#39;a.b&#39;</code></p>
+
+<pre><code>{a : {b: [1, 2]}}</code></pre></li>
+<li><p> 自定义函数</p>
+
+<pre><code>locator : function(data) {
+    // find data and return
+}</code></pre></li>
+</ol>
+
+<h3>filter</h3>
+<p>输出值的过滤器，用于筛选 dataSource，默认方法为 <code>startsWith</code>，具体方法可以查看 <a href="./docs/filter.html">Filter</a></p>
+
+<h4>过滤器支持类型</h4>
+
+<ul>
+<li><p>  默认值(startsWith)，不设置此属性</p>
+<p>会调用默认的 startsWith 方法，从头开始匹配</p></li>
+<li><p>  空字符串、null、undefined、false</p>
+<p>什么都不处理，返回原来的 dataSource</p></li>
+<li><p>  函数</p>
+<p>通过自定义函数去去筛选 dataSource，要注意数据转换。</p>
+<p>如：筛选出包含输入值的数据</p>
+
+<pre><code>filter: function(data, query) {
+    var result = [];
+    $.each(data, function(index, value) {
+        if (value.indexOf(query) &gt; -1) {
+        result.push({value: value});
+        }
+    });
+    return result;
+}</code></pre></li>
+</ul>
+
+<h4>filter 中的数据转换</h4>
+<p>做这个数据转换主要是为了增加高亮值的配置，渲染模版时会增加 <code>item-hl</code> 样式，如下是匹配所有的 a</p>
+
+<pre><code>// 输入
+['aba', 'abb', 'abc']
+
+// 输出
+[
+  {value: 'aba', highlightIndex:[[0, 1], [2, 3]]},
+  {value: 'abb', highlightIndex:[[0, 1]]},
+  {value: 'abc', highlightIndex:[[0, 1]]},
+]</code></pre>
+<p>highlightIndex 描述了多个高亮元素的索引值，aba 中第一个 a 的索引值为 [0, 1]，第二个 a 的索引值为 [2, 3]。</p>
+<p>想了解更多可查看<a href="./docs/design.html">设计章节</a></p>
+
+<h3>inputFilter</h3>
+<p>输入值的过滤器，支持 Function，默认不做处理。</p>
+<p>这个参数可以过滤输入框中的值，过滤后的匹配值用于筛选数据。</p>
+<p>如果用户输入 a@alipay，但我想用 @ 前面的值去筛选可以如下处理</p>
+
+<pre><code>new AutoComplete({
+    inputFilter: function(value) {
+        return value.split('@')[0];
+    }
+})</code></pre>
+
+<h3>submitOnEnter</h3>
+<p>回车时是否提交表单，默认为 true，会提交表单，组件不做任何处理。</p>
+
+<h2>事件</h2>
+
+<h3>itemSelect</h3>
+<p>当选中某项时触发，value 为当前选中的值。</p>
+
+<pre><code>.on('itemSelect', function(value){
+    // code
+});</code></pre>
+
+<h3>indexChange</h3>
+<p>当选项切换时触发，可能是鼠标或键盘，index 为切换后的索引值。</p>
+
+<pre><code>.on('indexChange', function(index){
+    // code
+});</code></pre>
 
   </div>
 </div>
