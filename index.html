@@ -56,9 +56,95 @@
 
 <h2>使用说明</h2>
 
-<h2>事件</h2>
+<h2>属性</h2>
 
-<h3>data</h3>
+<h3>trigger</h3>
+<p>输入框</p>
+
+<h3>template</h3>
+<p>模版，注意覆盖的时候不要缺少 <code>data-role</code></p>
+
+<h3>classPrefix</h3>
+<p>样式前缀，默认为 <code>ui-autocomplete</code></p>
+
+<h3>dataSource</h3>
+<p>提供的数据源，需要以数组的形式，以这个为基准进行筛选</p>
+<p>共支持 4 种方式</p>
+
+<ol>
+<li><p> Array</p>
+<p>提供一个简单的字符串数组</p>
+
+<pre><code>['10010', '10086', '10000']</code></pre></li>
+<li><p> Object</p>
+<p>提供一个对象，里面要包含数组，可以通过 <code>resultsLocator</code> 找到</p>
+
+<pre><code>{
+    data: ['10010', '10086', '10000']
+}</code></pre></li>
+<li><p> URL</p>
+<p>提供一个 URL，jsonp 的方式返回数据。也可以通过 <code>resultsLocator</code> 找</p>
+<p>URL 提供一个模版参数 <code>./test.json?v={{query}}</code>，query 是输入后过滤的值。</p></li>
+<li><p> Function</p></li>
+</ol>
+
+<h3>resultsLocator</h3>
+
+<h3>filter</h3>
+<p>输出值的过滤器，用于筛选 dataSource，默认方法为 <code>startsWith</code>，具体方法可以查看 <a href="./docs/filter.html">Filter</a></p>
+
+<h4>过滤器支持类型</h4>
+
+<ul>
+<li><p>  默认值(startsWith)，不设置此属性</p>
+<p>会调用默认的 startsWith 方法，从头开始匹配</p></li>
+<li><p>  空字符串、null、undefined、false</p>
+<p>什么都不处理，返回原来的 dataSource</p></li>
+<li><p>  函数</p>
+<p>通过自定义函数去去筛选 dataSource，要注意数据转换。</p>
+<p>如：筛选出包含输入值的数据</p>
+
+<pre><code>filter: function(data, query) {
+    var result = [];
+    $.each(data, function(index, value) {
+        if (value.indexOf(query) &gt; -1) {
+        result.push({value: value});
+        }
+    });
+    return result;
+}</code></pre></li>
+</ul>
+
+<h4>filter 中的数据转换</h4>
+<p>做这个数据转换主要是为了增加高亮值的配置，渲染模版时会增加 <code>item-hl</code> 样式，如下是匹配所有的 a</p>
+
+<pre><code>// 输入
+['aba', 'abb', 'abc']
+
+// 输出
+[
+  {value: 'aba', highlightIndex:[[0, 1], [2, 3]]},
+  {value: 'abb', highlightIndex:[[0, 1]]},
+  {value: 'abc', highlightIndex:[[0, 1]]},
+]</code></pre>
+<p>highlightIndex 描述了多个高亮元素的索引值，aba 中第一个 a 的索引值为 [0, 1]，第二个 a 的索引值为 [2, 3]。</p>
+<p>想了解更多可查看<a href="./docs/design.html">设计章节</a></p>
+
+<h3>inputFilter</h3>
+<p>输入值的过滤器，支持 Function，默认不做处理。</p>
+<p>这个参数可以过滤输入框中的值，过滤后的匹配值用于筛选数据。</p>
+<p>如果用户输入 a@alipay，但我想用 @ 前面的值去筛选可以如下处理</p>
+
+<pre><code>new AutoComplete({
+    inputFilter: function(value) {
+        return value.split('@')[0];
+    }
+})</code></pre>
+
+<h3>submitOnEnter</h3>
+<p>回车时是否提交表单，默认为 true，会提交表单，组件不做任何处理。</p>
+
+<h2>事件</h2>
 
 <h3>itemSelect</h3>
 
