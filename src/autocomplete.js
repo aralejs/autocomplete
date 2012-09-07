@@ -39,7 +39,7 @@ define(function(require, exports, module) {
             template: template,
             submitOnEnter: true, // 回车是否会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
-            resultsLocator: 'data',
+            locator: 'data',
             filter: 'startsWith', // 输出过滤
             inputFilter: defaultInputFilter, // 输入过滤
             // 以下仅为组件使用
@@ -203,7 +203,7 @@ define(function(require, exports, module) {
         // 过滤数据
         _filterData: function(data) {
             var filter = this.get('filter'),
-                locator = this.get('resultsLocator');
+                locator = this.get('locator');
 
             // 获取目标数据
             data = locateResult(locator, data);
@@ -282,8 +282,8 @@ define(function(require, exports, module) {
     }
 
     // 通过 locator 找到 data 中的某个属性的值
-    // locator 支持 function，函数返回值为结果
-    // locator 支持 string，而且支持点操作符寻址
+    // 1. locator 支持 function，函数返回值为结果
+    // 2. locator 支持 string，而且支持点操作符寻址
     //     data {
     //       a: {
     //         b: 'c'

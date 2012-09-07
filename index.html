@@ -83,12 +83,52 @@
     data: ['10010', '10086', '10000']
 }</code></pre></li>
 <li><p> URL</p>
-<p>提供一个 URL，jsonp 的方式返回数据。也可以通过 <code>resultsLocator</code> 找</p>
+<p>提供一个 URL，jsonp 的方式返回数据，返回的数据也可以通过 <code>resultsLocator</code> 找。</p>
 <p>URL 提供一个模版参数 <code>./test.json?v={{query}}</code>，query 是输入后过滤的值。</p></li>
-<li><p> Function</p></li>
+<li><p> Function</p>
+<p>提供一个自定义函数，根据自己的业务逻辑返回数组，这个自定义程度很高，可实现上面 3 中方式。</p>
+<p>可以每次输入都动态生成数据，如邮箱自动补完</p>
+
+<pre><code>dataSource: function(value) {
+    return [
+        value + '@gmail.com',
+        value + '@qq.com',
+        value + '@163.com'
+    ];
+}</code></pre>
+<p>也可以自己发送请求获取数据，return false 可阻止 data 事件，可查看 <a href="./docs/data-source.html">dataSource</a></p>
+
+<pre><code>dataSource: function(value) {
+    var that = this;
+    $.ajax('test.json?v+' + value, {
+        dataType: 'jsonp'
+    }).success(function(data) {
+        that.trigger('data', data);
+    })
+    return false;
+}</code></pre></li>
 </ol>
 
-<h3>resultsLocator</h3>
+<h3>locator</h3>
+<p>这个参数跟 dataSource 相关，一般情况 dataSource 会返回一个数组，filter 可以直接处理。但如果返回的是 Object，那么就需要找到这个需要的那个数组。</p>
+<p>这个参数可定位到需要的值，支持两种方式</p>
+
+<ol>
+<li><p> 字符串，默认为 &#39;data&#39;。如果为空字符串则返回原来的值。</p>
+
+<pre><code>{
+    data: ['10010', '10086', '10000']
+}</code></pre>
+<p>指定 <code>locator: &#39;data&#39;</code>，最终给 filter 的为 <code>[&#39;10010&#39;, &#39;10086&#39;, &#39;10000&#39;]</code></p>
+<p>还支持多层定位，如下可用 <code>locator: &#39;a.b&#39;</code></p>
+
+<pre><code>{a : {b: [1, 2]}}</code></pre></li>
+<li><p> 自定义函数</p>
+
+<pre><code>locator : function(data) {
+    // find data and return
+}</code></pre></li>
+</ol>
 
 <h3>filter</h3>
 <p>输出值的过滤器，用于筛选 dataSource，默认方法为 <code>startsWith</code>，具体方法可以查看 <a href="./docs/filter.html">Filter</a></p>

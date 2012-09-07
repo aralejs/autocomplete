@@ -52,15 +52,70 @@
 
 1.  URL
 
-    提供一个 URL，jsonp 的方式返回数据。也可以通过 `resultsLocator` 找
+    提供一个 URL，jsonp 的方式返回数据，返回的数据也可以通过 `resultsLocator` 找。
     
     URL 提供一个模版参数 `./test.json?v={{query}}`，query 是输入后过滤的值。
 
 1.  Function
 
-### resultsLocator
+    提供一个自定义函数，根据自己的业务逻辑返回数组，这个自定义程度很高，可实现上面 3 中方式。
+    
+    可以每次输入都动态生成数据，如邮箱自动补完
+    
+    ```
+    dataSource: function(value) {
+        return [
+            value + '@gmail.com',
+            value + '@qq.com',
+            value + '@163.com'
+        ];
+    }
+    ```
+    
+    也可以自己发送请求获取数据，return false 可阻止 data 事件，可查看 [dataSource](./docs/data-source.html)
+    
+    ```
+    dataSource: function(value) {
+        var that = this;
+        $.ajax('test.json?v+' + value, {
+            dataType: 'jsonp'
+        }).success(function(data) {
+            that.trigger('data', data);
+        })
+        return false;
+    }
+    ```
 
+### locator
 
+这个参数跟 dataSource 相关，一般情况 dataSource 会返回一个数组，filter 可以直接处理。但如果返回的是 Object，那么就需要找到这个需要的那个数组。
+
+这个参数可定位到需要的值，支持两种方式
+
+1.  字符串，默认为 'data'。如果为空字符串则返回原来的值。
+
+    ```
+    {
+        data: ['10010', '10086', '10000']
+    }
+    ```
+    
+    指定 `locator: 'data'`，最终给 filter 的为 `['10010', '10086', '10000']`
+    
+    还支持多层定位，如下可用 `locator: 'a.b'`
+    
+    ```
+    {a : {b: [1, 2]}}
+    ```
+
+2.  自定义函数
+
+    ```
+    locator : function(data) {
+        // find data and return
+    }
+    ```
+    
 
 ### filter
 
