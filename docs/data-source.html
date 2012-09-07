@@ -51,30 +51,45 @@
   
 
   <div class="markdown-body">
-    <h1>Filter</h1>
+    <h1>DataSource</h1>
+<p>数据源的管理模型</p>
 
 <hr/>
-<p>过滤是 autocomplete 数据操作的核心环节，将 dataSource 的数据根据一些规则进行处理，返回的数据再进行模版渲染。</p>
-<p>过滤器的输入有两个</p>
+<p>数据源是 autocomplete 的基础，数据可以是静态的也可以是动态的。</p>
+<p>只提供 <code>.getData</code> 的方法获取数据，通过 data 事件异步返回。</p>
 
-<ol>
-<li>dataSource 的返回值</li>
-<li>input 过滤后的返回值</li>
-</ol>
-<p>过滤器的输出直接给模版引擎</p>
+<pre><code>var source = new DataSource({
+    source: ['abc', 'abd', 'bcd']
+}).on('data', function(data) {
+    // ouput: ['abc', 'abd']
+});
+source.getData('a');</code></pre>
 
-<h3>使用方式</h3>
+<h2>属性</h2>
 
-<pre><code>filter: 'startsWith'</code></pre>
+<h3>source</h3>
+<p>数据源支持 Function, Array, Object, URL，可查看 <a href="../index.html">README dataSource 属性</a>。</p>
+<p>如果是 Function，可通过 <code>return false</code> 阻止 data 事件</p>
 
-<h2>过滤规则</h2>
+<pre><code>var source = new DataSource({
+    source: function(value) {
+        return false;
+    }
+}).on('data', function(data) {
+    // won't fire if return false
+});
+source.getData('a');</code></pre>
 
-<h3>startsWith</h3>
-<p>从头开始全匹配输入的值</p>
-<p>提供 dataSource</p>
+<h2>方法</h2>
 
-<pre><code>['abc', 'abd', 'bcd']</code></pre>
-<p>输入 <code>a</code> 后显示 abc 和 abd</p>
+<h3>getData(value)</h3>
+<p>获取 data，成功后会触发 data 事件。</p>
+<p>value 为输入框过滤后的值(realValue)</p>
+
+<h2>事件</h2>
+
+<h3>data</h3>
+<p>获取 data 成功后会触发这个事件，因为会涉及到异步，所以统一用事件处理。</p>
 
   </div>
 </div>
