@@ -19,7 +19,7 @@
         "templatable":"widget/1.0.0/templatable",
         "overlay":"0.9.9"
     },
-    "tests": ["autocomplete", "filter"],
+    "tests": ["autocomplete", "data-source", "filter"],
     "output": {
         "autocomplete.js": "."
     }
