@@ -6,7 +6,7 @@ define(function(require, exports, module) {
     var DataSource = Base.extend({
 
         attrs: {
-            source: [],
+            source: null,
             type: 'array'
         },
 
