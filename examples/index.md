@@ -39,7 +39,7 @@ seajs.use('../src/autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger',
         submitOnEnter: false,
-        dataSource: ['abc', 'abd', 'abe']
+        dataSource: ['abc', 'abd', 'abe', 'acd']
     }).render();
 });
 ````
