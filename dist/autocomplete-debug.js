@@ -237,7 +237,13 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                 // 如果输入为空，则清空并隐藏
                 if (!v) {
                     that.hide();
-                    that._clear();
+                    that.set('data', []);
+                    return;
+                }
+
+                // 模版为空，则隐藏
+                if (!that.get('data').length) {
+                    that.hide();
                     return;
                 }
 
@@ -361,7 +367,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
         _onRenderData: function(val) {
             // 渲染无数据则隐藏
             if (!val.length) {
-                this.hide();
+                this._clear();
                 return;
             }
             // 清除下拉状态
