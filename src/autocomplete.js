@@ -178,6 +178,9 @@ define(function(require, exports, module) {
 
                     // right arrow
                     case KEY.RIGHT:
+                        if (!that.get('visible')) {
+                            return;
+                        }
                         that.selectItem();
                         break;
 
@@ -188,7 +191,7 @@ define(function(require, exports, module) {
                             e.preventDefault();
                         }
                         if (!that.get('visible')) {
-                            return false;
+                            return;
                         }
                         that.selectItem();
                         break;
@@ -243,6 +246,7 @@ define(function(require, exports, module) {
         _clear: function(attribute) {
             this.$('[data-role=items]').empty();
             this.items = null;
+            this.currentItem = null;
             this.set('selectedIndex', -1);
         },
 

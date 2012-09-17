@@ -295,6 +295,9 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
 
                     // right arrow
                     case KEY.RIGHT:
+                        if (!that.get('visible')) {
+                            return;
+                        }
                         that.selectItem();
                         break;
 
@@ -305,7 +308,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                             e.preventDefault();
                         }
                         if (!that.get('visible')) {
-                            return false;
+                            return;
                         }
                         that.selectItem();
                         break;
@@ -360,6 +363,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
         _clear: function(attribute) {
             this.$('[data-role=items]').empty();
             this.items = null;
+            this.currentItem = null;
             this.set('selectedIndex', -1);
         },
 
