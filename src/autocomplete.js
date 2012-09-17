@@ -194,7 +194,7 @@ define(function(require, exports, module) {
 
             var item = this.currentItem;
             if (item) {
-                var value = item.data('value');
+                var value = item.attr('data-value');
                 this.get('trigger').val(value);
                 this.set('inputValue', value);
                 this.trigger('itemSelect', value);

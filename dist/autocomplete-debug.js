@@ -6,7 +6,7 @@ define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.0/base-debug", "#cla
     var DataSource = Base.extend({
 
         attrs: {
-            source: [],
+            source: null,
             type: 'array'
         },
 
@@ -58,7 +58,11 @@ define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.0/base-debug", "#cla
 
         _getFunctionData: function(query) {
             var func = this.get('source');
-            this.trigger('data', func.call(this, query));
+            // 如果返回 false 可阻止执行
+            var data = func.call(this, query);
+            if (data) {
+                this.trigger('data', data);
+            }
         }
     });
 
@@ -89,7 +93,7 @@ define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, export
     var $ = require('$-debug');
 
     var Filter = {
-        startsWith : function(query, data) {
+        startsWith: function(data, query) {
             var result = [], l = query.length,
                 reg = new RegExp('^' + query),
                 highlightIndex = (l === 1 ? [0] : [[0, l]]);
@@ -152,7 +156,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             template: template,
             submitOnEnter: true, // 回车是否会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
-            resultsLocator: 'data',
+            locator: 'data',
             filter: 'startsWith', // 输出过滤
             inputFilter: defaultInputFilter, // 输入过滤
             // 以下仅为组件使用
@@ -162,9 +166,9 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
         },
 
         events: {
-            'click [data-role=item]': function(e) {
+            // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
+            'mousedown [data-role=item]': function(e) {
                 this.selectItem();
-                e.preventDefault();
             },
             'mouseenter [data-role=item]': function(e) {
                 var i = this.items.index(e.currentTarget);
@@ -225,12 +229,24 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             var trigger = this.get('trigger'), that = this;
             trigger.on('keyup.autocomplete', function(e) {
                 // 获取输入的值
-                var v = that._getCurrentValue();
-                that.realValue = that.get('inputFilter').call(this, v);
+                var v = that.get('trigger').val(),
+                    oldInput = that.get('inputValue');
+
                 that.set('inputValue', v);
+
+                // 如果输入为空，则清空并隐藏
+                if (!v) {
+                    that.hide();
+                    that._clear();
+                    return;
+                }
+
+                // 如果输入变化才显示
+                if (oldInput !== v) {
+                    that.show();
+                }
             }).on('keydown.autocomplete', function(e) {
                 var currentIndex = that.get('selectedIndex');
-
 
                 switch (e.which) {
                     // top arrow
@@ -282,31 +298,24 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                         that.selectItem();
                         break;
                 }
-
-            }).on('focus.autocomplete', function(e) {
-
             }).on('blur.autocomplete', function(e) {
-                // 当选中某一项时，输入框的焦点会移向浮层，这时也会触发 blur 事件
-                // blur 优先于 click，浮层隐藏了就无法选中了，所以 400ms 后再触发
-                setTimeout(function() {
-                    that.hide();
-                }, 400);
+                that.hide();
             }).attr('autocomplete', 'off');
 
             this._tweakAlignDefaultValue();
         },
 
         selectItem: function() {
+            this.get('trigger').focus();
+            this.hide();
+
             var item = this.currentItem;
             if (item) {
-                var value = item.data('value');
+                var value = item.attr('data-value');
                 this.get('trigger').val(value);
                 this.set('inputValue', value);
                 this.trigger('itemSelect', value);
             }
-
-            this.get('trigger').focus();
-            this.hide();
         },
 
         // 调整 align 属性的默认值
@@ -316,15 +325,10 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             this.set('align', align);
         },
 
-        _getCurrentValue: function() {
-            return this.get('trigger').val();
-        },
-
         // 过滤数据
         _filterData: function(data) {
             var filter = this.get('filter'),
-                source = this.dataSource,
-                locator = this.get('resultsLocator');
+                locator = this.get('locator');
 
             // 获取目标数据
             data = locateResult(locator, data);
@@ -334,7 +338,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                 filter = Filter[filter];
             }
             if (filter && $.isFunction(filter)) {
-                data = filter.call(this, this.realValue, data);
+                data = filter.call(this, data, this.realValue);
             } else {
                 data = defaultOutputFilter.call(this, data);
             }
@@ -348,17 +352,10 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
         },
 
         _onRenderInputValue: function(val) {
-            !val && this._clear();
-
-            // 两种情况下会不显示下拉框
-            // 1. 设置的值为空
-            // 2. 设置的值和输入框中的相同
-            if (!val && this.get('trigger').val() === val) {
-                this.hide();
-                return;
+            if (val) {
+                this.realValue = this.get('inputFilter').call(this, val);
+                this.dataSource.getData(this.realValue);
             }
-            // 根据输入值获取数据
-            this.dataSource.getData(this.realValue);
         },
 
         _onRenderData: function(val) {
@@ -378,8 +375,6 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             // 初始化下拉的状态
             this.items = this.$('[data-role=items]').children();
             this.currentItem = null;
-
-            this.show();
         },
 
         _onRenderSelectedIndex: function(index) {
@@ -403,8 +398,8 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
     }
 
     // 通过 locator 找到 data 中的某个属性的值
-    // locator 支持 function，函数返回值为结果
-    // locator 支持 string，而且支持点操作符寻址
+    // 1. locator 支持 function，函数返回值为结果
+    // 2. locator 支持 string，而且支持点操作符寻址
     //     data {
     //       a: {
     //         b: 'c'

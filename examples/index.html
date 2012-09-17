@@ -176,9 +176,11 @@ seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
     new AutoComplete({
         trigger: '#example',
         dataSource: function(query) {
-            return $.map(data, function(v, i) {
+            var a = $.map(data, function(v, i) {
                 return query + '@' + v;
             });
+            a.push(query);
+            return a;
         },
         filter: '',
         inputFilter: function(v){
@@ -196,9 +198,11 @@ seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
     <span class="k">new</span> <span class="nx">AutoComplete</span><span class="p">({</span>
         <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#example&#39;</span><span class="p">,</span>
         <span class="nx">dataSource</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">return</span> <span class="nx">query</span> <span class="o">+</span> <span class="s1">&#39;@&#39;</span> <span class="o">+</span> <span class="nx">v</span><span class="p">;</span>
             <span class="p">});</span>
+            <span class="nx">a</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
         <span class="p">},</span>
         <span class="nx">filter</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="nx">inputFilter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>

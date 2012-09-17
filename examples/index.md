@@ -99,9 +99,11 @@ seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
     new AutoComplete({
         trigger: '#example',
         dataSource: function(query) {
-            return $.map(data, function(v, i) {
+            var a = $.map(data, function(v, i) {
                 return query + '@' + v;
             });
+            a.push(query);
+            return a;
         },
         filter: '',
         inputFilter: function(v){
