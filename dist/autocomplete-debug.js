@@ -258,8 +258,11 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                     // top arrow
                     case KEY.UP:
                         e.preventDefault();
-                        if (!that.get('visible')) {
+                        if (!that.get('visible') && that.get('data').length) {
                             that.show();
+                            return;
+                        }
+                        if (!that.items) {
                             return;
                         }
                         if (currentIndex > 0) {
@@ -272,8 +275,11 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                     // bottom arrow
                     case KEY.DOWN:
                         e.preventDefault();
-                        if (!that.get('visible')) {
+                        if (!that.get('visible') && that.get('data').length) {
                             that.show();
+                            return;
+                        }
+                        if (!that.items) {
                             return;
                         }
                         if (currentIndex < that.items.length - 1) {

@@ -145,6 +145,9 @@ define(function(require, exports, module) {
                             that.show();
                             return;
                         }
+                        if (!that.items) {
+                            return;
+                        }
                         if (currentIndex > 0) {
                             that.set('selectedIndex', currentIndex - 1);
                         } else {
@@ -157,6 +160,9 @@ define(function(require, exports, module) {
                         e.preventDefault();
                         if (!that.get('visible') && that.get('data').length) {
                             that.show();
+                            return;
+                        }
+                        if (!that.items) {
                             return;
                         }
                         if (currentIndex < that.items.length - 1) {
