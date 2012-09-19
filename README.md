@@ -6,7 +6,14 @@
 
 ## 使用说明
 
+初始化 autocomplete
 
+```javascript
+ac = new AutoComplete({
+    trigger: '#test',
+    dataSource: ['abc', 'abd', 'cbd']
+}).render();
+```
                         
 ## 属性 
 
