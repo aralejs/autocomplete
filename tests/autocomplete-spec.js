@@ -28,8 +28,8 @@ define(function(require) {
 
             $('#test').val('a').keyup();
             expect(ac.get('data')).toEqual([
-                {value: 'abc', highlightIndex: [0]},
-                {value: 'abd', highlightIndex: [0]}
+                {value: 'abc', highlightIndex: [[0, 1]]},
+                {value: 'abd', highlightIndex: [[0, 1]]}
             ]);
         });
 
@@ -146,8 +146,8 @@ define(function(require) {
 
                 $('#test').val('a').keyup();
                 expect(ac.get('data')).toEqual([
-                    {value: 'abc', highlightIndex: [0]},
-                    {value: 'abd', highlightIndex: [0]}
+                    {value: 'abc', highlightIndex: [[0, 1]]},
+                    {value: 'abd', highlightIndex: [[0, 1]]}
                 ]);
             });
 
@@ -165,8 +165,8 @@ define(function(require) {
 
                 $('#test').val('a').keyup();
                 expect(ac.get('data')).toEqual([
-                    {value: 'abc', highlightIndex: [0]},
-                    {value: 'abd', highlightIndex: [0]}
+                    {value: 'abc', highlightIndex: [[0, 1]]},
+                    {value: 'abd', highlightIndex: [[0, 1]]}
                 ]);
             });
 
@@ -185,8 +185,8 @@ define(function(require) {
 
                 $('#test').val('a').keyup();
                 expect(ac.get('data')).toEqual([
-                    {value: 'abc', highlightIndex: [0]},
-                    {value: 'abd', highlightIndex: [0]}
+                    {value: 'abc', highlightIndex: [[0, 1]]},
+                    {value: 'abd', highlightIndex: [[0, 1]]}
                 ]);
             });
         });
