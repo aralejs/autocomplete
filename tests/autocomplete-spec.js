@@ -256,7 +256,6 @@ define(function(require) {
 
             ac.selectItem();
             expect(ac.get('visible')).toBe(false);
-            expect(input).toBeFocused();
             expect(input.val()).toBe('abc');
             expect(ac.get('inputValue')).toBe('abc');
             expect(beCalled).toBeTruthy();
