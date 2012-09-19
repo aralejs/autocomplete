@@ -10,7 +10,9 @@ define(function(require, exports, module) {
                 var o = {};
                 if (reg.test(value)) {
                     o.value = value;
-                    o.highlightIndex = [[0, l]];
+                    if (l > 0) {
+                        o.highlightIndex = [[0, l]];
+                    }
                     result.push(o);
                 }
             });

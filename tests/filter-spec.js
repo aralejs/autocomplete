@@ -31,10 +31,10 @@ define(function(require) {
             test('start width none', function() {
                 var result = Filter.startsWith(data, '');
                 expect(result).toEqual([
-                    {value: 'about', highlightIndex: [[0, 1]]},
-                    {value: 'abuse', highlightIndex: [[0, 1]]}
-                    {value: 'but', highlightIndex: [[0, 1]]},
-                    {value: 'buffer', highlightIndex: [[0, 1]]}
+                    {value: 'about'},
+                    {value: 'abuse'},
+                    {value: 'but'},
+                    {value: 'buffer'}
                 ]);
             });
 
