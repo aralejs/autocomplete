@@ -12,7 +12,7 @@ define(function(require) {
                     'about',
                     'abuse',
                     'but',
-                    'buffter'
+                    'buffer'
                 ];
             });
 
@@ -20,23 +20,27 @@ define(function(require) {
                 data = null;
             });
 
-            test('normal usage', function() {
-                var result = Filter.startsWith('a', data);
-
-                expect(result[0].value).toBe('about');
-                expect(result[0].highlightIndex[0]).toBe(0);
-                expect(result[1].value).toBe('abuse');
-                expect(result[1].highlightIndex[0]).toBe(0);
+            test('start width a', function() {
+                var result = Filter.startsWith(data, 'a');
+                expect(result).toEqual([
+                    {value: 'about', highlightIndex: [[0, 1]]},
+                    {value: 'abuse', highlightIndex: [[0, 1]]}
+                ]);
             });
 
-            test('normal usage', function() {
-                var result = Filter.startsWith('bu', data);
+            test('start width none', function() {
+                var result = Filter.startsWith(data, '');
+                expect(result).toEqual([
+                    {value: 'about', highlightIndex: [[0, 1]]},
+                    {value: 'abuse', highlightIndex: [[0, 1]]}
+                    {value: 'but', highlightIndex: [[0, 1]]},
+                    {value: 'buffer', highlightIndex: [[0, 1]]}
+                ]);
+            });
 
-                expect(result[0].value).toBe('but');
-                var index = result[0].highlightIndex[0];
-                expect(index[0]).toBe(0);
-                expect(index[1]).toBe(2);
-                expect(result[1].value).toBe('buffter');
+            test('start width more', function() {
+                var result = Filter.startsWith(data, 'abc');
+                expect(result).toEqual([]);
             });
 
         });

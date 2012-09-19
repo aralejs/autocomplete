@@ -5,13 +5,12 @@ define(function(require, exports, module) {
     var Filter = {
         startsWith: function(data, query) {
             var result = [], l = query.length,
-                reg = new RegExp('^' + query),
-                highlightIndex = (l === 1 ? [0] : [[0, l]]);
+                reg = new RegExp('^' + query);
             $.each(data, function(index, value) {
                 var o = {};
                 if (reg.test(value)) {
                     o.value = value;
-                    o.highlightIndex = highlightIndex;
+                    o.highlightIndex = [[0, l]];
                     result.push(o);
                 }
             });
