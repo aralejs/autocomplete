@@ -203,6 +203,11 @@ define(function(require, exports, module) {
             this._tweakAlignDefaultValue();
         },
 
+        destroy: function() {
+            this.element.remove();
+            Xbox.superclass.destroy.call(this);
+        },
+
         selectItem: function() {
             this.get('trigger').focus();
             this.hide();
