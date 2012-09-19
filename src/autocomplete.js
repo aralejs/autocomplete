@@ -205,7 +205,7 @@ define(function(require, exports, module) {
 
         destroy: function() {
             this.element.remove();
-            Xbox.superclass.destroy.call(this);
+            AutoComplete.superclass.destroy.call(this);
         },
 
         selectItem: function() {
