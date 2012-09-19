@@ -74,15 +74,21 @@ define(function(require, exports, module) {
                             start = j;
                             length = 1;
                         }
-                        if (start - cursor > 0) {
+
+                        if (start > cursor) {
                             h += v.substring(cursor, start);
                         }
-                        h += '<span class="' + classPrefix + '-item-hl">' +
-                            v.substr(start, length) +
-                            '</span>';
+                        if (start < v.length) {
+                            h += '<span class="' + classPrefix + '-item-hl">' +
+                                v.substr(start, length) +
+                                '</span>';
+                        }
                         cursor = start + length;
+                        if (cursor >= v.length) {
+                            break;
+                        }
                     }
-                    if (v.length - cursor > 0) {
+                    if (v.length > cursor) {
                         h += v.substring(cursor, v.length);
                     }
                     return new Handlebars.SafeString(h);
