@@ -14,10 +14,10 @@
     "license": "",
     "dependencies": {
         "$":"$",
-        "base":"1.0.0",
+        "base":"1.0.1",
         "handlebars":"1.0.0",
-        "templatable":"widget/1.0.0/templatable",
-        "overlay":"0.9.9"
+        "templatable":"widget/1.0.2/templatable",
+        "overlay":"0.9.10"
     },
     "tests": ["autocomplete", "data-source", "filter"],
     "output": {

@@ -1,6 +1,6 @@
-define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
+define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.1/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
 
-    var Base = require('#base/1.0.0/base-debug');
+    var Base = require('#base/1.0.1/base-debug');
     var $ = require('$-debug');
 
     var DataSource = Base.extend({
@@ -95,13 +95,14 @@ define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, export
     var Filter = {
         startsWith: function(data, query) {
             var result = [], l = query.length,
-                reg = new RegExp('^' + query),
-                highlightIndex = (l === 1 ? [0] : [[0, l]]);
+                reg = new RegExp('^' + query);
             $.each(data, function(index, value) {
                 var o = {};
                 if (reg.test(value)) {
                     o.value = value;
-                    o.highlightIndex = highlightIndex;
+                    if (l > 0) {
+                        o.highlightIndex = [[0, l]];
+                    }
                     result.push(o);
                 }
             });
@@ -115,11 +116,11 @@ define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, export
 
 
 
-define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "#overlay/0.9.9/overlay-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.0/widget-debug", "#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.0/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "#overlay/0.9.10/overlay-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "position/1.0.0/position-debug", "#widget/1.0.2/widget-debug", "#base/1.0.1/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.2/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
-    var Overlay = require('#overlay/0.9.9/overlay-debug');
-    var Templatable = require('#widget/1.0.0/templatable-debug');
+    var Overlay = require('#overlay/0.9.10/overlay-debug');
+    var Templatable = require('#widget/1.0.2/templatable-debug');
     var Handlebars = require('#handlebars/1.0.0/handlebars-debug');
     var DataSource = require('./data-source-debug');
     var Filter = require('./filter-debug');
@@ -191,15 +192,21 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                             start = j;
                             length = 1;
                         }
-                        if (start - cursor > 0) {
+
+                        if (start > cursor) {
                             h += v.substring(cursor, start);
                         }
-                        h += '<span class="' + classPrefix + '-item-hl">' +
-                            v.substr(start, length) +
-                            '</span>';
+                        if (start < v.length) {
+                            h += '<span class="' + classPrefix + '-item-hl">' +
+                                v.substr(start, length) +
+                                '</span>';
+                        }
                         cursor = start + length;
+                        if (cursor >= v.length) {
+                            break;
+                        }
                     }
-                    if (v.length - cursor > 0) {
+                    if (v.length > cursor) {
                         h += v.substring(cursor, v.length);
                     }
                     return new Handlebars.SafeString(h);
@@ -318,6 +325,11 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             }).attr('autocomplete', 'off');
 
             this._tweakAlignDefaultValue();
+        },
+
+        destroy: function() {
+            this.element.remove();
+            AutoComplete.superclass.destroy.call(this);
         },
 
         selectItem: function() {
