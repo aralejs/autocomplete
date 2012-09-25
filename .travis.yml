@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - 0.8.x
+before_script:
+  - curl -O https://raw.github.com/jcarver989/phantom-jasmine/master/lib/run_jasmine_test.coffee
+  - python -m SimpleHTTPServer 8000
+script: phantomjs run_jasmine_test.coffee http://localhost:8000/tests/runner.html
