@@ -327,6 +327,11 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             this._tweakAlignDefaultValue();
         },
 
+        show: function() {
+            AutoComplete.superclass.show.call(this);
+            this._setPosition();
+        },
+
         destroy: function() {
             this.element.remove();
             AutoComplete.superclass.destroy.call(this);

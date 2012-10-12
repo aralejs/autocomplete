@@ -209,6 +209,11 @@ define(function(require, exports, module) {
             this._tweakAlignDefaultValue();
         },
 
+        show: function() {
+            AutoComplete.superclass.show.call(this);
+            this._setPosition();
+        },
+
         destroy: function() {
             this.element.remove();
             AutoComplete.superclass.destroy.call(this);
