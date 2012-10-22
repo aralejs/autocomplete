@@ -18,7 +18,7 @@
         "base":"1.0.1",
         "handlebars":"1.0.0",
         "templatable":"widget/1.0.2/templatable",
-        "overlay":"0.9.10"
+        "overlay":"0.9.11"
     },
     "tests": ["autocomplete", "data-source", "filter"],
     "output": {
