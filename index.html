@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
     <title>Autocomplete</title><link rel="stylesheet" href="http://alipay.github.com/liquidluck-theme-arale/assets/app.min.css">
+    <link rel="shortcut icon" href="http://alipay.github.com/liquidluck-theme-arale/assets/favicon.ico" type="image/x-icon" />
     <script src="http://seajs.org/dist/sea.js"></script>
     <script src="http://alipay.github.com/liquidluck-theme-arale/tools/arale-helper.js"></script>
     <!--[if lt IE 9]>
@@ -18,8 +19,8 @@
           
           <nav class="global-nav" role="navigation">
             <ul class="fn-clear">
-              <li class="user-guides"><a href="/developer-guides/">开发指南</a></li>
-              <li class="developer-guides"><a href="/document/">组件文档</a></li>
+              <li class="developer-guides"><a href="/developer-guides/">开发指南</a></li>
+              <li class="user-guides"><a href="/components/">组件文档</a> • <a style="padding-left:0;" href="/mapping.html">Map</a></li>
             </ul>
           </nav>
           <nav class="top-nav" role="navigation">
@@ -37,11 +38,26 @@
       <div class="container fn-clear">
 <div class="markdown-body">
   <h1 class="entry-title">AutoComplete</h1>
+  <div class="other-info">
+    <a href="history.html">历史</a>
+    <a target="_blank" href="https://github.com/aralejs/autocomplete/">源码</a>
+  </div>
+  <p class="entry-description">自动补全组件。</p>
   <p class="entry-cdn" data-name="autocomplete"></p>
   
   <hr />
 
-  <h2 id="toc_0">使用说明</h2>
+  
+<h2>演示</h2>
+<ul>
+  <li><a href="./examples/">演示文档</a></li>
+</ul>
+<h2>文档</h2>
+<ul>
+  <li><a href="./docs/data-source.html">数据源的管理模型</a></li>
+  <li><a href="./docs/design.html">设计模型</a></li>
+  <li><a href="./docs/filter.html">过滤器 Filter</a></li>
+</ul><h2 id="toc_0">使用说明</h2>
 <p>初始化 autocomplete</p>
 <div class="highlight"><pre><span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AutoComplete</span><span class="p">({</span>
     <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#test&#39;</span><span class="p">,</span>
@@ -49,17 +65,7 @@
 <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
 </pre></div>
 
-
-<h2>演示</h2>
-<ul>
-  <li><a href="./examples/">Example</a></li>
-</ul>
-<h2>文档</h2>
-<ul>
-  <li><a href="./docs/data-source.html">DataSource</a></li>
-  <li><a href="./docs/design.html">设计</a></li>
-  <li><a href="./docs/filter.html">Filter</a></li>
-</ul><h2 id="toc_1">API</h2>
+<h2 id="toc_1">API</h2>
 
 <h3 id="toc_2">属性</h3>
 
@@ -211,8 +217,7 @@
   <p>有任何疑问，欢迎发送邮件到 <a href="https://groups.google.com/forum/?fromgroups#!forum/aralejs">aralejs@googlegroups.com</a></p>
   <p>发现 bug？请提交 <a href="https://github.com/aralejs/autocomplete/issues/new">Issue</a></p>
 </div>
-
-        <div class="sidebar"></div>
+<div class="sidebar sidebar-components"></div>
       </div>
     </div>
 

@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-    <title>Autocomplete</title><link rel="stylesheet" href="http://alipay.github.com/liquidluck-theme-arale/assets/app.min.css">
+    <title>Autocomplete - 数据源的管理模型</title><link rel="stylesheet" href="http://alipay.github.com/liquidluck-theme-arale/assets/app.min.css">
+    <link rel="shortcut icon" href="http://alipay.github.com/liquidluck-theme-arale/assets/favicon.ico" type="image/x-icon" />
     <script src="http://seajs.org/dist/sea.js"></script>
     <script src="http://alipay.github.com/liquidluck-theme-arale/tools/arale-helper.js"></script>
     <!--[if lt IE 9]>
@@ -18,8 +19,8 @@
           
           <nav class="global-nav" role="navigation">
             <ul class="fn-clear">
-              <li class="user-guides"><a href="/developer-guides/">开发指南</a></li>
-              <li class="developer-guides"><a href="/document/">组件文档</a></li>
+              <li class="developer-guides"><a href="/developer-guides/">开发指南</a></li>
+              <li class="user-guides"><a href="/components/">组件文档</a> • <a style="padding-left:0;" href="/mapping.html">Map</a></li>
             </ul>
           </nav>
           <nav class="top-nav" role="navigation">
@@ -36,8 +37,7 @@
     <div id="main">
       <div class="container fn-clear">
 <div class="markdown-body">
-  <h1 class="entry-title">DataSource</h1>
-  <a id="back-to-module" href="../">返回组件</a>
+  <h1 class="entry-title"><a id="back-to-module" href="../">Autocomplete</a> - 数据源的管理模型</h1>
   <p>数据源是 autocomplete 的基础，数据可以是静态的也可以是动态的。</p>
 <p>只提供 <code>.getData</code> 的方法获取数据，通过 data 事件异步返回。</p>
 
@@ -75,8 +75,7 @@ source.getData('a');</code></pre>
 <p>获取 data 成功后会触发这个事件，因为会涉及到异步，所以统一用事件处理。</p>
 
 </div>
-
-        <div class="sidebar"></div>
+<div class="sidebar sidebar-components"></div>
       </div>
     </div>
 
