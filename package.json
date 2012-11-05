@@ -25,6 +25,7 @@
         "autocomplete.js": "."
     },
     "scripts": {
+        "install": "",
         "test": "make test"
     }
 }
