@@ -7,4 +7,3 @@ server:
 test:
 	@./node_modules/.bin/phantomjs run_jasmine_test.coffee http://localhost:8000/tests/runner.html
 
-install:
