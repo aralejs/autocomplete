@@ -4,7 +4,8 @@ python:
   - 3.2
 
 before_script:
-  - nohup make server &
+  - liquidluck server -d -s ~/.liquidluck-themes/arale2/settings.yml
+  - sleep 5
 
 install: 
   - pip install liquidluck
