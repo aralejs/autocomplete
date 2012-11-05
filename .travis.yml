@@ -1,8 +1,7 @@
-language: node_js
+language: python
 
 node_js:
-  - 0.8
-  - 0.6
+  - 3.2
 
 before_script:
   - liquidluck server -d -s ./liquidluck-themes-arale2/settings.yml
