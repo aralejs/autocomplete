@@ -4,11 +4,11 @@ node_js:
   - 3.2
 
 before_script:
-  - liquidluck server -d -s ./liquidluck-themes-arale2/settings.yml
+  - @nohup make server &
 
 install: 
   - pip install liquidluck
-  - git clone https://github.com/alipay/liquidluck-theme-arale2.git
+  - liquidluck install alipay/arale2 -g
   - curl -O https://raw.github.com/jcarver989/phantom-jasmine/master/lib/run_jasmine_test.coffee
-  - npm install phantomjs
+  - npm install phantomjs -g
   
