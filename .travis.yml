@@ -11,4 +11,3 @@ install:
   - liquidluck install alipay/arale2 -g
   - curl -O https://raw.github.com/jcarver989/phantom-jasmine/master/lib/run_jasmine_test.coffee
   - npm install phantomjs -g
-  
