@@ -16,3 +16,7 @@ install:
   - npm install phantomjs -g
   
 script: phantomjs run_jasmine_test.coffee http://127.0.0.1:8000/tests/runner.html
+
+env:
+  global:
+    - TIMEOUT=500
