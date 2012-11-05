@@ -5,7 +5,9 @@ python:
 
 before_script:
   - liquidluck build -s ~/.liquidluck-themes/arale2/settings.yml
-  - liquidluck server -d -s ~/.liquidluck-themes/arale2/settings.yml
+  - cd _site
+  - nohup python -m SimpleHTTPServer 8000 &
+  - ps aux | grep python
   - sleep 5
 
 install: 
