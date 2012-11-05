@@ -1,7 +1,10 @@
 language: node_js
 node_js:
-  - 0.8.x
+  - 0.8
+  - 0.6
 before_script:
+  - pip install liquidluck
+  - git clone https://github.com/alipay/liquidluck-theme-arale2.git
   - curl -O https://raw.github.com/jcarver989/phantom-jasmine/master/lib/run_jasmine_test.coffee
-  - python -m SimpleHTTPServer 8000
-script: phantomjs run_jasmine_test.coffee http://localhost:8000/tests/runner.html
+  - npm install phantomjs
+  - liquidluck server -d -s ./liquidluck-themes-arale2/settings.yml
