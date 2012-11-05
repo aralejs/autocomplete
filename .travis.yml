@@ -4,7 +4,7 @@ python:
   - 3.2
 
 before_script:
-  - liquidluck build -d -s ~/.liquidluck-themes/arale2/settings.yml
+  - liquidluck build -s ~/.liquidluck-themes/arale2/settings.yml
   - liquidluck server -d -s ~/.liquidluck-themes/arale2/settings.yml
   - sleep 5
 
