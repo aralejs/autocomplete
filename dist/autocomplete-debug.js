@@ -87,6 +87,7 @@ define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.1/base-debug", "#cla
 });
 
 
+
 define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
@@ -111,6 +112,7 @@ define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, export
 
     module.exports = Filter;
 });
+
 
 
 
