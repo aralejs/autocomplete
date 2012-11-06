@@ -4,10 +4,11 @@ python:
   - 2.7
 
 before_script:
+  - echo "debug = True" > ~/.liquidluck-themes/arale2/theme.py
   - liquidluck build -s ~/.liquidluck-themes/arale2/settings.yml
   - spm install --to _site/sea-modules
-  - nohup make server &
-  - ps aux | grep python
+  - cd _site
+  - nohup python -m SimpleHTTPServer 8000 &
   - sleep 10
   - cat _site/tests/runner.html
 
