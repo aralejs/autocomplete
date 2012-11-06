@@ -10,7 +10,7 @@ before_script:
   - cd _site
   - nohup python -m SimpleHTTPServer 8000 &
   - sleep 10
-  - cat _site/tests/runner.html
+  - cat tests/runner.html
 
 install: 
   - pip install liquidluck
