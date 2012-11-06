@@ -5,11 +5,11 @@ python:
 
 before_script:
   - liquidluck build -s ~/.liquidluck-themes/arale2/settings.yml
-  - cat _site/tests/runner.html
   - spm install --to _site/sea-modules
   - nohup make server &
   - ps aux | grep python
-  - sleep 5
+  - sleep 10
+  - cat _site/tests/runner.html
 
 install: 
   - pip install liquidluck
