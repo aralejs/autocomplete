@@ -4,7 +4,7 @@ python:
   - 2.7
 
 before_script:
-  - echo "debug = True" > ~/.liquidluck-themes/arale2/theme.py
+  - echo "debug = True" >> ~/.liquidluck-themes/arale2/theme.py
   - liquidluck build -s ~/.liquidluck-themes/arale2/settings.yml
   - spm install --to _site/sea-modules
   - cd _site
