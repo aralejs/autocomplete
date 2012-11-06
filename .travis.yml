@@ -5,7 +5,7 @@ python:
 
 before_script:
   - liquidluck build -s ~/.liquidluck-themes/arale2/settings.yml
-  - spm install --to _site
+  - spm install --to _site/sea-modules
   - nohup make server &
   - ps aux | grep python
   - sleep 5
