@@ -1,23 +1,16 @@
-language: python
+language: node_js
 
-python:
-  - 2.7
+node:
+  - 0.8
 
 before_script:
-  - echo "debug = True" >> ~/.liquidluck-themes/arale2/theme.py
-  - liquidluck build -s ~/.liquidluck-themes/arale2/settings.yml
-  - spm install --to _site/sea-modules
-  - cd _site
-  - nohup python -m SimpleHTTPServer 8000 &
-  - sleep 10
-  - cat tests/runner.html
+  - git clone git@github.com:alipay/liquidluck-theme-arale2.git ../liquidluck-theme-arale2
+  - cp -r ../liquidluck-theme-arale2/* tests/
+  - nohup node tests/test-travis.js &
 
 install: 
-  - pip install liquidluck
-  - liquidluck install alipay/arale2 -g
-  - curl -O https://raw.github.com/jcarver989/phantom-jasmine/master/lib/run_jasmine_test.coffee
-  - npm install spm -g
-  - npm install phantomjs -g
+  - npm install spm node-static swig
+  - spm install
   
 script: phantomjs run_jasmine_test.coffee http://127.0.0.1:8000/tests/runner.html
 
