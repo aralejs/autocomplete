@@ -6,14 +6,16 @@ node_js:
 
 before_script:
   - git clone https://github.com/alipay/liquidluck-theme-arale2.git ../liquidluck-theme-arale2
-  - cp -r ../liquidluck-theme-arale2/* tests/
+  - cp -r ../liquidluck-theme-arale2/static tests/
+  - cp -r ../liquidluck-theme-arale2/templates tests/
+  - cp -r ../liquidluck-theme-arale2/test-travis.js tests/
   - nohup node tests/test-travis.js &
 
 install: 
-  - npm install spm node-static swig
+  - npm install spm node-static swig phantomjs
   - spm install
   
-script: phantomjs run_jasmine_test.coffee http://127.0.0.1:8000/tests/runner.html
+script: ./node_modules/.bin/phantomjs tests/static/js/run_jasmine_test.coffee http://127.0.0.1:8000/tests/runner.html
 
 env:
   global:
