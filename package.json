@@ -1,9 +1,10 @@
 {
     "name": "autocomplete",
     "version": "0.8.0",
+    "root": "arale",
     "description": "自动补全组件",
     "tag": "widget",
-    "homepage": "",
+    "homepage": "http://aralejs.org/autocomplete/",
     "author": "popomore <sakura9515@gmail.com>",
     "repository": {
         "type": "git",
@@ -15,10 +16,10 @@
     "license": "MIT",
     "dependencies": {
         "$":"$",
-        "base":"1.0.1",
-        "handlebars":"1.0.0",
-        "templatable":"widget/1.0.2/templatable",
-        "overlay":"0.9.11"
+        "handlebars":"gallery/handlebars/1.0.0/handlebars",
+        "base":"arale/base/1.0.1/base",
+        "templatable":"arale/widget/1.0.2/templatable",
+        "overlay":"arale/overlay/0.9.12/overlay"
     },
     "tests": ["autocomplete", "data-source", "filter"],
     "output": {

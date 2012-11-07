@@ -1,6 +1,6 @@
-define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.1/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
+define("arale/autocomplete/0.8.0/data-source-debug", ["arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
 
-    var Base = require('#base/1.0.1/base-debug');
+    var Base = require('arale/base/1.0.1/base-debug');
     var $ = require('$-debug');
 
     var DataSource = Base.extend({
@@ -87,8 +87,7 @@ define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.1/base-debug", "#cla
 });
 
 
-
-define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, exports, module) {
+define("arale/autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
 
@@ -115,13 +114,12 @@ define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, export
 
 
 
-
-define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "#overlay/0.9.11/overlay-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.2/widget-debug", "#base/1.0.1/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.2/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("arale/autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
-    var Overlay = require('#overlay/0.9.11/overlay-debug');
-    var Templatable = require('#widget/1.0.2/templatable-debug');
-    var Handlebars = require('#handlebars/1.0.0/handlebars-debug');
+    var Overlay = require('arale/overlay/0.9.12/overlay-debug');
+    var Templatable = require('arale/widget/1.0.2/templatable-debug');
+    var Handlebars = require('gallery/handlebars/1.0.0/handlebars-debug');
     var DataSource = require('./data-source-debug');
     var Filter = require('./filter-debug');
 
