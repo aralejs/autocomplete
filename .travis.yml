@@ -13,6 +13,7 @@ before_script:
 install: 
   - npm install spm node-static swig phantomjs
   - sed -i 's/\[/[\"modules.aralejs.org\",/g' ~/.spm/config.json
+  - cat ~/.spm/config.json
   - spm install
 
 script: ./node_modules/.bin/phantomjs tests/static/js/run_jasmine_test.coffee http://127.0.0.1:8000/tests/runner.html
