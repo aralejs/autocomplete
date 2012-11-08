@@ -1,5 +1,7 @@
 # 过滤器 Filter
 
+- order: 3
+
 ----
 
 过滤是 autocomplete 数据操作的核心环节，将 dataSource 的数据根据一些规则进行处理，返回的数据再进行模版渲染。

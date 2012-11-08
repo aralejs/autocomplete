@@ -1,5 +1,7 @@
 # AutoComplete
 
+- order: 1
+
 ---
 
 自动补全组件。
