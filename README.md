@@ -21,20 +21,22 @@ ac = new AutoComplete({
 
 ### 属性 
 
-#### trigger
+#### trigger *selector*
 
 输入框
 
-#### template
+#### template *string*
 
 模版，注意覆盖的时候不要缺少 `data-role`
 
-#### classPrefix 
+模板重新渲染的时候只会渲染 `data-role="items"` 下面的
+
+#### classPrefix *string*
 
 样式前缀，默认为 `ui-autocomplete`
 
 
-#### dataSource
+#### dataSource *array | object | string | function*
 
 提供的数据源，需要以数组的形式，以这个为基准进行筛选
 
@@ -96,7 +98,7 @@ ac = new AutoComplete({
     }
     ```
 
-#### locator
+#### locator *object | function*
 
 这个参数跟 dataSource 相关，一般情况 dataSource 会返回一个数组，filter 可以直接处理。但如果返回的是 Object，那么就需要找到这个需要的那个数组。
 
@@ -127,7 +129,7 @@ ac = new AutoComplete({
     ```
     
 
-#### filter
+#### filter *function*
 
 输出值的过滤器，用于筛选 dataSource，默认方法为 `startsWith`，具体方法可以查看 [Filter](./docs/filter.html)
 
@@ -180,7 +182,7 @@ highlightIndex 描述了多个高亮元素的索引值，aba 中第一个 a 的�
 
 想了解更多可查看[设计章节](./docs/design.html)
 
-#### inputFilter
+#### inputFilter *function*
 
 输入值的过滤器，支持 Function，默认不做处理。
 
@@ -196,9 +198,7 @@ new AutoComplete({
 })
 ```
 
-
-
-#### submitOnEnter
+#### submitOnEnter *boolean*
 
 回车时是否提交表单，默认为 true，会提交表单，组件不做任何处理。
 
