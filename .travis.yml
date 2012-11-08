@@ -12,6 +12,7 @@ before_script:
 
 install: 
   - npm install spm node-static swig phantomjs
+  - spm env --init
   - ls ~/.spm
   - cat ~/.spm/config.json
   - sed -i 's/\[/[\"modules.aralejs.org\",/g' ~/.spm/config.json
