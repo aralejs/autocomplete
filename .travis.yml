@@ -11,12 +11,11 @@ before_script:
   - nohup node tests/test-travis.js &
 
 install: 
-  - npm install spm node-static swig phantomjs
+  - git clone https://github.com/seajs/spm.git ../spm
+  - npm install ../spm
+  - npm install node-static swig phantomjs 
   - spm env --init
-  - ls ~/.spm
-  - cat ~/.spm/config.json
   - sed -i 's/\[/[\"modules.aralejs.org\",/g' ~/.spm/config.json
-  - cat ~/.spm/config.json
   - spm install
 
 script: ./node_modules/.bin/phantomjs tests/static/js/run_jasmine_test.coffee http://127.0.0.1:8000/tests/runner.html
