@@ -18,7 +18,7 @@ source.getData('a');
 
 ## 属性
 
-### source
+### source *array | object | string | function*
 
 数据源支持 Function, Array, Object, URL，可查看 [README dataSource 属性](../index.html)。
 
