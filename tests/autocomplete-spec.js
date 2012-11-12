@@ -332,6 +332,42 @@ define(function(require) {
             expect(ac.currentItem).toBe(null);
             expect(ac.get('selectedIndex')).toBe(-1);
         });
+
+        test('do not show when async', function() {
+            var input = $('#test');
+            ac = new AutoComplete({
+                trigger: '#test',
+                dataSource: 'http://baidu.com'
+            }).render();
+
+            spyOn($, 'ajax').andCallFake(function(url) {
+                return {
+                    success: function(callback) {
+                        setTimeout(function() {
+                            callback(['abc', 'abd', 'cbd']);
+                        }, 50);
+                        return this;
+                    },
+                    error: function(callback) {
+                        return this;
+                    }
+                };
+            });
+
+            var t = ac.element.html();
+
+            $('#test').val('a').keyup();
+
+            waitsFor(function() {
+                return t !== ac.element.html();
+            }, 'element changed', 750);
+
+            runs(function() {
+                expect(ac.get('visible')).toBeTruthy();
+                //spyOn($, 'ajax').andCallThrough();
+            });
+
+        });
     });
 
 });
