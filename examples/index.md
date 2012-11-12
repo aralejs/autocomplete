@@ -55,9 +55,7 @@ seajs.use('../src/autocomplete', function(AutoComplete) {
 seajs.use('../src/autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger1',
-        dataSource: {
-            data : ['abc', 'abd', 'abe']
-        }
+        dataSource: './data.json'
     }).render();
 });
 ````

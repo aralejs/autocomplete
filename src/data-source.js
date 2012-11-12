@@ -32,16 +32,21 @@ define(function(require, exports, module) {
         },
 
         _getUrlData: function(query) {
-            var that = this;
+            var that = this, options;
             var url = this.get('source')
                 .replace(/{{query}}/g, query ? query : '');
-            $.ajax(url, {
-                dataType: 'jsonp'
-            }).success(function(data) {
-                that.trigger('data', data);
-            }).error(function(data) {
-                that.trigger('data', {});
-            });
+            if (/^(https?:\/\/)/.test(url)) {
+                options = {dataType: 'jsonp'};
+            } else {
+                options = {dataType: 'json'};
+            }
+            $.ajax(url, options)
+                .success(function(data) {
+                    that.trigger('data', data);
+                })
+                .error(function(data) {
+                    that.trigger('data', {});
+                });
         },
 
         _getArrayData: function() {

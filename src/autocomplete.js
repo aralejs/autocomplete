@@ -119,14 +119,14 @@ define(function(require, exports, module) {
             trigger.on('keyup.autocomplete', function(e) {
                 // 获取输入的值
                 var v = that.get('trigger').val();
+
                 that.oldInput = that.get('inputValue');
+                that.set('inputValue', v);
 
                 // 如果输入为空，则清空并隐藏
                 if (!v) {
                     that.hide();
                     that.set('data', []);
-                } else {
-                    that.set('inputValue', v);
                 }
             }).on('keydown.autocomplete', function(e) {
                 var currentIndex = that.get('selectedIndex');

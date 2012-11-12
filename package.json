@@ -1,6 +1,6 @@
 {
     "name": "autocomplete",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "root": "arale",
     "description": "自动补全组件",
     "tag": "widget",
