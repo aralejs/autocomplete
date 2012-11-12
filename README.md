@@ -66,9 +66,11 @@ ac = new AutoComplete({
 
 1.  URL
 
-    提供一个 URL，jsonp 的方式返回数据，返回的数据也可以通过 `resultsLocator` 找。
+    提供一个 URL，通过 ajax 返回数据，返回的数据也可以通过 `resultsLocator` 查找。
     
     URL 提供一个模版参数 `./test.json?v={{query}}`，query 是输入后过滤的值。
+
+    如果 URL 为 http 或 https 开头，会用 jsonp 发送请求。
 
 1.  Function
 
@@ -129,7 +131,6 @@ ac = new AutoComplete({
         // find data and return
     }
     ```
-    
 
 #### filter *function*
 
@@ -203,6 +204,11 @@ new AutoComplete({
 #### submitOnEnter *boolean*
 
 回车时是否提交表单，默认为 true，会提交表单，组件不做任何处理。
+
+#### disabled *boolean*
+
+是否禁用，默认为 `false`
+
 
 ### 事件
 

@@ -42,6 +42,7 @@ define(function(require, exports, module) {
             locator: 'data',
             filter: 'startsWith', // 输出过滤
             inputFilter: defaultInputFilter, // 输入过滤
+            disabled: false,
             // 以下仅为组件使用
             selectedIndex: undefined,
             inputValue: '', // 同步输入框的 value
@@ -117,6 +118,8 @@ define(function(require, exports, module) {
 
             var trigger = this.get('trigger'), that = this;
             trigger.on('keyup.autocomplete', function(e) {
+                if (that.get('disabled')) return;
+
                 // 获取输入的值
                 var v = that.get('trigger').val();
 
