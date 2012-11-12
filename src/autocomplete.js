@@ -118,27 +118,15 @@ define(function(require, exports, module) {
             var trigger = this.get('trigger'), that = this;
             trigger.on('keyup.autocomplete', function(e) {
                 // 获取输入的值
-                var v = that.get('trigger').val(),
-                    oldInput = that.get('inputValue');
-
-                that.set('inputValue', v);
+                var v = that.get('trigger').val();
+                that.oldInput = that.get('inputValue');
 
                 // 如果输入为空，则清空并隐藏
                 if (!v) {
                     that.hide();
                     that.set('data', []);
-                    return;
-                }
-
-                // 模版为空，则隐藏
-                if (!that.get('data').length) {
-                    that.hide();
-                    return;
-                }
-
-                // 如果输入变化才显示
-                if (oldInput !== v) {
-                    that.show();
+                } else {
+                    that.set('inputValue', v);
                 }
             }).on('keydown.autocomplete', function(e) {
                 var currentIndex = that.get('selectedIndex');
@@ -227,6 +215,7 @@ define(function(require, exports, module) {
             if (item) {
                 var value = item.attr('data-value');
                 this.get('trigger').val(value);
+                this.oldInput = value;
                 this.set('inputValue', value);
                 this.trigger('itemSelect', value);
             }
@@ -277,6 +266,7 @@ define(function(require, exports, module) {
             // 渲染无数据则隐藏
             if (!val.length) {
                 this._clear();
+                this.hide();
                 return;
             }
             // 清除下拉状态
@@ -290,6 +280,13 @@ define(function(require, exports, module) {
             // 初始化下拉的状态
             this.items = this.$('[data-role=items]').children();
             this.currentItem = null;
+
+            // 如果输入变化才显示
+            var v = this.get('inputValue');
+            if (v !== this.oldInput) {
+                this.show();
+                this.oldInput = v;
+            }
         },
 
         _onRenderSelectedIndex: function(index) {
