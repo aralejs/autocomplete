@@ -333,7 +333,7 @@ define(function(require) {
             expect(ac.get('selectedIndex')).toBe(-1);
         });
 
-        test('do not show when async', function() {
+        test('do not show when async #14', function() {
             var input = $('#test');
             ac = new AutoComplete({
                 trigger: '#test',
