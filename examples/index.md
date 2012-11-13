@@ -75,20 +75,6 @@ seajs.use('../src/data-source', function(DataSource) {
 ````
 
 
-````javascript
-seajs.use('../src/data-source', function(DataSource) {
-    var source = new DataSource({
-        source: './test.json?v={{query}}'
-    }).on('data', function(source) {
-        console.log('data change')
-        console.log(source);
-    });
-
-    var data = source.getData();
-});
-````
-
-
 <input id="example" type="text" value="" />
 
 ````javascript
