@@ -4,7 +4,7 @@ node_js:
   - 0.8
 
 before_script:
-  - git clone https://github.com/alipay/liquidluck-theme-arale2.git ../liquidluck-theme-arale2
+  - git clone https://github.com/aralejs/liquidluck-theme-arale2.git ../liquidluck-theme-arale2
   - cp -r ../liquidluck-theme-arale2/static tests/
   - cp -r ../liquidluck-theme-arale2/templates tests/
   - cp -r ../liquidluck-theme-arale2/test-travis.js tests/
