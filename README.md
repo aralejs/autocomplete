@@ -4,7 +4,7 @@
 
 ---
 
-[![Build Status](https://secure.travis-ci.org/aralejs/autocomplete.png?branch=0.8.0)](https://travis-ci.org/aralejs/autocomplete)
+[![Build Status](https://secure.travis-ci.org/aralejs/autocomplete.png)](https://travis-ci.org/aralejs/autocomplete)
 
 自动补全组件。
 
