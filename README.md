@@ -1,4 +1,4 @@
-# AutoComplete
+# AutoComplete [![Build Status](https://secure.travis-ci.org/aralejs/autocomplete.png?branch=0.8.0)](https://travis-ci.org/aralejs/autocomplete)
 
 - order: 1
 
