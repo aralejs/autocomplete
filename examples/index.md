@@ -1,102 +1,104 @@
-# 演示文档
+# 基本操作
+
+- order:1
 
 ----
 
-<style>
-.ui-autocomplete{
-    border: 1px solid #CCC;
-    background:#fff;
-    padding: 2px 0;
-}
-.ui-autocomplete-ctn{
-    margin:0;
-    padding:0;
-}
-.ui-autocomplete-item{
-    padding: 4px 10px;
-    list-style: none;
-}
-.ui-autocomplete-item-hover{
-    background:#0f0;
-}
-.ui-autocomplete-item-hl {
-    background: #ff0;
-}
-</style>
-
 <script>
-seajs.config({
-    map: [
-        //[/(\d(?:\/dist)?\/[a-z]+)\.js$/, '$1-debug.js']
-        //['overlay.js', 'overlay-debug.js'],
-        //['templatable.js', 'templatable-debug.js']
-    ]
-})
+seajs.use('../src/autocomplete.css');
 </script>
 
-<form name="" action="">
-    <input id="acTrigger" type="text" value="" />
-</form>
+最简单的方式只需要提供 trigger 和 datasource。
+
+<input id="acTrigger1" type="text" value="" />
 
 ````javascript
-seajs.use('../src/autocomplete', function(AutoComplete) {
+seajs.use('autocomplete', function(AutoComplete) {
     new AutoComplete({
-        trigger: '#acTrigger',
+        trigger: '#acTrigger1',
+        dataSource: ['abc', 'abd', 'abe', 'acd']
+    }).render();
+});
+````
+
+## 阻止回车事件
+
+当输入框在 form 中，直接回车会提交表单，这时需要设置 `submitOnEnter`
+
+````html
+<form name="" action="">
+    <input id="acTrigger2" type="text" value="" />
+</form>
+````
+
+````javascript
+seajs.use('autocomplete', function(AutoComplete) {
+    new AutoComplete({
+        trigger: '#acTrigger2',
         submitOnEnter: false,
         dataSource: ['abc', 'abd', 'abe', 'acd']
     }).render();
 });
 ````
 
+## 动态设置是否提示
 
-<input id="acTrigger1" type="text" value="" />
+可动态调用 `disabled` 属性
+
+<input id="acTrigger3" type="text" value="" />
+
+<a href="#" id="acTrigger3-extra" data-status="on">开启</a>
 
 ````javascript
-seajs.use('../src/autocomplete', function(AutoComplete) {
-    new AutoComplete({
-        trigger: '#acTrigger1',
-        dataSource: './data.json'
+seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+    var ac = new AutoComplete({
+        trigger: '#acTrigger3',
+        dataSource: ['abc', 'abd', 'abe', 'acd']
     }).render();
-});
-````
 
-````javascript
-seajs.use('../src/data-source', function(DataSource) {
-    var source = new DataSource({
-        source: ['a', 'b', 'c']
-    }).on('data', function(source) {
-        console.log('data change')
-        console.log(source);
+    $('#acTrigger3-extra').click(function(e) {
+        e.preventDefault();
+        var o = $(this), status = (o.html() === '开启');
+        o.html(status? '关闭' : '开启')
+        ac.set('disabled', status);
     });
-
-    var data = source.getData();
-    console.log(data);
 });
 ````
 
 
-<input id="example" type="text" value="" />
+## 自定义模板
+
+默认的模板可以查看 `src/autocomplete.tpl`，如果有修改模板的操作可如下自己定义
+
+````html
+<script id="acTrigger4-template" type="text/x-handlebars-template">
+  <div class="{{classPrefix}}">
+    <input type="text" value="" class="{{classPrefix}}-input" style="margin:5px;">
+    <ul class="{{classPrefix}}-ctn" data-role="items">
+      {{#each items}}
+        <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}">{{highlightItem ../classPrefix}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</script>
+````
+
+需要注意的：
+
+1. `data-role` 必须指定
+2. `highlightItem` 提供高亮功能，可不用
+3. `classPrefix` 可根据需求指定，可自定义命名空间
+
+使用该模板
+
+<input id="acTrigger4" type="text" value="" />
 
 ````javascript
-seajs.use(['../src/autocomplete', '$'], function(AutoComplete, $) {
-    var data = [
-        '163.com',
-        '126.com',
-        'gmail.com'
-    ];
-    new AutoComplete({
-        trigger: '#example',
-        dataSource: function(query) {
-            var a = $.map(data, function(v, i) {
-                return query + '@' + v;
-            });
-            a.push(query);
-            return a;
-        },
-        filter: '',
-        inputFilter: function(v){
-            return v.replace(/^(.*)@.*$/,'$1');
-        }
+seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+    var ac = new AutoComplete({
+        trigger: '#acTrigger4',
+        template: $('#acTrigger4-template').html(),
+        dataSource: ['abc', 'abd', 'abe', 'acd']
     }).render();
 });
 ````
