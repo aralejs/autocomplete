@@ -211,6 +211,9 @@ new AutoComplete({
 
 是否禁用，默认为 `false`
 
+#### selectFirst *boolean* _(0.8.1+)_
+
+默认选中第一项
 
 ### 事件
 

@@ -43,6 +43,7 @@ define(function(require, exports, module) {
             filter: 'startsWith', // 输出过滤
             inputFilter: defaultInputFilter, // 输入过滤
             disabled: false,
+            selectFirst: false,
             // 以下仅为组件使用
             selectedIndex: undefined,
             inputValue: '', // 同步输入框的 value
@@ -295,6 +296,10 @@ define(function(require, exports, module) {
             // 初始化下拉的状态
             this.items = this.$('[data-role=items]').children();
             this.currentItem = null;
+
+            if (this.get('selectFirst')) {
+                this.set('selectedIndex', 0);
+            }
 
             // 如果输入变化才显示
             var v = this.get('inputValue');

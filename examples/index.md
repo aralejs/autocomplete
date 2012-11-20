@@ -102,3 +102,17 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
     }).render();
 });
 ````
+
+## 可以默认选中第一个
+
+<input id="acTrigger5" type="text" value="" />
+
+````javascript
+seajs.use('autocomplete', function(AutoComplete) {
+    new AutoComplete({
+        trigger: '#acTrigger5',
+        selectFirst: true,
+        dataSource: ['abc', 'abd', 'abe', 'acd']
+    }).render();
+});
+````
