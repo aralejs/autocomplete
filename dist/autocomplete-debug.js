@@ -1,4 +1,4 @@
-define("arale/autocomplete/0.8.0/data-source-debug", ["arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
+define("arale/autocomplete/0.8.1/data-source-debug", ["arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
 
     var Base = require('arale/base/1.0.1/base-debug');
     var $ = require('$-debug');
@@ -32,16 +32,21 @@ define("arale/autocomplete/0.8.0/data-source-debug", ["arale/base/1.0.1/base-deb
         },
 
         _getUrlData: function(query) {
-            var that = this;
+            var that = this, options;
             var url = this.get('source')
                 .replace(/{{query}}/g, query ? query : '');
-            $.ajax(url, {
-                dataType: 'jsonp'
-            }).success(function(data) {
-                that.trigger('data', data);
-            }).error(function(data) {
-                that.trigger('data', {});
-            });
+            if (/^(https?:\/\/)/.test(url)) {
+                options = {dataType: 'jsonp'};
+            } else {
+                options = {dataType: 'json'};
+            }
+            $.ajax(url, options)
+                .success(function(data) {
+                    that.trigger('data', data);
+                })
+                .error(function(data) {
+                    that.trigger('data', {});
+                });
         },
 
         _getArrayData: function() {
@@ -87,7 +92,7 @@ define("arale/autocomplete/0.8.0/data-source-debug", ["arale/base/1.0.1/base-deb
 });
 
 
-define("arale/autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, exports, module) {
+define("arale/autocomplete/0.8.1/filter-debug", ["$-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
 
@@ -114,7 +119,7 @@ define("arale/autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, e
 
 
 
-define("arale/autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("arale/autocomplete/0.8.1/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
     var Overlay = require('arale/overlay/0.9.12/overlay-debug');
@@ -123,7 +128,7 @@ define("arale/autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", ".
     var DataSource = require('./data-source-debug');
     var Filter = require('./filter-debug');
 
-    var template = '<div class="{{classPrefix}}"><ul class="{{classPrefix}}-ctn" data-role="items">{{#each items}}<li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}">{{highlightItem ../classPrefix}}</li>{{/each}}</ul></div>';
+    var template = '<div class="{{classPrefix}}"> <ul class="{{classPrefix}}-ctn" data-role="items"> {{#each items}} <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}">{{highlightItem ../classPrefix}}</li> {{/each}} </ul> </div>';
 
     // keyCode
     var KEY = {
@@ -158,6 +163,7 @@ define("arale/autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", ".
             locator: 'data',
             filter: 'startsWith', // 输出过滤
             inputFilter: defaultInputFilter, // 输入过滤
+            disabled: false,
             // 以下仅为组件使用
             selectedIndex: undefined,
             inputValue: '', // 同步输入框的 value
@@ -233,28 +239,18 @@ define("arale/autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", ".
 
             var trigger = this.get('trigger'), that = this;
             trigger.on('keyup.autocomplete', function(e) {
-                // 获取输入的值
-                var v = that.get('trigger').val(),
-                    oldInput = that.get('inputValue');
+                if (that.get('disabled')) return;
 
+                // 获取输入的值
+                var v = that.get('trigger').val();
+
+                that.oldInput = that.get('inputValue');
                 that.set('inputValue', v);
 
                 // 如果输入为空，则清空并隐藏
                 if (!v) {
                     that.hide();
                     that.set('data', []);
-                    return;
-                }
-
-                // 模版为空，则隐藏
-                if (!that.get('data').length) {
-                    that.hide();
-                    return;
-                }
-
-                // 如果输入变化才显示
-                if (oldInput !== v) {
-                    that.show();
                 }
             }).on('keydown.autocomplete', function(e) {
                 var currentIndex = that.get('selectedIndex');
@@ -343,6 +339,7 @@ define("arale/autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", ".
             if (item) {
                 var value = item.attr('data-value');
                 this.get('trigger').val(value);
+                this.oldInput = value;
                 this.set('inputValue', value);
                 this.trigger('itemSelect', value);
             }
@@ -393,6 +390,7 @@ define("arale/autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", ".
             // 渲染无数据则隐藏
             if (!val.length) {
                 this._clear();
+                this.hide();
                 return;
             }
             // 清除下拉状态
@@ -406,6 +404,13 @@ define("arale/autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", ".
             // 初始化下拉的状态
             this.items = this.$('[data-role=items]').children();
             this.currentItem = null;
+
+            // 如果输入变化才显示
+            var v = this.get('inputValue');
+            if (v !== this.oldInput) {
+                this.show();
+                this.oldInput = v;
+            }
         },
 
         _onRenderSelectedIndex: function(index) {
