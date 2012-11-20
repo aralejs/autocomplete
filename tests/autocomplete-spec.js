@@ -30,7 +30,9 @@ define(function(require) {
                 dataSource: ['abc', 'abd', 'cbd']
             }).render();
 
-            $('#test').val('a').keyup();
+            $('#test').val('a');
+            ac._keyup_event.call(ac);
+
             expect(ac.get('data')).to.eql([
                 {value: 'abc', highlightIndex: [[0, 1]]},
                 {value: 'abd', highlightIndex: [[0, 1]]}
@@ -43,7 +45,9 @@ define(function(require) {
                 dataSource: ['abc', 'abd', 'cbd']
             }).render();
 
-            $('#test').val('a').keyup();
+            $('#test').val('a');
+            ac._keyup_event.call(ac);
+
             expect(ac.items.eq(0).data('value')).to.be('abc');
             expect(ac.items.eq(0).text()).to.be('abc');
             expect(ac.items.eq(0).find('.ui-autocomplete-item-hl').text())
@@ -67,19 +71,22 @@ define(function(require) {
                 });
 
                 expectValue = 'a';
-                input.val('a').keyup();
+                input.val('a');
+                ac._keyup_event.call(ac);
                 expect(ac._onRenderInputValue.calls.length).to.be(1);
 
                 expectValue = '';
-                input.keyup();
+                ac._keyup_event.call(ac);
                 expect(ac._onRenderInputValue.calls.length).to.be(1);
 
                 expectValue = 'ab';
-                input.val('ab').keyup();
+                input.val('ab');
+                ac._keyup_event.call(ac);
                 expect(ac._onRenderInputValue.calls.length).to.be(2);
 
                 expectValue = 'a';
-                input.val('a').keyup();
+                input.val('a');
+                ac._keyup_event.call(ac);
                 expect(ac._onRenderInputValue.calls.length).to.be(3);
             });
 
@@ -98,11 +105,13 @@ define(function(require) {
                 });
 
                 expectValue = 'a';
-                input.val('a').keyup();
+                input.val('a');
+                ac._keyup_event.call(ac);
                 expect(ac.dataSource.getData.calls.length).to.be(1);
 
                 expectValue = '';
-                input.val('').keyup();
+                input.val('');
+                ac._keyup_event.call(ac);
                 expect(ac.dataSource.getData.calls.length).to.be(1);
             });
 
@@ -115,22 +124,26 @@ define(function(require) {
                 dataSource: ['abc', 'abd', 'cbd']
             }).render();
 
-            input.val('a').keyup();
+            input.val('a');
+            ac._keyup_event.call(ac);
 
             expect(ac.get('visible')).to.be(true);
-            input.val('').keyup();
+            input.val('');
+            ac._keyup_event.call(ac);
             expect(ac.get('visible')).to.be(false);
             expect(ac.get('data')).to.eql([]);
 
-            input.val('a').keyup();
+            input.val('a');
+            ac._keyup_event.call(ac);
             ac.hide();
 
             expect(ac.get('visible')).to.be(false);
             ac.set('inputValue', 'ab');
-            input.keyup();
+            ac._keyup_event.call(ac);
             expect(ac.get('visible')).to.be(true);
 
-            input.val('az').keyup();
+            input.val('az');
+            ac._keyup_event.call(ac);
             expect(ac.get('visible')).to.be(false);
         });
 
@@ -148,7 +161,8 @@ define(function(require) {
                     locator: 'test'
                 }).render();
 
-                $('#test').val('a').keyup();
+                $('#test').val('a');
+                ac._keyup_event.call(ac);
                 expect(ac.get('data')).to.eql([
                     {value: 'abc', highlightIndex: [[0, 1]]},
                     {value: 'abd', highlightIndex: [[0, 1]]}
@@ -167,7 +181,8 @@ define(function(require) {
                     locator: 'test.more'
                 }).render();
 
-                $('#test').val('a').keyup();
+                $('#test').val('a');
+                ac._keyup_event.call(ac);
                 expect(ac.get('data')).to.eql([
                     {value: 'abc', highlightIndex: [[0, 1]]},
                     {value: 'abd', highlightIndex: [[0, 1]]}
@@ -187,7 +202,8 @@ define(function(require) {
                     }
                 }).render();
 
-                $('#test').val('a').keyup();
+                $('#test').val('a');
+                ac._keyup_event.call(ac);
                 expect(ac.get('data')).to.eql([
                     {value: 'abc', highlightIndex: [[0, 1]]},
                     {value: 'abd', highlightIndex: [[0, 1]]}
@@ -204,7 +220,8 @@ define(function(require) {
                     dataSource: ['abc', 'abd', 'cbd']
                 }).render();
 
-                $('#test').val('a').keyup();
+                $('#test').val('a');
+                ac._keyup_event.call(ac);
                 expect(ac.get('data')).to.eql([]);
             });
             it('not exist', function() {
@@ -215,7 +232,8 @@ define(function(require) {
                     dataSource: ['abc', 'abd', 'cbd']
                 }).render();
 
-                $('#test').val('a').keyup();
+                $('#test').val('a');
+                ac._keyup_event.call(ac);
                 expect(ac.get('data')).to.eql([
                     {value: 'abc'},
                     {value: 'abd'},
@@ -238,7 +256,8 @@ define(function(require) {
                     dataSource: ['abc', 'abd', 'cbd']
                 }).render();
 
-                $('#test').val('a').keyup();
+                $('#test').val('a');
+                ac._keyup_event.call(ac);
                 expect(ac.get('data')).to.eql([
                     {value: 'abd'},
                     {value: 'cbd'}
@@ -255,7 +274,8 @@ define(function(require) {
                 beCalled = true;
             }).render();
 
-            $('#test').val('a').keyup();
+            $('#test').val('a');
+            ac._keyup_event.call(ac);
             ac.set('selectedIndex', 0);
 
             ac.selectItem();
