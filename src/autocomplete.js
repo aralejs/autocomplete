@@ -121,9 +121,14 @@ define(function(require, exports, module) {
 
             var trigger = this.get('trigger'), that = this;
             trigger
-                .on('keyup.autocomplete', $.proxy(this._keyup_event, this))
+                .attr('autocomplete', 'off')
                 .on('keydown.autocomplete', $.proxy(this._keydown_event, this))
-                .attr('autocomplete', 'off');
+                .on('keyup.autocomplete', function() {
+                    clearTimeout(that._timeout);
+                    that._timeout = setTimeout(function() {
+                        that._keyup_event.call(that);
+                    }, 300);
+                });
         },
 
         show: function() {
