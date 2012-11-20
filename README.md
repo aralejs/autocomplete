@@ -207,7 +207,7 @@ new AutoComplete({
 
 回车时是否提交表单，默认为 true，会提交表单，组件不做任何处理。
 
-#### disabled *boolean*
+#### disabled *boolean* _(1.8.1+)_
 
 是否禁用，默认为 `false`
 
