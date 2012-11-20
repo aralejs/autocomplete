@@ -20,56 +20,56 @@ define(function(require) {
             data = null;
         });
 
-        test('error type', function() {
+        it('error type', function() {
             // not Boolean
             expect(function() {
                 new DataSource({
                     source: true
                 });
-            }).toThrow();
+            }).to.throwError();
 
             // not Null
             expect(function() {
                 new DataSource({
                     source: null
                 });
-            }).toThrow();
+            }).to.throwError();
 
             // not Undefined
             expect(function() {
                 new DataSource({
                     source: undefined
                 });
-            }).toThrow();
+            }).to.throwError();
 
             // not DOM Element
             expect(function() {
                 new DataSource({
                     source: document.body
                 });
-            }).toThrow();
+            }).to.throwError();
         });
-        test('type is array', function() {
+        it('type is array', function() {
             var param = [1, 2, 3];
             var source = new DataSource({
                 source: param
             }).on('data', function(data) {
-                expect(data).toEqual(param);
+                expect(data).to.eql(param);
             }).getData();
         });
 
-        test('type is object', function() {
+        it('type is object', function() {
             var param = {
                 data: 1
             };
             var source = new DataSource({
                 source: param
             }).on('data', function(data) {
-                expect(data).toEqual(param);
+                expect(data).to.eql(param);
             }).getData();
         });
 
-        test('type is function', function() {
+        it('type is function', function() {
             var source = new DataSource({
                 source: function(q) {
                     return [
@@ -77,11 +77,11 @@ define(function(require) {
                     ];
                 }
             }).on('data', function(data) {
-                expect(data).toEqual(['a@163.com']);
+                expect(data).to.eql(['a@163.com']);
             }).getData('a');
         });
 
-        test('type is function return false', function() {
+        it('type is function return false', function() {
             var beCalled = false;
             var source = new DataSource({
                 source: function(q) {
@@ -91,12 +91,12 @@ define(function(require) {
                 beCalled = true;
             }).getData('a');
 
-            expect(beCalled).toBeFalsy();
+            expect(beCalled).not.to.be.ok();
         });
 
-        test('type is url', function() {
+        xit('type is url', function() {
             spyOn($, 'ajax').andCallFake(function(url) {
-                expect(url).toBe('./test.json?q=a');
+                expect(url).to.be('./test.json?q=a');
                 return {
                     success: function(callback) {
                         callback([1, 2, 3]);
@@ -110,13 +110,13 @@ define(function(require) {
             var source = new DataSource({
                 source: './test.json?q={{query}}'
             }).on('data', function(data) {
-                expect(data).toEqual([1, 2, 3]);
+                expect(data).to.eql([1, 2, 3]);
             }).getData('a');
         });
 
-        test('type is url when error', function() {
+        xit('type is url when error', function() {
             spyOn($, 'ajax').andCallFake(function(url) {
-                expect(url).toBe('./test.json?q=a');
+                expect(url).to.be('./test.json?q=a');
                 return {
                     success: function(callback) {
                         return this;
@@ -131,7 +131,7 @@ define(function(require) {
             var source = new DataSource({
                 source: './test.json?q={{query}}'
             }).on('data', function(data) {
-                expect(data).toEqual({});
+                expect(data).to.eql({});
             }).getData('a');
         });
     });
