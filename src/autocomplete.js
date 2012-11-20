@@ -116,6 +116,8 @@ define(function(require, exports, module) {
         setup: function() {
             AutoComplete.superclass.setup.call(this);
 
+            this._blurHide([this.get('trigger')]);
+
             var trigger = this.get('trigger'), that = this;
             trigger.on('keyup.autocomplete', function(e) {
                 if (that.get('disabled')) return;
@@ -193,8 +195,6 @@ define(function(require, exports, module) {
                         that.selectItem();
                         break;
                 }
-            }).on('blur.autocomplete', function(e) {
-                that.hide();
             }).attr('autocomplete', 'off');
 
             this._tweakAlignDefaultValue();
