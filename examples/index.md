@@ -47,7 +47,7 @@ seajs.use('autocomplete', function(AutoComplete) {
 
 <input id="acTrigger3" type="text" value="" />
 
-<a href="#" id="acTrigger3-extra" data-status="on">开启</a>
+状态：<a href="#" id="acTrigger3-extra" data-status="on">开启</a>
 
 ````javascript
 seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
