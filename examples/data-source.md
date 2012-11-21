@@ -29,12 +29,15 @@ seajs.use('autocomplete', function(AutoComplete) {
 
 ## 使用异步数据
 
+一般异步获取后的数据不需要过滤了，可设置 `filter` 为空
+
 <input id="acTrigger2" type="text" value="" />
 
 ````javascript
 seajs.use('autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger2',
+        filter: '',
         dataSource: './data.json?q={{query}}'
     }).render();
 });
