@@ -39,7 +39,6 @@ seajs.use('autocomplete', function(AutoComplete) {
 seajs.use('autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger2',
-        filter: '',
         dataSource: './data.json?q={{query}}'
     }).render();
 });

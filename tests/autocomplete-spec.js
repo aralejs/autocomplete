@@ -357,6 +357,16 @@ define(function(require) {
             expect(ac.get('selectedIndex')).to.be(-1);
         });
 
+        it('should set empty filter when asyc request #18', function() {
+            var input = $('#test');
+            ac = new AutoComplete({
+                trigger: '#test',
+                dataSource: './data.json'
+            }).render();
+
+            expect(ac.get('filter')).to.be('');
+        });
+
         xit('do not show when async #14', function() {
             var input = $('#test');
             ac = new AutoComplete({

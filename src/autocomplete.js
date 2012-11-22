@@ -109,9 +109,13 @@ define(function(require, exports, module) {
         },
 
         initProps: function(attribute) {
-            this.dataSource = new DataSource({
+            var ds = this.dataSource = new DataSource({
                 source: this.get('dataSource')
             }).on('data', this._filterData, this);
+            // 异步请求的时候一般不需要过滤器
+            if (ds.get('type') === 'url') {
+                this.set('filter', '');
+            }
         },
 
         setup: function() {
