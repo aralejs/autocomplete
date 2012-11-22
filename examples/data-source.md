@@ -14,6 +14,8 @@ seajs.use('../src/autocomplete.css');
 
 数据源通常为数组，但也可以为对象，如果是对象默认会去找对象的 data 属性。
 
+在每次输入的时候都会调用下 dataSource
+
 <input id="acTrigger1" type="text" value="" />
 
 ````javascript
