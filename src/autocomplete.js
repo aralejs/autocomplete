@@ -40,7 +40,12 @@ define(function(require, exports, module) {
             submitOnEnter: true, // 回车是否会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             locator: 'data',
-            filter: 'startsWith', // 输出过滤
+            filter: {
+                name: 'startsWith',
+                options: {
+                    key: 'value'
+                }
+            }, // 输出过滤
             inputFilter: defaultInputFilter, // 输入过滤
             disabled: false,
             selectFirst: false,
@@ -65,7 +70,7 @@ define(function(require, exports, module) {
             // 将匹配的高亮文字加上 hl 的样式
             highlightItem: function(classPrefix) {
                 var index = this.highlightIndex,
-                    cursor = 0, v = this.value, h = '';
+                    cursor = 0, v = this.matchKey, h = '';
                 if ($.isArray(index)) {
                     for (var i = 0, l = index.length; i < l; i++) {
                         var j = index[i], start, length;
@@ -169,18 +174,29 @@ define(function(require, exports, module) {
 
         // 过滤数据
         _filterData: function(data) {
-            var filter = this.get('filter'),
+            var filter = this.get('filter'), filterOptions = {},
                 locator = this.get('locator');
 
             // 获取目标数据
             data = locateResult(locator, data);
 
+            // object 的情况
+            // {
+            //   name: '',
+            //   options: {}
+            // }
+            if ($.isPlainObject(filter)) {
+                filterOptions = filter.options || {};
+                filter = filter.name || '';
+            }
+
             // 如果 filter 不是 `function`，则从组件内置的 FILTER 获取
             if (!$.isFunction(filter)) {
                 filter = Filter[filter];
             }
+
             if (filter && $.isFunction(filter)) {
-                data = filter.call(this, data, this.realValue);
+                data = filter.call(this, data, this.realValue, filterOptions);
             } else {
                 data = defaultOutputFilter.call(this, data);
             }

@@ -110,11 +110,17 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
     new AutoComplete({
         trigger: '#acTrigger5',
+        filter: {
+            name: 'startsWith',
+            options: {
+                key: 'title'
+            }
+        },
         dataSource: [
-          {title: 'abc', myprop: '1'},
-          {title: 'abd', myprop: '2'},
-          {title: 'abe', myprop: '3'},
-          {title: 'acd', myprop: '4'}
+          {title: 'abc', myprop: '123'},
+          {title: 'abd', myprop: '124'},
+          {title: 'abe', myprop: '125'},
+          {title: 'acd', myprop: '134'}
         ]
     }).render();
 });
