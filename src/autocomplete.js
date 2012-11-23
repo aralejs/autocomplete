@@ -127,11 +127,11 @@ define(function(require, exports, module) {
             var trigger = this.get('trigger'), that = this;
             trigger
                 .attr('autocomplete', 'off')
-                .on('keydown.autocomplete', $.proxy(this._keydown_event, this))
+                .on('keydown.autocomplete', $.proxy(this._keydownEvent, this))
                 .on('keyup.autocomplete', function() {
                     clearTimeout(that._timeout);
                     that._timeout = setTimeout(function() {
-                        that._keyup_event.call(that);
+                        that._keyupEvent.call(that);
                     }, 300);
                 });
         },
@@ -187,7 +187,7 @@ define(function(require, exports, module) {
             this.set('data', data);
         },
 
-        _keyup_event: function() {
+        _keyupEvent: function() {
             if (this.get('disabled')) return;
 
             // 获取输入的值
@@ -203,7 +203,7 @@ define(function(require, exports, module) {
             }
         },
 
-        _keydown_event: function(e) {
+        _keydownEvent: function(e) {
             var currentIndex = this.get('selectedIndex');
 
             switch (e.which) {
