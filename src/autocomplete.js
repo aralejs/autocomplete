@@ -156,7 +156,7 @@ define(function(require, exports, module) {
             this.hide();
 
             var item = this.currentItem,
-                data = this.get('data');
+                data = this.get('data'),
                 index = this.items.index(item);
             data = data.length ? data[index] : {};
 
