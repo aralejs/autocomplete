@@ -231,36 +231,36 @@ define(function(require, exports, module) {
                 // top arrow
                 case KEY.UP:
                     e.preventDefault();
-                if (!this.get('visible') && this.get('data').length) {
-                    this.show();
-                    return;
-                }
-                if (!this.items) {
-                    return;
-                }
-                if (currentIndex > 0) {
-                    this.set('selectedIndex', currentIndex - 1);
-                } else {
-                    this.set('selectedIndex', this.items.length - 1);
-                }
-                break;
+                    if (!this.get('visible') && this.get('data').length) {
+                        this.show();
+                        return;
+                    }
+                    if (!this.items) {
+                        return;
+                    }
+                    if (currentIndex > 0) {
+                        this.set('selectedIndex', currentIndex - 1);
+                    } else {
+                        this.set('selectedIndex', this.items.length - 1);
+                    }
+                    break;
 
                 // bottom arrow
                 case KEY.DOWN:
                     e.preventDefault();
-                if (!this.get('visible') && this.get('data').length) {
-                    this.show();
-                    return;
-                }
-                if (!this.items) {
-                    return;
-                }
-                if (currentIndex < this.items.length - 1) {
-                    this.set('selectedIndex', currentIndex + 1);
-                } else {
-                    this.set('selectedIndex', 0);
-                }
-                break;
+                    if (!this.get('visible') && this.get('data').length) {
+                        this.show();
+                        return;
+                    }
+                    if (!this.items) {
+                        return;
+                    }
+                    if (currentIndex < this.items.length - 1) {
+                        this.set('selectedIndex', currentIndex + 1);
+                    } else {
+                        this.set('selectedIndex', 0);
+                    }
+                    break;
 
                 // left arrow
                 case KEY.LEFT:
@@ -269,30 +269,31 @@ define(function(require, exports, module) {
                 // right arrow
                 case KEY.RIGHT:
                     if (!this.get('visible')) {
-                    return;
-                }
-                this.selectItem();
-                break;
+                        return;
+                    }
+                    this.selectItem();
+                    break;
 
                 // enter
                 case KEY.ENTER:
                     // 是否阻止回车提交表单
                     if (!this.get('submitOnEnter')) {
-                    e.preventDefault();
-                }
-                if (!this.get('visible')) {
-                    return;
-                }
-                this.selectItem();
-                break;
+                        e.preventDefault();
+                    }
+                    if (!this.get('visible')) {
+                        return;
+                    }
+                    this.selectItem();
+                    break;
             }
 
         },
 
         _clear: function(attribute) {
             this.$('[data-role=items]').empty();
-            this.items = null;
-            this.currentItem = null;
+            delete this.items;
+            delete this.lastIndex;
+            delete this.currentItem;
             this.set('selectedIndex', -1);
         },
 
@@ -308,6 +309,12 @@ define(function(require, exports, module) {
             if (!val.length) {
                 this._clear();
                 this.hide();
+                return;
+            }
+            // 如果输入变化才显示
+            var v = this.get('inputValue');
+            if (v === this.oldInput) {
+                this._clear();
                 return;
             }
             // 清除下拉状态
@@ -326,12 +333,8 @@ define(function(require, exports, module) {
                 this.set('selectedIndex', 0);
             }
 
-            // 如果输入变化才显示
-            var v = this.get('inputValue');
-            if (v !== this.oldInput) {
-                this.show();
-                this.oldInput = v;
-            }
+            this.show();
+            this.oldInput = v;
         },
 
         _onRenderSelectedIndex: function(index) {
@@ -344,7 +347,8 @@ define(function(require, exports, module) {
                 .eq(index)
                 .addClass(className);
 
-            this.trigger('indexChange', index);
+            this.trigger('indexChange', index, this.lastIndex);
+            this.lastIndex = index;
         }
     });
 

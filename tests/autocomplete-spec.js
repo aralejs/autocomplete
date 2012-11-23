@@ -321,6 +321,7 @@ define(function(require) {
                 .find('.ui-autocomplete-item-hl');
             expect(item.length).to.be(1);
             expect(item.eq(0).text()).to.be('a');
+            delete ac.oldInput;
 
             ac.set('data', [
                 {matchKey: 'abcdefg', highlightIndex: [[1, 2], [3, 4]]}
@@ -331,6 +332,7 @@ define(function(require) {
             expect(item.length).to.be(2);
             expect(item.eq(0).text()).to.be('b');
             expect(item.eq(1).text()).to.be('d');
+            delete ac.oldInput;
 
             ac.set('data', [
                 {matchKey: 'abcdefg', highlightIndex: [[0, 1], [3, 7], [8, 9]]}
@@ -341,6 +343,7 @@ define(function(require) {
             expect(item.length).to.be(2);
             expect(item.eq(0).text()).to.be('a');
             expect(item.eq(1).text()).to.be('defg');
+            delete ac.oldInput;
 
             ac.set('data', [
                 {matchKey: 'abcdefg', highlightIndex: [1, 4]}
@@ -351,6 +354,7 @@ define(function(require) {
             expect(item.length).to.be(2);
             expect(item.eq(0).text()).to.be('b');
             expect(item.eq(1).text()).to.be('e');
+            delete ac.oldInput;
 
             ac.set('data', [
                 {matchKey: 'abcdefg', highlightIndex: [6, 8]}
@@ -360,6 +364,7 @@ define(function(require) {
                 .find('.ui-autocomplete-item-hl');
             expect(item.length).to.be(1);
             expect(item.eq(0).text()).to.be('g');
+            delete ac.oldInput;
         });
 
         it('clear', function() {
@@ -373,8 +378,9 @@ define(function(require) {
 
             ac._clear();
             expect(ac.$('[data-role=items]').html()).to.be('');
-            expect(ac.items).to.be(null);
-            expect(ac.currentItem).to.be(null);
+            expect(ac.items).to.be(undefined);
+            expect(ac.currentItem).to.be(undefined);
+            expect(ac.currentItem).to.be(undefined);
             expect(ac.get('selectedIndex')).to.be(-1);
         });
 

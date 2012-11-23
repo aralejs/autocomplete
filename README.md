@@ -259,16 +259,20 @@ new AutoComplete({
 
 ```
 .on('itemSelect', function(value, data){
-    // this.currentItem
+    console.log(this.currentItem);
 });
 ```
 
 #### indexChange
 
-当选项切换时触发，可能是鼠标或键盘，index 为切换后的索引值。
+当选项切换时触发，可能是鼠标或键盘。
+
+ -  currentIndex: 切换后的索引值
+
+ -  lastIndex _(0.9.0 支持)_: 切换前的索引值
 
 ```
-.on('indexChange', function(index){
-    // code
+.on('indexChange', function(currentIndex, lastIndex){
+    console.log(this.items[currentIndex])
 });
 ```
