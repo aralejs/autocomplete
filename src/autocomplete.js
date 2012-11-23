@@ -195,11 +195,12 @@ define(function(require, exports, module) {
                 filter = Filter[filter];
             }
 
-            if (filter && $.isFunction(filter)) {
-                data = filter.call(this, data, this.realValue, filterOptions);
-            } else {
-                data = defaultOutputFilter.call(this, data);
+
+            if (!(filter && $.isFunction(filter))) {
+                filter = Filter['default'];
             }
+
+            data = filter.call(this, data, this.realValue, filterOptions);
             this.set('data', data);
         },
 
@@ -381,13 +382,5 @@ define(function(require, exports, module) {
 
     function defaultInputFilter(v) {
         return v;
-    }
-
-    function defaultOutputFilter(data) {
-        var result = [];
-        $.each(data, function(index, value) {
-            result.push({value: value});
-        });
-        return result;
     }
 });

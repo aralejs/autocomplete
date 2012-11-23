@@ -34,8 +34,8 @@ define(function(require) {
             ac._keyupEvent.call(ac);
 
             expect(ac.get('data')).to.eql([
-                {value: 'abc', highlightIndex: [[0, 1]]},
-                {value: 'abd', highlightIndex: [[0, 1]]}
+                {matchKey: 'abc', highlightIndex: [[0, 1]]},
+                {matchKey: 'abd', highlightIndex: [[0, 1]]}
             ]);
         });
 
@@ -147,9 +147,6 @@ define(function(require) {
             expect(ac.get('visible')).to.be(false);
         });
 
-        it('keydown', function() {
-        });
-
         describe('data locator', function() {
             it('is string', function() {
                 var input = $('#test');
@@ -164,8 +161,8 @@ define(function(require) {
                 $('#test').val('a');
                 ac._keyupEvent.call(ac);
                 expect(ac.get('data')).to.eql([
-                    {value: 'abc', highlightIndex: [[0, 1]]},
-                    {value: 'abd', highlightIndex: [[0, 1]]}
+                    {matchKey: 'abc', highlightIndex: [[0, 1]]},
+                    {matchKey: 'abd', highlightIndex: [[0, 1]]}
                 ]);
             });
 
@@ -184,8 +181,8 @@ define(function(require) {
                 $('#test').val('a');
                 ac._keyupEvent.call(ac);
                 expect(ac.get('data')).to.eql([
-                    {value: 'abc', highlightIndex: [[0, 1]]},
-                    {value: 'abd', highlightIndex: [[0, 1]]}
+                    {matchKey: 'abc', highlightIndex: [[0, 1]]},
+                    {matchKey: 'abd', highlightIndex: [[0, 1]]}
                 ]);
             });
 
@@ -205,8 +202,8 @@ define(function(require) {
                 $('#test').val('a');
                 ac._keyupEvent.call(ac);
                 expect(ac.get('data')).to.eql([
-                    {value: 'abc', highlightIndex: [[0, 1]]},
-                    {value: 'abd', highlightIndex: [[0, 1]]}
+                    {matchKey: 'abc', highlightIndex: [[0, 1]]},
+                    {matchKey: 'abd', highlightIndex: [[0, 1]]}
                 ]);
             });
         });
@@ -235,9 +232,9 @@ define(function(require) {
                 $('#test').val('a');
                 ac._keyupEvent.call(ac);
                 expect(ac.get('data')).to.eql([
-                    {value: 'abc'},
-                    {value: 'abd'},
-                    {value: 'cbd'}
+                    {matchKey: 'abc'},
+                    {matchKey: 'abd'},
+                    {matchKey: 'cbd'}
                 ]);
             });
             it('is function', function() {
@@ -261,6 +258,30 @@ define(function(require) {
                 expect(ac.get('data')).to.eql([
                     {value: 'abd'},
                     {value: 'cbd'}
+                ]);
+            });
+            it('should be object', function() {
+                var input = $('#test');
+                ac = new AutoComplete({
+                    trigger: '#test',
+                    filter: {
+                        name: 'startsWith',
+                        options: {
+                            key: 'title'
+                        }
+                    },
+                    dataSource: [
+                        {title: 'abc', prop: '1'},
+                        {title: 'abd', prop: '2'},
+                        {title: 'cbd', prop: '3'}
+                    ]
+                }).render();
+
+                $('#test').val('a');
+                ac._keyupEvent.call(ac);
+                expect(ac.get('data')).to.eql([
+                    {title: 'abc', prop: '1', matchKey: 'abc', highlightIndex: [[0, 1]]},
+                    {title: 'abd', prop: '2', matchKey: 'abd', highlightIndex: [[0, 1]]}
                 ]);
             });
         });
@@ -293,7 +314,7 @@ define(function(require) {
             }).render();
 
             ac.set('data', [
-                {value: 'abcdefg', highlightIndex: [[0, 1]]}
+                {matchKey: 'abcdefg', highlightIndex: [[0, 1]]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
@@ -302,7 +323,7 @@ define(function(require) {
             expect(item.eq(0).text()).to.be('a');
 
             ac.set('data', [
-                {value: 'abcdefg', highlightIndex: [[1, 2], [3, 4]]}
+                {matchKey: 'abcdefg', highlightIndex: [[1, 2], [3, 4]]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
@@ -312,7 +333,7 @@ define(function(require) {
             expect(item.eq(1).text()).to.be('d');
 
             ac.set('data', [
-                {value: 'abcdefg', highlightIndex: [[0, 1], [3, 7], [8, 9]]}
+                {matchKey: 'abcdefg', highlightIndex: [[0, 1], [3, 7], [8, 9]]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
@@ -322,7 +343,7 @@ define(function(require) {
             expect(item.eq(1).text()).to.be('defg');
 
             ac.set('data', [
-                {value: 'abcdefg', highlightIndex: [1, 4]}
+                {matchKey: 'abcdefg', highlightIndex: [1, 4]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
@@ -332,7 +353,7 @@ define(function(require) {
             expect(item.eq(1).text()).to.be('e');
 
             ac.set('data', [
-                {value: 'abcdefg', highlightIndex: [6, 8]}
+                {matchKey: 'abcdefg', highlightIndex: [6, 8]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)

@@ -3,19 +3,28 @@ define(function(require, exports, module) {
     var $ = require('$');
 
     var Filter = {
+        default: function(data, query, options) {
+            var result = [];
+            $.each(data, function(index, item) {
+                var o = {}, matchKey = getMatchKey(item, options);
+                if ($.isPlainObject(item)) {
+                    o = $.extend({}, item);
+                }
+                o.matchKey = matchKey;
+                result.push(o);
+            });
+            return result;
+        },
+
         startsWith: function(data, query, options) {
             var result = [], l = query.length,
                 reg = new RegExp('^' + query);
             $.each(data, function(index, item) {
-                var matchKey = '', o = {};
+                var o = {}, matchKey = getMatchKey(item, options);
 
                 if ($.isPlainObject(item)) {
-                    matchKey = item[options.key] || '';
                     o = $.extend({}, item);
-                } else {
-                    matchKey = item;
                 }
-
                 // 生成 item
                 // {
                 //   ...   // self property
@@ -35,6 +44,16 @@ define(function(require, exports, module) {
     };
 
     module.exports = Filter;
+
+    function getMatchKey(item, options) {
+        if ($.isPlainObject(item)) {
+            // 默认取对象的 value 属性
+            var key = options.key || 'value'; 
+            return item[key] || '';
+        } else {
+            return item;
+        }
+    }
 });
 
 
