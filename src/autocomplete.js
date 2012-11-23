@@ -155,13 +155,17 @@ define(function(require, exports, module) {
             this.get('trigger').focus();
             this.hide();
 
-            var item = this.currentItem;
+            var item = this.currentItem,
+                data = this.get('data');
+                index = this.items.index(item);
+            data = data.length ? data[index] : {};
+
             if (item) {
-                var value = item.attr('data-value');
-                this.get('trigger').val(value);
-                this.oldInput = value;
-                this.set('inputValue', value);
-                this.trigger('itemSelect', value);
+                var matchKey = item.attr('data-value');
+                this.get('trigger').val(matchKey);
+                this.oldInput = matchKey;
+                this.set('inputValue', matchKey);
+                this.trigger('itemSelect', matchKey, data);
             }
         },
 

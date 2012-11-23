@@ -251,11 +251,15 @@ new AutoComplete({
 
 #### itemSelect
 
-当选中某项时触发，value 为当前选中的值。
+当选中某项时触发
+ 
+ -  value：当前选中的值。
+
+ -  data _(0.9.0 支持)_：选中项对应的数据源对象
 
 ```
-.on('itemSelect', function(value){
-    // code
+.on('itemSelect', function(value, data){
+    // this.currentItem
 });
 ```
 
