@@ -161,7 +161,7 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
     var DataSource = require('./data-source-debug');
     var Filter = require('./filter-debug');
 
-    var template = '<div class="{{classPrefix}}"> <ul class="{{classPrefix}}-ctn" data-role="items"> {{#each items}} <li data-role="item" class="{{../classPrefix}}-item" data-value="{{matchKey}}">{{highlightItem ../classPrefix}}</li> {{/each}} </ul> </div>';
+    var template = '<div class="{{classPrefix}}"> <ul class="{{classPrefix}}-ctn" data-role="items"> {{#each items}} <li data-role="item" class="{{../classPrefix}}-item" data-value="{{matchKey}}">{{highlightItem ../classPrefix matchKey}}</li> {{/each}} </ul> </div>';
 
     // keyCode
     var KEY = {
@@ -222,9 +222,9 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
 
         templateHelpers: {
             // 将匹配的高亮文字加上 hl 的样式
-            highlightItem: function(classPrefix) {
+            highlightItem: function(classPrefix, matchKey) {
                 var index = this.highlightIndex,
-                    cursor = 0, v = this.matchKey, h = '';
+                    cursor = 0, v = matchKey || this.matchKey || '', h = '';
                 if ($.isArray(index)) {
                     for (var i = 0, l = index.length; i < l; i++) {
                         var j = index[i], start, length;
@@ -254,7 +254,7 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
                     }
                     return new Handlebars.SafeString(h);
                 }
-                return this.value;
+                return v;
             }
         },
 
@@ -309,13 +309,17 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
             this.get('trigger').focus();
             this.hide();
 
-            var item = this.currentItem;
+            var item = this.currentItem,
+                data = this.get('data'),
+                index = this.items.index(item);
+            data = data.length ? data[index] : {};
+
             if (item) {
-                var value = item.attr('data-value');
-                this.get('trigger').val(value);
-                this.oldInput = value;
-                this.set('inputValue', value);
-                this.trigger('itemSelect', value);
+                var matchKey = item.attr('data-value');
+                this.get('trigger').val(matchKey);
+                this.oldInput = matchKey;
+                this.set('inputValue', matchKey);
+                this.trigger('itemSelect', matchKey, data);
             }
         },
 
@@ -381,36 +385,36 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
                 // top arrow
                 case KEY.UP:
                     e.preventDefault();
-                if (!this.get('visible') && this.get('data').length) {
-                    this.show();
-                    return;
-                }
-                if (!this.items) {
-                    return;
-                }
-                if (currentIndex > 0) {
-                    this.set('selectedIndex', currentIndex - 1);
-                } else {
-                    this.set('selectedIndex', this.items.length - 1);
-                }
-                break;
+                    if (!this.get('visible') && this.get('data').length) {
+                        this.show();
+                        return;
+                    }
+                    if (!this.items) {
+                        return;
+                    }
+                    if (currentIndex > 0) {
+                        this.set('selectedIndex', currentIndex - 1);
+                    } else {
+                        this.set('selectedIndex', this.items.length - 1);
+                    }
+                    break;
 
                 // bottom arrow
                 case KEY.DOWN:
                     e.preventDefault();
-                if (!this.get('visible') && this.get('data').length) {
-                    this.show();
-                    return;
-                }
-                if (!this.items) {
-                    return;
-                }
-                if (currentIndex < this.items.length - 1) {
-                    this.set('selectedIndex', currentIndex + 1);
-                } else {
-                    this.set('selectedIndex', 0);
-                }
-                break;
+                    if (!this.get('visible') && this.get('data').length) {
+                        this.show();
+                        return;
+                    }
+                    if (!this.items) {
+                        return;
+                    }
+                    if (currentIndex < this.items.length - 1) {
+                        this.set('selectedIndex', currentIndex + 1);
+                    } else {
+                        this.set('selectedIndex', 0);
+                    }
+                    break;
 
                 // left arrow
                 case KEY.LEFT:
@@ -419,30 +423,31 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
                 // right arrow
                 case KEY.RIGHT:
                     if (!this.get('visible')) {
-                    return;
-                }
-                this.selectItem();
-                break;
+                        return;
+                    }
+                    this.selectItem();
+                    break;
 
                 // enter
                 case KEY.ENTER:
                     // 是否阻止回车提交表单
                     if (!this.get('submitOnEnter')) {
-                    e.preventDefault();
-                }
-                if (!this.get('visible')) {
-                    return;
-                }
-                this.selectItem();
-                break;
+                        e.preventDefault();
+                    }
+                    if (!this.get('visible')) {
+                        return;
+                    }
+                    this.selectItem();
+                    break;
             }
 
         },
 
         _clear: function(attribute) {
             this.$('[data-role=items]').empty();
-            this.items = null;
-            this.currentItem = null;
+            delete this.items;
+            delete this.lastIndex;
+            delete this.currentItem;
             this.set('selectedIndex', -1);
         },
 
@@ -458,6 +463,12 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
             if (!val.length) {
                 this._clear();
                 this.hide();
+                return;
+            }
+            // 如果输入变化才显示
+            var v = this.get('inputValue');
+            if (v === this.oldInput) {
+                this._clear();
                 return;
             }
             // 清除下拉状态
@@ -476,12 +487,8 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
                 this.set('selectedIndex', 0);
             }
 
-            // 如果输入变化才显示
-            var v = this.get('inputValue');
-            if (v !== this.oldInput) {
-                this.show();
-                this.oldInput = v;
-            }
+            this.show();
+            this.oldInput = v;
         },
 
         _onRenderSelectedIndex: function(index) {
@@ -494,7 +501,8 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
                 .eq(index)
                 .addClass(className);
 
-            this.trigger('indexChange', index);
+            this.trigger('indexChange', index, this.lastIndex);
+            this.lastIndex = index;
         }
     });
 
