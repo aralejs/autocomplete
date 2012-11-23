@@ -1,4 +1,4 @@
-define("arale/autocomplete/0.8.1/data-source-debug", ["arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
+define("arale/autocomplete/0.9.0/data-source-debug", ["arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
 
     var Base = require('arale/base/1.0.1/base-debug');
     var $ = require('$-debug');
@@ -92,18 +92,41 @@ define("arale/autocomplete/0.8.1/data-source-debug", ["arale/base/1.0.1/base-deb
 });
 
 
-define("arale/autocomplete/0.8.1/filter-debug", ["$-debug"], function(require, exports, module) {
+define("arale/autocomplete/0.9.0/filter-debug", ["$-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
 
     var Filter = {
-        startsWith: function(data, query) {
+        default: function(data, query, options) {
+            var result = [];
+            $.each(data, function(index, item) {
+                var o = {}, matchKey = getMatchKey(item, options);
+                if ($.isPlainObject(item)) {
+                    o = $.extend({}, item);
+                }
+                o.matchKey = matchKey;
+                result.push(o);
+            });
+            return result;
+        },
+
+        startsWith: function(data, query, options) {
             var result = [], l = query.length,
                 reg = new RegExp('^' + query);
-            $.each(data, function(index, value) {
-                var o = {};
-                if (reg.test(value)) {
-                    o.value = value;
+            $.each(data, function(index, item) {
+                var o = {}, matchKey = getMatchKey(item, options);
+
+                if ($.isPlainObject(item)) {
+                    o = $.extend({}, item);
+                }
+                // 生成 item
+                // {
+                //   ...   // self property
+                //   matchKey: '', // 匹配的内容
+                //   highlightIndex: [] // 高亮的索引
+                // }
+                if (reg.test(matchKey)) {
+                    o.matchKey = matchKey;
                     if (l > 0) {
                         o.highlightIndex = [[0, l]];
                     }
@@ -115,11 +138,21 @@ define("arale/autocomplete/0.8.1/filter-debug", ["$-debug"], function(require, e
     };
 
     module.exports = Filter;
+
+    function getMatchKey(item, options) {
+        if ($.isPlainObject(item)) {
+            // 默认取对象的 value 属性
+            var key = options.key || 'value'; 
+            return item[key] || '';
+        } else {
+            return item;
+        }
+    }
 });
 
 
 
-define("arale/autocomplete/0.8.1/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
     var Overlay = require('arale/overlay/0.9.12/overlay-debug');
@@ -128,7 +161,7 @@ define("arale/autocomplete/0.8.1/autocomplete-debug", ["./data-source-debug", ".
     var DataSource = require('./data-source-debug');
     var Filter = require('./filter-debug');
 
-    var template = '<div class="{{classPrefix}}"> <ul class="{{classPrefix}}-ctn" data-role="items"> {{#each items}} <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}">{{highlightItem ../classPrefix}}</li> {{/each}} </ul> </div>';
+    var template = '<div class="{{classPrefix}}"> <ul class="{{classPrefix}}-ctn" data-role="items"> {{#each items}} <li data-role="item" class="{{../classPrefix}}-item" data-value="{{matchKey}}">{{highlightItem ../classPrefix}}</li> {{/each}} </ul> </div>';
 
     // keyCode
     var KEY = {
@@ -161,7 +194,12 @@ define("arale/autocomplete/0.8.1/autocomplete-debug", ["./data-source-debug", ".
             submitOnEnter: true, // 回车是否会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             locator: 'data',
-            filter: 'startsWith', // 输出过滤
+            filter: {
+                name: 'startsWith',
+                options: {
+                    key: 'value'
+                }
+            }, // 输出过滤
             inputFilter: defaultInputFilter, // 输入过滤
             disabled: false,
             selectFirst: false,
@@ -186,7 +224,7 @@ define("arale/autocomplete/0.8.1/autocomplete-debug", ["./data-source-debug", ".
             // 将匹配的高亮文字加上 hl 的样式
             highlightItem: function(classPrefix) {
                 var index = this.highlightIndex,
-                    cursor = 0, v = this.value, h = '';
+                    cursor = 0, v = this.matchKey, h = '';
                 if ($.isArray(index)) {
                     for (var i = 0, l = index.length; i < l; i++) {
                         var j = index[i], start, length;
@@ -248,11 +286,11 @@ define("arale/autocomplete/0.8.1/autocomplete-debug", ["./data-source-debug", ".
             var trigger = this.get('trigger'), that = this;
             trigger
                 .attr('autocomplete', 'off')
-                .on('keydown.autocomplete', $.proxy(this._keydown_event, this))
+                .on('keydown.autocomplete', $.proxy(this._keydownEvent, this))
                 .on('keyup.autocomplete', function() {
                     clearTimeout(that._timeout);
                     that._timeout = setTimeout(function() {
-                        that._keyup_event.call(that);
+                        that._keyupEvent.call(that);
                     }, 300);
                 });
         },
@@ -290,25 +328,37 @@ define("arale/autocomplete/0.8.1/autocomplete-debug", ["./data-source-debug", ".
 
         // 过滤数据
         _filterData: function(data) {
-            var filter = this.get('filter'),
+            var filter = this.get('filter'), filterOptions = {},
                 locator = this.get('locator');
 
             // 获取目标数据
             data = locateResult(locator, data);
 
+            // object 的情况
+            // {
+            //   name: '',
+            //   options: {}
+            // }
+            if ($.isPlainObject(filter)) {
+                filterOptions = filter.options || {};
+                filter = filter.name || '';
+            }
+
             // 如果 filter 不是 `function`，则从组件内置的 FILTER 获取
             if (!$.isFunction(filter)) {
                 filter = Filter[filter];
             }
-            if (filter && $.isFunction(filter)) {
-                data = filter.call(this, data, this.realValue);
-            } else {
-                data = defaultOutputFilter.call(this, data);
+
+            // 使用 default filter
+            if (!(filter && $.isFunction(filter))) {
+                filter = Filter['default'];
             }
+
+            data = filter.call(this, data, this.realValue, filterOptions);
             this.set('data', data);
         },
 
-        _keyup_event: function() {
+        _keyupEvent: function() {
             if (this.get('disabled')) return;
 
             // 获取输入的值
@@ -324,7 +374,7 @@ define("arale/autocomplete/0.8.1/autocomplete-debug", ["./data-source-debug", ".
             }
         },
 
-        _keydown_event: function(e) {
+        _keydownEvent: function(e) {
             var currentIndex = this.get('selectedIndex');
 
             switch (e.which) {
@@ -486,13 +536,5 @@ define("arale/autocomplete/0.8.1/autocomplete-debug", ["./data-source-debug", ".
 
     function defaultInputFilter(v) {
         return v;
-    }
-
-    function defaultOutputFilter(data) {
-        var result = [];
-        $.each(data, function(index, value) {
-            result.push({value: value});
-        });
-        return result;
     }
 });
