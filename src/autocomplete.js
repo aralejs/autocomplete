@@ -68,9 +68,9 @@ define(function(require, exports, module) {
 
         templateHelpers: {
             // 将匹配的高亮文字加上 hl 的样式
-            highlightItem: function(classPrefix) {
+            highlightItem: function(classPrefix, matchKey) {
                 var index = this.highlightIndex,
-                    cursor = 0, v = this.matchKey, h = '';
+                    cursor = 0, v = matchKey || this.matchKey || '', h = '';
                 if ($.isArray(index)) {
                     for (var i = 0, l = index.length; i < l; i++) {
                         var j = index[i], start, length;
@@ -100,7 +100,7 @@ define(function(require, exports, module) {
                     }
                     return new Handlebars.SafeString(h);
                 }
-                return this.value;
+                return v;
             }
         },
 

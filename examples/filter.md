@@ -23,7 +23,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
             var result = [];
             $.each(data, function(index, value) {
                 if (value.indexOf(query) > -1) {
-                    result.push({value: value});
+                    result.push({matchKey: value});
                 }
             });
             return result;
