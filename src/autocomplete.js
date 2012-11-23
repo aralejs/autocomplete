@@ -195,7 +195,7 @@ define(function(require, exports, module) {
                 filter = Filter[filter];
             }
 
-
+            // 使用 default filter
             if (!(filter && $.isFunction(filter))) {
                 filter = Filter['default'];
             }
