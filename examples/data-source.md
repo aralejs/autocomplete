@@ -100,3 +100,22 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 });
 ````
 
+## 处理复杂数据的数据结构
+
+数据不是字符串而是复杂结构
+
+<input id="acTrigger5" type="text" value="" />
+
+````javascript
+seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+    new AutoComplete({
+        trigger: '#acTrigger5',
+        dataSource: [
+          {title: 'abc', myprop: '1'},
+          {title: 'abd', myprop: '2'},
+          {title: 'abe', myprop: '3'},
+          {title: 'acd', myprop: '4'}
+        ]
+    }).render();
+});
+````
