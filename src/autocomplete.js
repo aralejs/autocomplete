@@ -228,6 +228,10 @@ define(function(require, exports, module) {
             var currentIndex = this.get('selectedIndex');
 
             switch (e.which) {
+                case KEY.ESC:
+                    this.hide();
+                    break;
+
                 // top arrow
                 case KEY.UP:
                     e.preventDefault();
