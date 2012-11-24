@@ -382,6 +382,10 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
             var currentIndex = this.get('selectedIndex');
 
             switch (e.which) {
+                case KEY.ESC:
+                    this.hide();
+                    break;
+
                 // top arrow
                 case KEY.UP:
                     e.preventDefault();
@@ -418,14 +422,8 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
 
                 // left arrow
                 case KEY.LEFT:
-                    break;
-
                 // right arrow
                 case KEY.RIGHT:
-                    if (!this.get('visible')) {
-                        return;
-                    }
-                    this.selectItem();
                     break;
 
                 // enter
