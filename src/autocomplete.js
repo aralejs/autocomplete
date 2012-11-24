@@ -268,14 +268,8 @@ define(function(require, exports, module) {
 
                 // left arrow
                 case KEY.LEFT:
-                    break;
-
                 // right arrow
                 case KEY.RIGHT:
-                    if (!this.get('visible')) {
-                        return;
-                    }
-                    this.selectItem();
                     break;
 
                 // enter
