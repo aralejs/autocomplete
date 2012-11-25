@@ -274,14 +274,14 @@ define(function(require, exports, module) {
 
                 // enter
                 case KEY.ENTER:
-                    // 是否阻止回车提交表单
-                    if (!this.get('submitOnEnter')) {
-                        e.preventDefault();
+                    if (this.get('visible')) {
+                        this.selectItem();
+
+                        // 是否阻止回车提交表单
+                        if (!this.get('submitOnEnter')) {
+                            e.preventDefault();
+                        }
                     }
-                    if (!this.get('visible')) {
-                        return;
-                    }
-                    this.selectItem();
                     break;
             }
 

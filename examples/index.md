@@ -17,10 +17,6 @@ seajs.use('autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger1',
         dataSource: ['abc', 'abd', 'abe', 'acd']
-    }).on('indexChange', function(currentIndex, lastIndex){
-        console.log('currentIndex ' + currentIndex);
-        console.log('lastIndex ' + lastIndex);
-        console.log(this.items[currentIndex]);
     }).render();
 });
 ````
