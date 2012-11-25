@@ -225,6 +225,8 @@ define(function(require, exports, module) {
         },
 
         _keydownEvent: function(e) {
+            if (this.get('disabled')) return;
+
             var currentIndex = this.get('selectedIndex');
 
             switch (e.which) {
