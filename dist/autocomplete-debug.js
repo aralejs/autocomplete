@@ -379,6 +379,8 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
         },
 
         _keydownEvent: function(e) {
+            if (this.get('disabled')) return;
+
             var currentIndex = this.get('selectedIndex');
 
             switch (e.which) {
@@ -428,14 +430,14 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
 
                 // enter
                 case KEY.ENTER:
-                    // 是否阻止回车提交表单
-                    if (!this.get('submitOnEnter')) {
-                        e.preventDefault();
+                    if (this.get('visible')) {
+                        this.selectItem();
+
+                        // 是否阻止回车提交表单
+                        if (!this.get('submitOnEnter')) {
+                            e.preventDefault();
+                        }
                     }
-                    if (!this.get('visible')) {
-                        return;
-                    }
-                    this.selectItem();
                     break;
             }
 
