@@ -194,12 +194,7 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
             submitOnEnter: true, // 回车是否会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             locator: 'data',
-            filter: {
-                name: 'startsWith',
-                options: {
-                    key: 'value'
-                }
-            }, // 输出过滤
+            filter: undefined, // 输出过滤
             inputFilter: defaultInputFilter, // 输入过滤
             disabled: false,
             selectFirst: false,
@@ -271,9 +266,20 @@ define("arale/autocomplete/0.9.0/autocomplete-debug", ["./data-source-debug", ".
             var ds = this.dataSource = new DataSource({
                 source: this.get('dataSource')
             }).on('data', this._filterData, this);
-            // 异步请求的时候一般不需要过滤器
-            if (ds.get('type') === 'url') {
-                this.set('filter', '');
+
+            // 设置 filter 的默认值
+            if (this.get('filter') === undefined) {
+                // 异步请求的时候一般不需要过滤器
+                if (ds.get('type') === 'url') {
+                    this.set('filter', '');
+                } else {
+                    this.set('filter', {
+                        name: 'startsWith',
+                        options: {
+                          key: 'value'
+                        }
+                    });
+                }
             }
         },
 
