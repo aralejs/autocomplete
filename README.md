@@ -193,7 +193,7 @@ ac = new AutoComplete({
 
     `filter: {name: 'startsWith'}` 等于 `filter: 'startsWith'`
 
- -  空字符串、null、undefined、false
+ -  空字符串、null、false
 
     什么都不处理，返回原来的 dataSource
 
