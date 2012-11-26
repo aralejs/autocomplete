@@ -59,39 +59,36 @@ define(function(require) {
         });
 
         describe('inputValue', function() {
-            xit('change value', function() {
-                var expectValue, input = $('#test');
+            it('change value', function() {
+                var input = $('#test');
                 ac = new AutoComplete({
                     trigger: '#test',
                     dataSource: ['abc', 'abd', 'cbd']
                 }).render();
 
-                spyOn(ac, '_onRenderInputValue').andCallFake(function(val) {
-                    expect(expectValue).to.be(val);
-                });
+                var spy = sinon.spy(ac, '_onRenderInputValue');
 
-                expectValue = 'a';
                 input.val('a');
                 ac._keyupEvent.call(ac);
-                expect(ac._onRenderInputValue.calls.length).to.be(1);
+                expect(spy).to.be.called.with('a');
+                expect(spy).to.be.called.once();
 
-                expectValue = '';
                 ac._keyupEvent.call(ac);
-                expect(ac._onRenderInputValue.calls.length).to.be(1);
+                expect(spy).to.be.called.once();
 
-                expectValue = 'ab';
                 input.val('ab');
                 ac._keyupEvent.call(ac);
-                expect(ac._onRenderInputValue.calls.length).to.be(2);
+                expect(spy).to.be.called.with('ab');
+                expect(spy).to.be.called.twice();
 
-                expectValue = 'a';
                 input.val('a');
                 ac._keyupEvent.call(ac);
-                expect(ac._onRenderInputValue.calls.length).to.be(3);
+                expect(spy).to.be.called.with('a');
+                expect(spy).to.be.called.thrice();
             });
 
-            xit('input filter', function() {
-                var expectValue, input = $('#test');
+            it('input filter', function() {
+                var input = $('#test');
                 ac = new AutoComplete({
                     trigger: '#test',
                     inputFilter: function(val) {
@@ -100,19 +97,16 @@ define(function(require) {
                     dataSource: ['abc', 'abd', 'cbd']
                 }).render();
 
-                spyOn(ac.dataSource, 'getData').andCallFake(function(val) {
-                    expect('filter-' + expectValue).to.be(val);
-                });
+                var spy = sinon.spy(ac.dataSource, 'getData');
 
-                expectValue = 'a';
                 input.val('a');
                 ac._keyupEvent.call(ac);
-                expect(ac.dataSource.getData.calls.length).to.be(1);
+                expect(spy).to.be.called.with('filter-a');
+                expect(spy).to.be.called.once();
 
-                expectValue = '';
                 input.val('');
                 ac._keyupEvent.call(ac);
-                expect(ac.dataSource.getData.calls.length).to.be(1);
+                expect(spy).to.be.called.once();
             });
 
         });
@@ -374,7 +368,8 @@ define(function(require) {
                 dataSource: ['abc', 'abd', 'cbd']
             }).render();
 
-            $('#test').val('a').keyup();
+            $('#test').val('a');
+            ac._keyupEvent.call(ac);
 
             ac._clear();
             expect(ac.$('[data-role=items]').html()).to.be('');
@@ -394,39 +389,35 @@ define(function(require) {
             expect(ac.get('filter')).to.be('');
         });
 
-        xit('do not show when async #14', function() {
+        it('do not show when async #14', function(done) {
             var input = $('#test');
             ac = new AutoComplete({
                 trigger: '#test',
                 dataSource: 'http://baidu.com'
             }).render();
 
-            spyOn($, 'ajax').andCallFake(function(url) {
-                return {
-                    success: function(callback) {
-                        setTimeout(function() {
-                            callback(['abc', 'abd', 'cbd']);
-                        }, 50);
-                        return this;
-                    },
-                    error: function(callback) {
-                        return this;
-                    }
-                };
+            var spy = sinon.stub($, 'ajax').returns({
+                success: function(callback) {
+                    setTimeout(function() {
+                      callback(['abc', 'abd', 'cbd']);
+                    }, 50);
+                    return this;
+                },
+                error: function(callback) {
+                }
             });
 
             var t = ac.element.html();
 
-            $('#test').val('a').keyup();
+            $('#test').val('a');
+            ac._keyupEvent.call(ac);
 
-            waitsFor(function() {
-                return t !== ac.element.html();
-            }, 'element changed', 750);
 
-            runs(function() {
+            setTimeout(function() {
                 expect(ac.get('visible')).to.be.ok();
-                //spyOn($, 'ajax').andCallThrough();
-            });
+                spy.restore();
+                done();
+            }, 50);
 
         });
     });
