@@ -203,7 +203,7 @@ define(function(require) {
         });
 
         describe('filter', function() {
-            it('specified', function() {
+            it('should support string', function() {
                 var input = $('#test');
                 ac = new AutoComplete({
                     trigger: '#test',
@@ -215,23 +215,7 @@ define(function(require) {
                 ac._keyupEvent.call(ac);
                 expect(ac.get('data')).to.eql([]);
             });
-            it('not exist', function() {
-                var input = $('#test');
-                ac = new AutoComplete({
-                    trigger: '#test',
-                    filter: 'none',
-                    dataSource: ['abc', 'abd', 'cbd']
-                }).render();
-
-                $('#test').val('a');
-                ac._keyupEvent.call(ac);
-                expect(ac.get('data')).to.eql([
-                    {matchKey: 'abc'},
-                    {matchKey: 'abd'},
-                    {matchKey: 'cbd'}
-                ]);
-            });
-            it('is function', function() {
+            it('should support function', function() {
                 var input = $('#test');
                 ac = new AutoComplete({
                     trigger: '#test',
@@ -254,7 +238,7 @@ define(function(require) {
                     {value: 'cbd'}
                 ]);
             });
-            it('should be object', function() {
+            it('should support object', function() {
                 var input = $('#test');
                 ac = new AutoComplete({
                     trigger: '#test',
@@ -278,6 +262,57 @@ define(function(require) {
                     {title: 'abd', prop: '2', matchKey: 'abd', highlightIndex: [[0, 1]]}
                 ]);
             });
+            it('should use default filter when not exist', function() {
+                var input = $('#test');
+                ac = new AutoComplete({
+                    trigger: '#test',
+                    filter: 'none',
+                    dataSource: ['abc', 'abd', 'cbd']
+                }).render();
+
+                $('#test').val('a');
+                ac._keyupEvent.call(ac);
+                expect(ac.get('data')).to.eql([
+                    {matchKey: 'abc'},
+                    {matchKey: 'abd'},
+                    {matchKey: 'cbd'}
+                ]);
+            });
+            it('should be "startsWith" by default', function() {
+                var input = $('#test');
+                ac = new AutoComplete({
+                    trigger: '#test',
+                    dataSource: []
+                }).render();
+
+                expect(ac.get('filter')).to.eql({
+                  name: 'startsWith',
+                  options: {
+                    key: 'value'
+                  }
+                });
+            });
+            it('should be empty when ajax and not specified', function() {
+                var input = $('#test');
+                ac = new AutoComplete({
+                    trigger: '#test',
+                    dataSource: './data.json'
+                }).render();
+
+                expect(ac.get('filter')).to.be('');
+            });
+            it('should use specified filter when ajax and specified', function() {
+                var input = $('#test');
+                ac = new AutoComplete({
+                    trigger: '#test',
+                    filter: 'startsWith',
+                    dataSource: './data.json'
+                }).render();
+
+                expect(ac.get('filter')).to.be('startsWith');
+            });
+
+
         });
 
         it('select item', function() {
@@ -418,6 +453,20 @@ define(function(require) {
                 spy.restore();
                 done();
             }, 50);
+
+        });
+
+        it('should support selectFirst', function() {
+            ac = new AutoComplete({
+                trigger: '#test',
+                selectFirst: true,
+                dataSource: ['abc', 'abd', 'cbd']
+            }).render();
+
+            $('#test').val('a');
+            ac._keyupEvent.call(ac);
+            expect(ac.get('selectedIndex')).to.be(0);
+
 
         });
     });
