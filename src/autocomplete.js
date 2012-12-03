@@ -41,7 +41,7 @@ define(function(require, exports, module) {
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             locator: 'data',
             filter: undefined, // 输出过滤
-            inputFilter: defaultInputFilter, // 输入过滤
+            inputFilter: function(v) {return v;}, // 输入过滤
             disabled: false,
             selectFirst: false,
             // 以下仅为组件使用
@@ -53,7 +53,11 @@ define(function(require, exports, module) {
         events: {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
             'mousedown [data-role=item]': function(e) {
+                this._mousedownCall++;
                 this.selectItem();
+            },
+            'mousedown': function() {
+                this._mousedownCall++;
             },
             'mouseenter [data-role=item]': function(e) {
                 var i = this.items.index(e.currentTarget);
@@ -120,6 +124,7 @@ define(function(require, exports, module) {
 
             // 是否开始处理流程
             this._start = false;
+            this._mousedownCall = 0;
 
             this._initFilter(); // 初始化 filter
             this._blurHide([trigger]);
@@ -127,6 +132,7 @@ define(function(require, exports, module) {
 
             trigger
                 .attr('autocomplete', 'off')
+                .on('blur.autocomplete', $.proxy(this._blurEvent, this))
                 .on('keydown.autocomplete', $.proxy(this._keydownEvent, this))
                 .on('keyup.autocomplete', function() {
                     clearTimeout(that._timeout);
@@ -142,6 +148,7 @@ define(function(require, exports, module) {
         },
 
         destroy: function() {
+            this._clear();
             this.element.remove();
             AutoComplete.superclass.destroy.call(this);
         },
@@ -161,6 +168,7 @@ define(function(require, exports, module) {
                 this.get('trigger').val(matchKey);
                 this.set('inputValue', matchKey);
                 this.trigger('itemSelect', data);
+                this._clear();
             }
         },
 
@@ -256,6 +264,14 @@ define(function(require, exports, module) {
             data = filter.func.call(this, data, this.queryValue, filter.options);
 
             this.set('data', data);
+        },
+
+        _blurEvent: function() {
+            // 阻止 blur 事件
+            if (!(this._mousedownCall === 1)) {
+                this.hide();
+            }
+            this._mousedownCall = 0;
         },
 
         _keyupEvent: function() {
@@ -426,9 +442,5 @@ define(function(require, exports, module) {
             return p;
         }
         return data;
-    }
-
-    function defaultInputFilter(v) {
-        return v;
     }
 });
