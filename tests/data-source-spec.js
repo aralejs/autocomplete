@@ -94,45 +94,42 @@ define(function(require) {
             expect(beCalled).not.to.be.ok();
         });
 
-        xit('type is url', function() {
-            spyOn($, 'ajax').andCallFake(function(url) {
-                expect(url).to.be('./test.json?q=a');
-                return {
-                    success: function(callback) {
-                        callback([1, 2, 3]);
-                        return this;
-                    },
-                    error: function(callback) {
-                    }
-                };
+        it('type is url', function() {
+            var spy = sinon.stub($, 'ajax').returns({
+                success: function(callback) {
+                  callback([1, 2, 3]);
+                  return this;
+                },
+                error: function(callback) {
+                }
             });
-            var beCalled = false;
+
             var source = new DataSource({
                 source: './test.json?q={{query}}'
             }).on('data', function(data) {
                 expect(data).to.eql([1, 2, 3]);
             }).getData('a');
+            expect(spy).to.be.called.with('./test.json?q=a');
+            spy.restore();
         });
 
-        xit('type is url when error', function() {
-            spyOn($, 'ajax').andCallFake(function(url) {
-                expect(url).to.be('./test.json?q=a');
-                return {
-                    success: function(callback) {
-                        return this;
-                    },
-                    error: function(callback) {
-                        callback();
-                        return this;
-                    }
-                };
+        it('type is url when error', function() {
+            var spy = sinon.stub($, 'ajax').returns({
+                success: function(callback) {
+                    return this;
+                },
+                error: function(callback) {
+                    callback();
+                    return this;
+                }
             });
-            var beCalled = false;
+
             var source = new DataSource({
                 source: './test.json?q={{query}}'
             }).on('data', function(data) {
                 expect(data).to.eql({});
             }).getData('a');
+            spy.restore();
         });
     });
 
