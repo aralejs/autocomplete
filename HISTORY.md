@@ -2,7 +2,7 @@
 
 ---
 
-### 0.9.0 [milestone](https://github.com/aralejs/autocomplete/issues?milestone=2&state=closed)
+## 0.9.0 [milestone](https://github.com/aralejs/autocomplete/issues?milestone=2&state=closed)
 
 `tag:new` [#10](https://github.com/aralejs/autocomplete/issues/10) 支持 disabled 属性。
 
@@ -26,11 +26,11 @@
 
 `tag:fixed` [#27](https://github.com/aralejs/autocomplete/issues/27) trigger为textarea，submitOnEnter 处理逻辑的问题。
 
-### 0.8.0
+## 0.8.0
 
-第一个正式版。
+`tag:new` 第一个正式版。
 
-### 0.7.9
+## 0.7.9
 
-不要用这个版本。
+`tag:new` 不要用这个版本。
 
