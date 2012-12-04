@@ -22,5 +22,8 @@ install:
   - spm env --init
   - sed -i 's/\[/[\"modules.spmjs.org\",/g' ~/.spm/config.json
   - spm install
+  - nohup ping a.alipayobjects.com &
+  - sleep 5
+  - cat nohup.out
 
 script: ./node_modules/.bin/mocha-phantomjs http://127.0.0.1:8000/tests/runner.html
