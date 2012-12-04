@@ -20,6 +20,7 @@ install:
   - npm install ../spm
   - npm install node-static swig mocha-phantomjs
   - spm env --init
+  - sed -i 's/\[/[\"modules.spmjs.org\",/g' ~/.spm/config.json
   - spm install
 
 script: ./node_modules/.bin/mocha-phantomjs http://127.0.0.1:8000/tests/runner.html
