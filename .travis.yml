@@ -1,8 +1,8 @@
 language: node_js
 
 notifications:
-    email:
-        - aralejs@gmail.com
+  email:
+    - aralejs@gmail.com
 
 node_js:
   - 0.8
@@ -16,11 +16,8 @@ before_script:
   - nohup node tests/test-travis.js &
 
 install: 
-  - git clone https://github.com/spmjs/spm.git ../spm
-  - npm install ../spm
-  - npm install node-static swig mocha-phantomjs
-  - spm env --init
+  - npm install spm node-static swig mocha-phantomjs
   - sed -i 's/\[/[\"modules.spmjs.org\",/g' ~/.spm/config.json
-  - spm install
+  - ./node_modules/.bin/spm install
 
 script: ./node_modules/.bin/mocha-phantomjs http://127.0.0.1:8000/tests/runner.html
