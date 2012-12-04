@@ -187,10 +187,7 @@ define(function(require, exports, module) {
             if (filter === undefined) {
                 // 异步请求的时候一般不需要过滤器
                 if (this.dataSource.get('type') === 'url') {
-                    filter = {
-                        name: 'default',
-                        func: Filter['default']
-                    };
+                    filter = null;
                 } else {
                     filter = {
                         name: 'startsWith',
@@ -231,13 +228,13 @@ define(function(require, exports, module) {
                         filter = null;
                     }
                 }
-
-                if (!filter) {
-                    filter = {
-                        name: 'default',
-                        func: Filter['default']
-                    };
-                }
+            }
+            // filter 为 null，设置为 default
+            if (!filter) {
+                filter = {
+                    name: 'default',
+                    func: Filter['default']
+                };
             }
             this.set('filter', filter);
         },
