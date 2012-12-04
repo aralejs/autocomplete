@@ -52,12 +52,13 @@ define(function(require, exports, module) {
 
         events: {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
+            // https://github.com/aralejs/autocomplete/issues/26
             'mousedown [data-role=item]': function(e) {
-                this._mousedownCall++;
                 this.selectItem();
+                this._firstMousedown = true;
             },
             'mousedown': function() {
-                this._mousedownCall++;
+                this._secondMousedown = true;
             },
             'mouseenter [data-role=item]': function(e) {
                 var i = this.items.index(e.currentTarget);
@@ -121,10 +122,6 @@ define(function(require, exports, module) {
             this.dataSource = new DataSource({
                 source: this.get('dataSource')
             }).on('data', this._filterData, this);
-
-            // 是否开始处理流程
-            this._start = false;
-            this._mousedownCall = 0;
 
             this._initFilter(); // 初始化 filter
             this._blurHide([trigger]);
@@ -267,11 +264,14 @@ define(function(require, exports, module) {
         },
 
         _blurEvent: function() {
-            // 阻止 blur 事件
-            if (!(this._mousedownCall === 1)) {
+            if (!this._secondMousedown) {
+                this.hide();
+            } else if (this._firstMousedown) {
+                this.get('trigger').focus();
                 this.hide();
             }
-            this._mousedownCall = 0;
+            delete this._firstMousedown;
+            delete this._secondMousedown;
         },
 
         _keyupEvent: function() {
@@ -364,7 +364,7 @@ define(function(require, exports, module) {
                 this.hide();
                 this.set('data', []);
             }
-            this._start = false;
+            delete this._start;
         },
 
         _onRenderData: function(data) {
