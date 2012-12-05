@@ -32,8 +32,8 @@ seajs.use('../src/autocomplete.css');
 </script>
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
-    new AutoComplete({
+seajs.use(['textarea-complete', '$'], function(TextareaComplete, $) {
+    new TextareaComplete({
         trigger: '#acTrigger',
         dataSource: ['abc', 'abd', 'abe', 'acd'],
         submitOnEnter: false,
