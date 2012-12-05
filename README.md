@@ -1,7 +1,5 @@
 # AutoComplete 
 
-- order: 1
-
 ---
 
 [![Build Status](https://secure.travis-ci.org/aralejs/autocomplete.png)](https://travis-ci.org/aralejs/autocomplete)
