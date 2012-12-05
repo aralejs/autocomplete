@@ -271,8 +271,6 @@ define(function(require, exports, module) {
         _keydownEvent: function(e) {
             if (this.get('disabled')) return;
 
-            var currentIndex = this.get('selectedIndex');
-
             switch (e.which) {
                 case KEY.ESC:
                     this.hide();
@@ -280,36 +278,12 @@ define(function(require, exports, module) {
 
                 // top arrow
                 case KEY.UP:
-                    e.preventDefault();
-                    if (!this.get('visible') && this.get('data').length) {
-                        this.show();
-                        return;
-                    }
-                    if (!this.items) {
-                        return;
-                    }
-                    if (currentIndex > 0) {
-                        this.set('selectedIndex', currentIndex - 1);
-                    } else {
-                        this.set('selectedIndex', this.items.length - 1);
-                    }
+                    this._keyUp(e);
                     break;
 
                 // bottom arrow
                 case KEY.DOWN:
-                    e.preventDefault();
-                    if (!this.get('visible') && this.get('data').length) {
-                        this.show();
-                        return;
-                    }
-                    if (!this.items) {
-                        return;
-                    }
-                    if (currentIndex < this.items.length - 1) {
-                        this.set('selectedIndex', currentIndex + 1);
-                    } else {
-                        this.set('selectedIndex', 0);
-                    }
+                    this._keyDown(e);
                     break;
 
                 // left arrow
@@ -320,17 +294,56 @@ define(function(require, exports, module) {
 
                 // enter
                 case KEY.ENTER:
-                    if (this.get('visible')) {
-                        this.selectItem();
-
-                        // 是否阻止回车提交表单
-                        if (!this.get('submitOnEnter')) {
-                            e.preventDefault();
-                        }
-                    }
+                    this._keyEnter(e);
                     break;
             }
+        },
 
+        _keyUp: function(e) {
+            e.preventDefault();
+
+            var currentIndex = this.get('selectedIndex');
+            if (!this.get('visible') && this.get('data').length) {
+                this.show();
+                return;
+            }
+            if (!this.items) {
+                return;
+            }
+            if (currentIndex > 0) {
+                this.set('selectedIndex', currentIndex - 1);
+            } else {
+                this.set('selectedIndex', this.items.length - 1);
+            }
+        },
+
+        _keyDown: function(e) {
+            e.preventDefault();
+
+            var currentIndex = this.get('selectedIndex');
+            if (!this.get('visible') && this.get('data').length) {
+                this.show();
+                return;
+            }
+            if (!this.items) {
+                return;
+            }
+            if (currentIndex < this.items.length - 1) {
+                this.set('selectedIndex', currentIndex + 1);
+            } else {
+                this.set('selectedIndex', 0);
+            }
+        },
+
+        _keyEnter: function(e) {
+            if (this.get('visible')) {
+                this.selectItem();
+
+                // 是否阻止回车提交表单
+                if (!this.get('submitOnEnter')) {
+                    e.preventDefault();
+                }
+            }
         },
 
         _clear: function(attribute) {
