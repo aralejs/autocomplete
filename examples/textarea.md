@@ -25,7 +25,7 @@ seajs.use('../src/autocomplete.css');
 <div class="{{classPrefix}}">
     <ul class="{{classPrefix}}-ctn" data-role="items">
         {{#each items}}
-            <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}">{{text}}</li>
+            <li data-role="item" class="{{../classPrefix}}-item" data-value="@{{value}} ">{{text}}</li>
         {{/each}}
     </ul>
 </div>
@@ -35,7 +35,13 @@ seajs.use('../src/autocomplete.css');
 seajs.use(['textarea-complete', '$'], function(TextareaComplete, $) {
     new TextareaComplete({
         trigger: '#acTrigger',
-        dataSource: ['abc', 'abd', 'abe', 'acd'],
+        cursor: [15, 5],
+        dataSource: [
+          {nickName:'popomore', realName: 'Haoliang Gao'},
+          {nickName:'lepture', realName: 'Hsaoming Yang'},
+          {nickName:'afc163', realName: 'Xingmin Zhu'},
+          {nickName:'shawn', realName: 'Shuai Shao'}
+        ],
         submitOnEnter: false,
         selectFirst: true,
         template: $('#acTriggerTemplte').html(),
@@ -49,15 +55,10 @@ seajs.use(['textarea-complete', '$'], function(TextareaComplete, $) {
             query = query.substring(1);
             var reg = new RegExp('^' + query);
             $.each(data, function(index, item) {
-                if (!query) {
+                if (reg.test(item.nickName) || reg.test(item.realName)) {
                     result.push({
-                        value: self.get('inputValue').replace(/@[^@]*$/, '') + '@' + item,
-                        text: item
-                    });
-                } else if (reg.test(item)) {
-                    result.push({
-                        value: self.get('inputValue').replace(/@[^@]*$/, '') + '@' + item,
-                        text: item
+                        value: item.nickName,
+                        text: item.nickName + ' (' + item.realName + ')'
                     });
                 }
             });
