@@ -52,7 +52,7 @@ define(function(require, exports, module) {
 
         events: {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
-            // https://github.com/aralejs/autocomplete/issues/26
+            // see _blurEvent
             'mousedown [data-role=item]': function(e) {
                 this.selectItem();
                 this._firstMousedown = true;
@@ -109,7 +109,6 @@ define(function(require, exports, module) {
                 classPrefix: this.get('classPrefix'),
                 items: []
             };
-
             AutoComplete.superclass.parseElement.call(this);
         },
 
@@ -139,11 +138,6 @@ define(function(require, exports, module) {
                 });
         },
 
-        show: function() {
-            AutoComplete.superclass.show.call(this);
-            this._setPosition();
-        },
-
         destroy: function() {
             this._clear();
             this.element.remove();
@@ -171,6 +165,7 @@ define(function(require, exports, module) {
 
         setInputValue: function(val) {
             if (this.get('inputValue') !== val) {
+                // 进入处理流程
                 this._start = true;
                 this.get('trigger').val(val);
                 this.set('inputValue', val);
@@ -239,13 +234,6 @@ define(function(require, exports, module) {
             this.set('filter', filter);
         },
 
-        // 调整 align 属性的默认值
-        _tweakAlignDefaultValue: function() {
-            var align = this.get('align');
-            align.baseElement = this.get('trigger');
-            this.set('align', align);
-        },
-
         // 过滤数据
         _filterData: function(data) {
             var filter = this.get('filter'),
@@ -261,6 +249,7 @@ define(function(require, exports, module) {
         },
 
         _blurEvent: function() {
+            // https://github.com/aralejs/autocomplete/issues/26
             if (!this._secondMousedown) {
                 this.hide();
             } else if (this._firstMousedown) {
@@ -350,6 +339,13 @@ define(function(require, exports, module) {
             delete this.items;
             delete this.lastIndex;
             delete this.currentItem;
+        },
+
+        // 调整 align 属性的默认值
+        _tweakAlignDefaultValue: function() {
+            var align = this.get('align');
+            align.baseElement = this.get('trigger');
+            this.set('align', align);
         },
 
         _onRenderInputValue: function(val) {
