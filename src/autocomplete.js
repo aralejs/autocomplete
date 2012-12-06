@@ -301,37 +301,23 @@ define(function(require, exports, module) {
 
         _keyUp: function(e) {
             e.preventDefault();
-
-            var currentIndex = this.get('selectedIndex');
-            if (!this.get('visible') && this.get('data').length) {
-                this.show();
-                return;
-            }
-            if (!this.items) {
-                return;
-            }
-            if (currentIndex > 0) {
-                this.set('selectedIndex', currentIndex - 1);
-            } else {
-                this.set('selectedIndex', this.items.length - 1);
+            if (this.get('data').length) {
+                if (!this.get('visible')) {
+                    this.show();
+                    return;
+                }
+                this._step(-1);
             }
         },
 
         _keyDown: function(e) {
             e.preventDefault();
-
-            var currentIndex = this.get('selectedIndex');
-            if (!this.get('visible') && this.get('data').length) {
-                this.show();
-                return;
-            }
-            if (!this.items) {
-                return;
-            }
-            if (currentIndex < this.items.length - 1) {
-                this.set('selectedIndex', currentIndex + 1);
-            } else {
-                this.set('selectedIndex', 0);
+            if (this.get('data').length) {
+                if (!this.get('visible')) {
+                    this.show();
+                    return;
+                }
+                this._step(1);
             }
         },
 
@@ -342,6 +328,24 @@ define(function(require, exports, module) {
                 // 是否阻止回车提交表单
                 if (!this.get('submitOnEnter')) {
                     e.preventDefault();
+                }
+            }
+        },
+
+        // 选项上下移动
+        _step: function(direction) {
+            var currentIndex = this.get('selectedIndex');
+            if (direction === -1) { // 反向
+                if (currentIndex > 0) {
+                    this.set('selectedIndex', currentIndex - 1);
+                } else {
+                    this.set('selectedIndex', this.items.length - 1);
+                }
+            } else if (direction === 1) { // 正向
+                if (currentIndex < this.items.length - 1) {
+                    this.set('selectedIndex', currentIndex + 1);
+                } else {
+                    this.set('selectedIndex', 0);
                 }
             }
         },

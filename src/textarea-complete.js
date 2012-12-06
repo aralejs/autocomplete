@@ -23,8 +23,30 @@ define(function(require, exports, module) {
       if (this.get('cursor')) {
         this.mirror = Mirror.init(this.get('trigger'));
         this.dataSource.before('getData', function() {
-          that.mirror.setContent(that.get('inputValue'), that.queryValue, that.sel.cursor());
+          that.mirror.setContent(
+            that.get('inputValue'),
+            that.queryValue,
+            that.sel.cursor()
+          );
         });
+      }
+    },
+
+    _keyUp: function(e) {
+      if (this.get('visible')) {
+        e.preventDefault();
+        if (this.get('data').length) {
+          this._step(-1);
+        }
+      }
+    },
+
+    _keyDown: function(e) {
+      if (this.get('visible')) {
+        e.preventDefault();
+        if (this.get('data').length) {
+          this._step(1);
+        }
       }
     },
 
@@ -50,7 +72,6 @@ define(function(require, exports, module) {
         align.baseXY = [pos.left + offset[0], pos.bottom + offset[1]];
         align.selfXY = [0, 0];
         this.set('align', align);
-        console.log(pos)
       }
       TextareaComplete.superclass.show.call(this);
     },
@@ -81,6 +102,7 @@ define(function(require, exports, module) {
     }
   });
 
+  // 计算光标位置
   // MIT https://github.com/ichord/At.js/blob/master/js/jquery.atwho.js
   var Mirror = {
     mirror: null,
@@ -98,12 +120,25 @@ define(function(require, exports, module) {
         return css[p] = origin.css(p);
       });
       this.mirror = $('<div><span></span></div>')
-      .css(css)
-      .insertAfter(origin)
+        .css(css)
+        .insertAfter(origin);
       return this;
     },
-    setContent: function() {
-      this.mirror.html(mirrorContent.apply(this, arguments));
+    setContent: function(content, query, cursor) {
+      var left = query ? (cursor[1] - query.length) : cursor[1];
+      var right = cursor[1];
+      var v = [
+        '<span>',
+          content.substring(0, left),
+        '</span>',
+        '<span id="flag">',
+          (query || ''),
+        '</span>',
+        '<span>',
+          content.substring(right),
+        '</span>'
+      ].join('');
+      this.mirror.html(v);
       return this;
     },
     getFlagRect: function() {
@@ -121,19 +156,5 @@ define(function(require, exports, module) {
   };
 
   module.exports = TextareaComplete;
-
-  function mirrorContent(content, query, cursor) {
-    var left = query ? (cursor[1] - query.length) : cursor[1];
-    var right = cursor[1];
-    return '<span>' +
-        content.substring(0, left) +
-      '</span>' +
-      '<span id="flag">' +
-        (query || '') +
-      '</span>' +
-      '<span>' +
-        content.substring(right) +
-      '</span>';
-  }
 });
 
