@@ -76,8 +76,7 @@ define(function(require) {
                 dataSource: ['abc', 'abd', 'cbd']
             }).render();
 
-            $('#test').val('a');
-            ac._keyupEvent.call(ac);
+            ac.setInputValue('a');
 
             expect(ac.items.eq(0).data('value')).to.be('abc');
             expect(ac.items.eq(0).text()).to.be('abc');
@@ -105,7 +104,6 @@ define(function(require) {
                 expect(spy).to.be.called.once();
 
                 ac.setInputValue('ab');
-                ac._keyupEvent.call(ac);
                 expect(spy).to.be.called.with('ab');
                 expect(spy).to.be.called.twice();
 
@@ -127,13 +125,11 @@ define(function(require) {
 
                 var spy = sinon.spy(ac.dataSource, 'getData');
 
-                input.val('a');
-                ac._keyupEvent.call(ac);
+                ac.setInputValue('a');
                 expect(spy).to.be.called.with('filter-a');
                 expect(spy).to.be.called.once();
 
-                input.val('');
-                ac._keyupEvent.call(ac);
+                ac.setInputValue('');
                 expect(spy).to.be.called.once();
                 spy.restore();
             });
@@ -150,8 +146,7 @@ define(function(require) {
                     locator: 'test'
                 }).render();
 
-                $('#test').val('a');
-                ac._keyupEvent.call(ac);
+                ac.setInputValue('a');
                 expect(ac.get('data')).to.eql([
                     {matchKey: 'abc', highlightIndex: [[0, 1]]},
                     {matchKey: 'abd', highlightIndex: [[0, 1]]}
@@ -170,8 +165,7 @@ define(function(require) {
                     locator: 'test.more'
                 }).render();
 
-                $('#test').val('a');
-                ac._keyupEvent.call(ac);
+                ac.setInputValue('a');
                 expect(ac.get('data')).to.eql([
                     {matchKey: 'abc', highlightIndex: [[0, 1]]},
                     {matchKey: 'abd', highlightIndex: [[0, 1]]}
@@ -191,8 +185,7 @@ define(function(require) {
                     }
                 }).render();
 
-                $('#test').val('a');
-                ac._keyupEvent.call(ac);
+                ac.setInputValue('a');
                 expect(ac.get('data')).to.eql([
                     {matchKey: 'abc', highlightIndex: [[0, 1]]},
                     {matchKey: 'abd', highlightIndex: [[0, 1]]}
@@ -383,8 +376,7 @@ define(function(require) {
                 beCalled = true;
             }).render();
 
-            $('#test').val('a');
-            ac._keyupEvent.call(ac);
+            ac.setInputValue('a');
             ac.set('selectedIndex', 0);
 
             ac.selectItem();
@@ -462,8 +454,7 @@ define(function(require) {
                 dataSource: ['abc', 'abd', 'cbd']
             }).render();
 
-            $('#test').val('a');
-            ac._keyupEvent.call(ac);
+            ac.setInputValue('a');
 
             ac._clear();
             expect(ac.$('[data-role=items]').html()).to.be('');
@@ -493,9 +484,7 @@ define(function(require) {
 
             var t = ac.element.html();
 
-            $('#test').val('a');
-            ac._keyupEvent.call(ac);
-
+            ac.setInputValue('a');
 
             setTimeout(function() {
                 expect(ac.get('visible')).to.be.ok();
@@ -512,8 +501,7 @@ define(function(require) {
                 dataSource: ['abc', 'abd', 'cbd']
             }).render();
 
-            $('#test').val('a');
-            ac._keyupEvent.call(ac);
+            ac.setInputValue('a');
             expect(ac.get('selectedIndex')).to.be(0);
 
 
