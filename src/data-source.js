@@ -34,7 +34,7 @@ define(function(require, exports, module) {
         _getUrlData: function(query) {
             var that = this, options;
             var url = this.get('source')
-                .replace(/{{query}}/g, query ? query : '');
+                .replace(/{{query}}/g, query ? encodeURIComponent(query) : '');
             if (/^(https?:\/\/)/.test(url)) {
                 options = {dataType: 'jsonp'};
             } else {

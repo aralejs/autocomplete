@@ -48,7 +48,7 @@ define(function(require, exports, module) {
     function getMatchKey(item, options) {
         if ($.isPlainObject(item)) {
             // 默认取对象的 value 属性
-            var key = options.key || 'value'; 
+            var key = (options && options.key) || 'value'; 
             return item[key] || '';
         } else {
             return item;
