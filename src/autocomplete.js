@@ -368,7 +368,10 @@ define(function(require, exports, module) {
         _onRenderInputValue: function(val) {
             if (this._start && val) {
                 this.queryValue = this.get('inputFilter').call(this, val);
-                this.dataSource.getData(this.queryValue);
+                // 如果 query 为空则跳出
+                if (this.queryValue) {
+                    this.dataSource.getData(this.queryValue);
+                }
             }
             if (val === '') {
                 this.hide();
