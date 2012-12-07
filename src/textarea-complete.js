@@ -94,8 +94,7 @@ define(function(require, exports, module) {
 
         var value = this.get('trigger').val();
         this.set('inputValue', value);
-        this.mirror.setContent(value, '', this.sel.cursor());
-        
+        this.mirror && this.mirror.setContent(value, '', this.sel.cursor());
         this.trigger('itemSelect', data);
         this._clear();
       }
