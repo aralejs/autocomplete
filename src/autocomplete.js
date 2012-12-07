@@ -44,6 +44,7 @@ define(function(require, exports, module) {
             inputFilter: function(v) {return v;}, // 输入过滤
             disabled: false,
             selectFirst: false,
+            delay: 100,
             // 以下仅为组件使用
             selectedIndex: undefined,
             inputValue: '', // 同步输入框的 value
@@ -134,7 +135,7 @@ define(function(require, exports, module) {
                     clearTimeout(that._timeout);
                     that._timeout = setTimeout(function() {
                         that._keyupEvent.call(that);
-                    }, 100);
+                    }, that.get('delay'));
                 });
         },
 
