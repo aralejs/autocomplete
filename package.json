@@ -24,9 +24,21 @@
     },
     "tests": ["autocomplete", "data-source", "filter"],
     "output": {
-        "autocomplete.js": "."
+        "autocomplete.js": ".",
+        "textarea-complete.js": "."
     },
     "scripts": {
         "test": "make test"
-    }
+    },
+    "servers": {
+        "dev": {
+          "user": "admin",
+          "pass": "alipaydev"
+        }
+    },
+    "deploy": {
+      "server": "dev",
+      "host": "assets.p97.alipay.net",
+      "path": "/home/admin/wwwroot/assets/"
+    } 
 }

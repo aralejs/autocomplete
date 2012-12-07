@@ -198,6 +198,7 @@ define("arale/autocomplete/1.0.0/autocomplete-debug", ["./data-source-debug", ".
             inputFilter: function(v) {return v;}, // 输入过滤
             disabled: false,
             selectFirst: false,
+            delay: 100,
             // 以下仅为组件使用
             selectedIndex: undefined,
             inputValue: '', // 同步输入框的 value
@@ -288,7 +289,7 @@ define("arale/autocomplete/1.0.0/autocomplete-debug", ["./data-source-debug", ".
                     clearTimeout(that._timeout);
                     that._timeout = setTimeout(function() {
                         that._keyupEvent.call(that);
-                    }, 100);
+                    }, that.get('delay'));
                 });
         },
 
@@ -522,7 +523,10 @@ define("arale/autocomplete/1.0.0/autocomplete-debug", ["./data-source-debug", ".
         _onRenderInputValue: function(val) {
             if (this._start && val) {
                 this.queryValue = this.get('inputFilter').call(this, val);
-                this.dataSource.getData(this.queryValue);
+                // 如果 query 为空则跳出
+                if (this.queryValue) {
+                    this.dataSource.getData(this.queryValue);
+                }
             }
             if (val === '') {
                 this.hide();
