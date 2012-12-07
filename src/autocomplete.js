@@ -264,9 +264,12 @@ define(function(require, exports, module) {
         _keyupEvent: function() {
             if (this.get('disabled')) return;
 
-            // 获取输入的值
-            var v = this.get('trigger').val();
-            this.setInputValue(v);
+            if (this._keyupStart) {
+                delete this._keyupStart;
+                // 获取输入的值
+                var v = this.get('trigger').val();
+                this.setInputValue(v);
+            }
         },
 
         _keydownEvent: function(e) {
@@ -297,6 +300,10 @@ define(function(require, exports, module) {
                 case KEY.ENTER:
                     this._keyEnter(e);
                     break;
+
+                // default 继续执行 keyup
+                default:
+                    this._keyupStart = true;
             }
         },
 
