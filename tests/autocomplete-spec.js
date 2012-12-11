@@ -97,18 +97,18 @@ define(function(require) {
                 var spy = sinon.spy(ac, '_onRenderInputValue');
 
                 ac.setInputValue('a');
-                expect(spy).to.be.called.with('a');
+                expect(spy).to.be.called.withArgs('a');
                 expect(spy).to.be.called.once();
 
                 ac._keyupEvent.call(ac);
                 expect(spy).to.be.called.once();
 
                 ac.setInputValue('ab');
-                expect(spy).to.be.called.with('ab');
+                expect(spy).to.be.called.withArgs('ab');
                 expect(spy).to.be.called.twice();
 
                 ac.setInputValue('a');
-                expect(spy).to.be.called.with('a');
+                expect(spy).to.be.called.withArgs('a');
                 expect(spy).to.be.called.thrice();
                 spy.restore();
             });
@@ -126,7 +126,7 @@ define(function(require) {
                 var spy = sinon.spy(ac.dataSource, 'getData');
 
                 ac.setInputValue('a');
-                expect(spy).to.be.called.with('filter-a');
+                expect(spy).to.be.called.withArgs('filter-a');
                 expect(spy).to.be.called.once();
 
                 ac.setInputValue('');
@@ -295,7 +295,7 @@ define(function(require) {
 
                 expect(ac.get('filter')).to.eql({
                     name: 'default',
-                    func: Filter.default
+                    func: Filter['default']
                 });
             });
             it('should support function', function() {
@@ -344,7 +344,7 @@ define(function(require) {
 
                 expect(ac.get('filter')).to.eql({
                     name: 'default',
-                    func: Filter.default
+                    func: Filter['default']
                 });
             });
             it('should be called with 3 param', function() {
@@ -363,7 +363,7 @@ define(function(require) {
                 }).render();
 
                 ac.setInputValue('a');
-                expect(spy).to.be.called.with(['abc'], 'a', {key: 'value'});
+                expect(spy).to.be.called.withArgs(['abc'], 'a', {key: 'value'});
             });
         });
 

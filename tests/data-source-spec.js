@@ -109,7 +109,7 @@ define(function(require) {
             }).on('data', function(data) {
                 expect(data).to.eql([1, 2, 3]);
             }).getData('a');
-            expect(spy).to.be.called.with('./test.json?q=a');
+            expect(spy).to.be.called.withArgs('./test.json?q=a');
             spy.restore();
         });
 

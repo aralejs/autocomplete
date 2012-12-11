@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     var $ = require('$');
 
     var Filter = {
-        default: function(data, query, options) {
+        'default': function(data, query, options) {
             var result = [];
             $.each(data, function(index, item) {
                 var o = {}, matchKey = getMatchKey(item, options);
@@ -16,7 +16,7 @@ define(function(require, exports, module) {
             return result;
         },
 
-        startsWith: function(data, query, options) {
+        'startsWith': function(data, query, options) {
             var result = [], l = query.length,
                 reg = new RegExp('^' + query);
             $.each(data, function(index, item) {
