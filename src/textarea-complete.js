@@ -52,10 +52,14 @@ define(function(require, exports, module) {
 
     _keyEnter: function(e) {
       // 如果没有选中任一一项也不会阻止
-      if (this.get('visible') && this.currentItem) {
-        e.preventDefault();
-        e.stopImmediatePropagation(); // 阻止冒泡及绑定的其他 keydown 事件
-        this.selectItem();
+      if (this.get('visible')) {
+        if (this.currentItem) {
+          e.preventDefault();
+          e.stopImmediatePropagation(); // 阻止冒泡及绑定的其他 keydown 事件
+          this.selectItem();
+        } else {
+          this.hide();
+        }
       }
     },
 
