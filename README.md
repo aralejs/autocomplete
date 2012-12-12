@@ -19,7 +19,7 @@ ac = new AutoComplete({
 }).render();
 ```
 
-在看 API 之前查看[更多演示](./examples/)
+在看 API 之前查看[更多演示](http://aralejs.org/autocomplete/examples/)
 
 ## API
 
@@ -120,7 +120,7 @@ ac = new AutoComplete({
     }
     ```
     
-    也可以自己发送请求获取数据，`return false` 可阻止 data 事件，可查看 [dataSource](./docs/data-source.html)
+    也可以自己发送请求获取数据，`return false` 可阻止 data 事件，可查看 [dataSource](http://aralejs.org/autocomplete/docs/data-source.html)
     
     ```
     dataSource: function(value) {
@@ -172,7 +172,7 @@ ac = new AutoComplete({
 
  -  字符串
 
-    可指定内置的 filter，查看[过滤器章节](./docs/filter.html)。
+    可指定内置的 filter，查看[过滤器章节](http://aralejs.org/autocomplete/docs/filter.html)。
  
     如不设置此属性会调用默认的 `startsWith` 方法，从头开始匹配
 
@@ -215,7 +215,7 @@ ac = new AutoComplete({
     }
     ```
 
-想了解更多可查看[过滤器章节](./docs/filter.html)和[设计章节](./docs/design.html)
+想了解更多可查看[过滤器章节](http://aralejs.org/autocomplete/docs/filter.html)和[设计章节](http://aralejs.org/autocomplete/docs/design.html)
 
 #### inputFilter *function*
 

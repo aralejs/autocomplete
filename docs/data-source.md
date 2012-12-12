@@ -22,7 +22,7 @@ source.getData('a');
 
 ### source *array | object | string | function*
 
-数据源支持 Function, Array, Object, URL，可查看 [README dataSource 属性](../index.html)。
+数据源支持 Function, Array, Object, URL，可查看 [README dataSource 属性](http://aralejs.org/autocomplete/index.html)。
 
 如果是 Function，可通过 `return false` 阻止 data 事件
 
