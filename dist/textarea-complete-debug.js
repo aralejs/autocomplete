@@ -168,8 +168,12 @@ define("arale/autocomplete/1.0.0/autocomplete-debug", ["./data-source-debug", ".
             if (this.get('inputValue') !== val) {
                 // 进入处理流程
                 this._start = true;
-                this.get('trigger').val(val);
                 this.set('inputValue', val);
+                // 避免光标移动到尾部 #44
+                var trigger = this.get('trigger');
+                if (trigger.val() !== val) {
+                    trigger.val(val);
+                }
             }
         },
 
@@ -565,7 +569,7 @@ define("arale/autocomplete/1.0.0/filter-debug", ["$-debug"], function(require, e
     var $ = require('$-debug');
 
     var Filter = {
-        default: function(data, query, options) {
+        'default': function(data, query, options) {
             var result = [];
             $.each(data, function(index, item) {
                 var o = {}, matchKey = getMatchKey(item, options);
@@ -578,7 +582,7 @@ define("arale/autocomplete/1.0.0/filter-debug", ["$-debug"], function(require, e
             return result;
         },
 
-        startsWith: function(data, query, options) {
+        'startsWith': function(data, query, options) {
             var result = [], l = query.length,
                 reg = new RegExp('^' + query);
             $.each(data, function(index, item) {
@@ -674,10 +678,14 @@ define("arale/autocomplete/1.0.0/textarea-complete-debug", ["./autocomplete-debu
 
     _keyEnter: function(e) {
       // 如果没有选中任一一项也不会阻止
-      if (this.get('visible') && this.currentItem) {
-        e.preventDefault();
-        e.stopImmediatePropagation(); // 阻止冒泡及绑定的其他 keydown 事件
-        this.selectItem();
+      if (this.get('visible')) {
+        if (this.currentItem) {
+          e.preventDefault();
+          e.stopImmediatePropagation(); // 阻止冒泡及绑定的其他 keydown 事件
+          this.selectItem();
+        } else {
+          this.hide();
+        }
       }
     },
 

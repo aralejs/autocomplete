@@ -8,6 +8,8 @@
 
 `tag:new` [#25](https://github.com/aralejs/autocomplete/issues/25) 提供 setInputValue 方法程序可以自动补完
 
+`tag:new` [#41](https://github.com/aralejs/autocomplete/issues/41) 提供 delay 属性
+
 `tag:changed` [#31](https://github.com/aralejs/autocomplete/issues/31) itemSelect 事件接口变更
 
 `tag:improved` 输入频率从 300 到 100，没有明显停顿
@@ -19,6 +21,10 @@
 `tag:improved` [#26](https://github.com/aralejs/autocomplete/issues/26) focus/blur 优化
 
 `tag:fixed` [#32](https://github.com/aralejs/autocomplete/issues/32) 选中某项后 focus 输入框
+
+`tag:fixed` [#42](https://github.com/aralejs/autocomplete/issues/42) 修复回车后还是会触发 keyup 的问题
+
+`tag:fixed` [#39](https://github.com/aralejs/autocomplete/issues/39) 修复 dataSource url 的参数没有编码的问题
 
 ## 0.9.0 [milestone](https://github.com/aralejs/autocomplete/issues?milestone=2&state=closed)
 
