@@ -168,8 +168,12 @@ define(function(require, exports, module) {
             if (this.get('inputValue') !== val) {
                 // 进入处理流程
                 this._start = true;
-                this.get('trigger').val(val);
                 this.set('inputValue', val);
+                // 避免光标移动到尾部 #44
+                var trigger = this.get('trigger');
+                if (trigger.val() !== val) {
+                    trigger.val(val);
+                }
             }
         },
 
