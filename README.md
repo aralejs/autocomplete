@@ -47,7 +47,7 @@ ac = new AutoComplete({
 
  -  模板重新渲染的时候只会渲染 `data-role="items"` 下面的
 
- -  highlightItem 会高亮匹配的值，接受两个参数 `classPrefix` 和 `需要高亮的值`，这个方法会通过对象的 highlightIndex 读取高亮的位置，具体格式看 filter
+ -  highlightItem 会高亮匹配的值，接受两个参数 `classPrefix` 和 `需要高亮的值`，这个方法会通过对象的 highlightIndex 读取高亮的位置，具体格式看 [filter](http://aralejs.org/autocomplete/docs/filter.html)
 
 #### classPrefix *string*
 
@@ -59,8 +59,8 @@ ac = new AutoComplete({
 
 ```
 [
-    {title: 'abc'},
-    {title: 'abd'}
+    {value: 'abc'},
+    {value: 'abd'}
 ]
 ```
 
@@ -71,7 +71,6 @@ ac = new AutoComplete({
     'abc',
     'abd'
 ]
-
 ```
 
 数据源通过转化变成这种形式，共支持 4 种方式
@@ -96,17 +95,17 @@ ac = new AutoComplete({
     ```
 
 
-1.  URL _(0.9.0+ 支持 ajax)_
+1.  URL
 
     提供一个 URL，通过 ajax 返回数据，返回的数据也可以通过 `locator` 查找。
     
-    URL 提供一个模版参数 `./test.json?v={{query}}`，query 是输入的值，如果使用了 `inputFilter` 则是过滤后的值。
+    URL 提供一个模版参数 `./test.json?v={{query}}`，query 是输入的值（如果使用了 `inputFilter` 则是过滤后的值）。
 
-    如果 URL 为 http 或 https 开头，会用 jsonp 发送请求。
+    如果 URL 为 http 或 https 开头，会用 jsonp 发送请求，否则为 ajax _(0.9.0+ 支持 ajax)_。
 
 1.  Function
 
-    提供一个自定义函数，根据自己的业务逻辑返回数组，这个自定义程度很高，可实现上面 3 中方式。
+    提供一个自定义函数，根据自己的业务逻辑返回数组，这个自定义程度很高，可实现上面 3 种方式。
     
     可以每次输入都动态生成数据，如邮箱自动补完
     
@@ -120,12 +119,12 @@ ac = new AutoComplete({
     }
     ```
     
-    也可以自己发送请求获取数据，`return false` 可阻止 data 事件，可查看 [dataSource](http://aralejs.org/autocomplete/docs/data-source.html)
+    也可以自己发送请求获取数据，`return false` 阻止 data 事件，可查看 [dataSource](http://aralejs.org/autocomplete/docs/data-source.html)
     
     ```
     dataSource: function(value) {
         var that = this;
-        $.ajax('test.json?v+' + value, {
+        $.ajax('test.json?v=' + value, {
             dataType: 'jsonp'
         }).success(function(data) {
             that.trigger('data', data);
@@ -136,11 +135,11 @@ ac = new AutoComplete({
 
 #### locator *object | function*
 
-这个参数跟 dataSource 相关，一般情况 dataSource 为一个数组，filter 可以直接处理。但如果返回的是 Object，那么就需要找到那个数组。
+这个参数与 dataSource 相关，一般情况 dataSource 为一个数组，filter 可以直接处理。但如果返回的是 Object，那么就需要找到那个数组。
 
 这个参数可定位到需要的值，支持两种方式
 
-1.  字符串，默认为 `data`。如果为空字符串则返回原来的值。
+1.  字符串，默认为 `data`。**如果为空字符串则返回原来的值**。
 
     ```
     {
@@ -199,7 +198,7 @@ ac = new AutoComplete({
 
  -  函数
 
-    通过自定义函数去去筛选 dataSource，要注意数据转换。
+    通过自定义函数去筛选 dataSource，要注意数据转换。
 
     如：筛选出包含输入值的数据
 
@@ -245,19 +244,23 @@ new AutoComplete({
 
 默认选中第一项
 
+#### delay *number* _(1.0.0+)_
+
+按键频率，每次按键的间隔，在这个时间范围内不会处理过滤流程。
+
 ### 事件
 
 #### itemSelect
 
 当选中某项时触发
  
- -  value：当前选中的值。
-
  -  data _(0.9.0 支持)_：选中项对应的数据源对象
 
+**注意：**原来回调第一个参数为选中的内容，现在替换为一个对象，这样能获得整个 dataSource 的值。对象中也包括原来的内容 `value == data.matchKey`。
+
 ```
-.on('itemSelect', function(value, data){
-    console.log(this.currentItem);
+.on('itemSelect', function(data){
+    console.log(data.matchKey);
 });
 ```
 

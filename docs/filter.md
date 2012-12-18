@@ -26,7 +26,7 @@ filter: 'startsWith'
 
 支持参数：
 
- -  key: 如果是对象数组，key 指定过滤哪个字段，默认值为 `value`。
+ -  key: 如果是对象数组，key 为需要过滤的那个字段，默认值为 `value`。
 
 示例：提供 dataSource
 
