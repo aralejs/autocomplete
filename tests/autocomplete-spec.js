@@ -221,10 +221,11 @@ define(function(require) {
             var input = $('#test');
             ac = new AutoComplete({
                 trigger: '#test',
-                template: '<div><p data-role="other">a</p><ul data-role="items"><li data-role="item">{{matchKey}}</li></ul></div>',
+                template: '<div><p data-role="other">a</p><ul data-role="items">{{#each items}}<li data-role="item">{{matchKey}}</li>{{/each}}</ul></div>',
                 dataSource: ['abc']
             }).render();
             ac.setInputValue('a');
+            expect(ac.get('visible')).to.be.ok();
             ac.element.find('[data-role=other]').mousedown();
 
             expect(ac.get('visible')).to.be.ok();
