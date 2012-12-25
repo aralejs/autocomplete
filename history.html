@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8">
+    <title>Autocomplete - Histroy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="nico 0.1.0" />
+    <link type="image/x-icon" href="./static/css/favicon.ico" rel="icon">
+    <link rel="stylesheet" href="./static/css/normalize.css" />
+    <link rel="stylesheet" href="./static/css/site.css" />
+    <link rel="stylesheet" href="./static/css/solarized.css" />
+    <script src="https://a.alipayobjects.com/seajs/1.2.1/sea.js"></script>
+    <script src="./static/js/arale-helper.js"></script>
+    <script src="./static/js/site.js"></script><script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36247332-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://ssl.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<script>
+  (function() {
+    var data;
+    seajs._package = data = {"name":"autocomplete","version":"1.0.0","root":"arale","description":"自动补全组件","tag":"widget","homepage":"http://aralejs.org/autocomplete/","author":"popomore <sakura9515@gmail.com>","repository":{"type":"git","url":"https://github.com/aralejs/autocomplete.git"},"bugs":{"url":"https://github.com/aralejs/autocomplete/issues"},"license":"MIT","dependencies":{"$":"$","handlebars":"gallery/handlebars/1.0.0/handlebars","selection":"gallery/selection/0.9.0/selection","base":"arale/base/1.0.1/base","templatable":"arale/widget/1.0.2/templatable","overlay":"arale/overlay/0.9.13/overlay"},"tests":["autocomplete","data-source","filter"],"output":{"autocomplete.js":".","textarea-complete.js":"."},"scripts":{"test":"make test"}}
+    data.dependencies && (delete data.dependencies['$'])
+    data.devDependencies && (delete data.devDependencies['$'])
+
+    seajs.config({ alias: data.dependencies })
+    seajs.config({ alias: data.devDependencies })
+    seajs.config({ alias: {"autocomplete":"./src/autocomplete.js","data-source":"./src/data-source.js","filter":"./src/filter.js","textarea-complete":"./src/textarea-complete.js"} })
+  })();
+</script>
+    <!--[if lt IE 9]>
+    <script src="./static/js/html5shiv.js"></script>
+    <![endif]-->
+    
+  </head>
+  <body>
+    <div id="body-wrapper">
+      <aside id="sidebar-wrapper">
+        <h1><a href="index.html">Autocomplete</a><sup class="package-root"><a href="/">arale</a></sup></h1>
+        <p class="version">当前版本：<span>1.0.0</span></p>
+        <p class="description">自动补全组件</p>
+        <a class="source" href="https://github.com/aralejs/autocomplete.git" target="_blank">View the Project</a>
+        <ul id="navigation" role="navigation">
+          <li><a href="index.html">文档</a></li>
+          <li><a href="./examples/">演示</a></li>
+          <li><a href="history.html">历史</a></li>
+          <li><a class="test-link" href="tests/runner.html" target="_blank">用例</a></li>
+          <li><a class="issue-link" href="https://github.com/aralejs/autocomplete/issues" target="_blank">讨论</a></li>
+        </ul>
+        
+ 
+      </aside>
+      <div id="content-wrapper">
+        <div id="content">
+<article class="hentry">
+  <h1 class="entry-title">Histroy</h1>
+  <div class="meta">2012-12-25</div>
+  <div><a href="https://github.com/aralejs/aralejs.org/wiki/%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95%E4%B9%A6%E5%86%99%E8%A7%84%E8%8C%83">书写规范</a></div>  
+  <div class="entry-content">
+    <h2 id="milestone">1.1.0 <a href="https://github.com/aralejs/autocomplete/issues?milestone=4&amp;state=closed">milestone</a></h2>
+<p><code>tag:new</code> <a href="https://github.com/aralejs/autocomplete/issues/45">#45</a> dataSource 新增 abort 接口，可以阻止异步请求</p>
+
+<p><code>tag:changed</code> dataSource 类型为 function 时，异步返回由 <code>this.trigger(&#39;data&#39;, data)</code> 改为 <code>done(data)</code>。</p>
+<h2 id="milestone">1.0.0 <a href="https://github.com/aralejs/autocomplete/issues?milestone=3&amp;state=closed">milestone</a></h2>
+<p><code>tag:new</code> <a href="https://github.com/aralejs/autocomplete/issues/37">#37</a> 拆分出 textarea-complete，单独支持 textarea。</p>
+
+<p><code>tag:new</code> <a href="https://github.com/aralejs/autocomplete/issues/25">#25</a> 提供 setInputValue 方法程序可以自动补完</p>
+
+<p><code>tag:new</code> <a href="https://github.com/aralejs/autocomplete/issues/41">#41</a> 提供 delay 属性</p>
+
+<p><code>tag:changed</code> <a href="https://github.com/aralejs/autocomplete/issues/31">#31</a> itemSelect 事件接口变更</p>
+
+<p><code>tag:improved</code> 输入频率从 300 到 100，没有明显停顿</p>
+
+<p><code>tag:improved</code> <a href="https://github.com/aralejs/autocomplete/issues/25">#25</a> filter 处理优化</p>
+
+<p><code>tag:improved</code> 提取 _step 方法处理 index 变化</p>
+
+<p><code>tag:improved</code> <a href="https://github.com/aralejs/autocomplete/issues/26">#26</a> focus/blur 优化</p>
+
+<p><code>tag:fixed</code> <a href="https://github.com/aralejs/autocomplete/issues/32">#32</a> 选中某项后 focus 输入框</p>
+
+<p><code>tag:fixed</code> <a href="https://github.com/aralejs/autocomplete/issues/42">#42</a> 修复回车后还是会触发 keyup 的问题</p>
+
+<p><code>tag:fixed</code> <a href="https://github.com/aralejs/autocomplete/issues/39">#39</a> 修复 dataSource url 的参数没有编码的问题</p>
+<h2 id="milestone">0.9.0 <a href="https://github.com/aralejs/autocomplete/issues?milestone=2&amp;state=closed">milestone</a></h2>
+<p><code>tag:new</code> <a href="https://github.com/aralejs/autocomplete/issues/10">#10</a> 支持 disabled 属性。</p>
+
+<p><code>tag:new</code> <a href="https://github.com/aralejs/autocomplete/issues/11">#11</a> 控制按键频率。</p>
+
+<p><code>tag:new</code> <a href="https://github.com/aralejs/autocomplete/issues/13">#13</a> dataSource 支持 ajax。</p>
+
+<p><code>tag:new</code> <a href="https://github.com/aralejs/autocomplete/issues/15">#15</a> 提供 selectFirst 参数。</p>
+
+<p><code>tag:new</code> <a href="https://github.com/aralejs/autocomplete/issues/16">#16</a> dataSource 支持复杂的结构。</p>
+
+<p><code>tag:improved</code> <a href="https://github.com/aralejs/autocomplete/issues/17">#17</a> dataSource 如果是 ajax，filter 的默认值为空。</p>
+
+<p><code>tag:improved</code> <a href="https://github.com/aralejs/autocomplete/issues/21">#21</a> itemSelect 事件返回的值支持原对象。</p>
+
+<p><code>tag:improved</code> <a href="https://github.com/aralejs/autocomplete/issues/22">#22</a> 支持ESC关闭浮层。</p>
+
+<p><code>tag:improved</code> <a href="https://github.com/aralejs/autocomplete/issues/23">#23</a> 去除右键选择的功能。</p>
+
+<p><code>tag:fixed</code> <a href="https://github.com/aralejs/autocomplete/issues/14">#14</a> 修复异步获取数据，浮层不会显示的问题。</p>
+
+<p><code>tag:fixed</code> <a href="https://github.com/aralejs/autocomplete/issues/27">#27</a> trigger为textarea，submitOnEnter 处理逻辑的问题。</p>
+<h2 id="0-8-0">0.8.0</h2>
+<p><code>tag:new</code> 第一个正式版。</p>
+<h2 id="0-7-9">0.7.9</h2>
+<p><code>tag:new</code> 不要用这个版本。</p>
+
+  </div>
+</article>
+<script>
+seajs.use('$', function($) {
+    $('#content code').each(function(index, item) {
+        item = $(item);
+        var matcher = item.html().match(/^tag:(.+)/i);
+        if (matcher) {
+            item.parent().css('padding-left', '150px');
+            item.replaceWith('<span class="history-tag history-tag-'+matcher[1]+'">'+matcher[1]+'</span>');
+        }
+    });
+});
+</script>
+<style>
+#content p {
+    border-top: 1px dashed #CCCCCC;
+    font-size: 16px;
+    margin: 12px 0;
+    padding: 12px 0 0 0;
+    position: relative;
+}
+#content h2 {
+    margin-top: 60px;
+    font-family: Georgia;
+    border-bottom: none;
+}
+</style>
+</div>
+      </div>
+      
+    </div>
+    <div id="footer-wrapper">
+      <footer>
+        <p class="powered">
+        <a href="http://aralejs.org">Arale</a> •
+        <a href="http://seajs.org">SeaJS</a> •
+        <a href="https://github.com/spmjs/spm">spm</a> •
+        <a href="http://lab.lepture.com/nico/">nico</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

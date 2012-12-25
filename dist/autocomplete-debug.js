@@ -1,6 +1,6 @@
-define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.1/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
+define("arale/autocomplete/1.0.0/data-source-debug", ["arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "$-debug"], function(require, exports, module) {
 
-    var Base = require('#base/1.0.1/base-debug');
+    var Base = require('arale/base/1.0.1/base-debug');
     var $ = require('$-debug');
 
     var DataSource = Base.extend({
@@ -32,16 +32,21 @@ define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.1/base-debug", "#cla
         },
 
         _getUrlData: function(query) {
-            var that = this;
+            var that = this, options;
             var url = this.get('source')
-                .replace(/{{query}}/g, query ? query : '');
-            $.ajax(url, {
-                dataType: 'jsonp'
-            }).success(function(data) {
-                that.trigger('data', data);
-            }).error(function(data) {
-                that.trigger('data', {});
-            });
+                .replace(/{{query}}/g, query ? encodeURIComponent(query) : '');
+            if (/^(https?:\/\/)/.test(url)) {
+                options = {dataType: 'jsonp'};
+            } else {
+                options = {dataType: 'json'};
+            }
+            $.ajax(url, options)
+                .success(function(data) {
+                    that.trigger('data', data);
+                })
+                .error(function(data) {
+                    that.trigger('data', {});
+                });
         },
 
         _getArrayData: function() {
@@ -87,19 +92,41 @@ define("#autocomplete/0.8.0/data-source-debug", ["#base/1.0.1/base-debug", "#cla
 });
 
 
-
-define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, exports, module) {
+define("arale/autocomplete/1.0.0/filter-debug", ["$-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
 
     var Filter = {
-        startsWith: function(data, query) {
+        'default': function(data, query, options) {
+            var result = [];
+            $.each(data, function(index, item) {
+                var o = {}, matchKey = getMatchKey(item, options);
+                if ($.isPlainObject(item)) {
+                    o = $.extend({}, item);
+                }
+                o.matchKey = matchKey;
+                result.push(o);
+            });
+            return result;
+        },
+
+        'startsWith': function(data, query, options) {
             var result = [], l = query.length,
                 reg = new RegExp('^' + query);
-            $.each(data, function(index, value) {
-                var o = {};
-                if (reg.test(value)) {
-                    o.value = value;
+            $.each(data, function(index, item) {
+                var o = {}, matchKey = getMatchKey(item, options);
+
+                if ($.isPlainObject(item)) {
+                    o = $.extend({}, item);
+                }
+                // 生成 item
+                // {
+                //   ...   // self property
+                //   matchKey: '', // 匹配的内容
+                //   highlightIndex: [] // 高亮的索引
+                // }
+                if (reg.test(matchKey)) {
+                    o.matchKey = matchKey;
                     if (l > 0) {
                         o.highlightIndex = [[0, l]];
                     }
@@ -111,21 +138,30 @@ define("#autocomplete/0.8.0/filter-debug", ["$-debug"], function(require, export
     };
 
     module.exports = Filter;
+
+    function getMatchKey(item, options) {
+        if ($.isPlainObject(item)) {
+            // 默认取对象的 value 属性
+            var key = (options && options.key) || 'value'; 
+            return item[key] || '';
+        } else {
+            return item;
+        }
+    }
 });
 
 
 
-
-define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "#overlay/0.9.11/overlay-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.2/widget-debug", "#base/1.0.1/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.2/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("arale/autocomplete/1.0.0/autocomplete-debug", ["./data-source-debug", "./filter-debug", "$-debug", "arale/overlay/0.9.13/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
-    var Overlay = require('#overlay/0.9.11/overlay-debug');
-    var Templatable = require('#widget/1.0.2/templatable-debug');
-    var Handlebars = require('#handlebars/1.0.0/handlebars-debug');
+    var Overlay = require('arale/overlay/0.9.13/overlay-debug');
+    var Templatable = require('arale/widget/1.0.2/templatable-debug');
+    var Handlebars = require('gallery/handlebars/1.0.0/handlebars-debug');
     var DataSource = require('./data-source-debug');
     var Filter = require('./filter-debug');
 
-    var template = '<div class="{{classPrefix}}"><ul class="{{classPrefix}}-ctn" data-role="items">{{#each items}}<li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}">{{highlightItem ../classPrefix}}</li>{{/each}}</ul></div>';
+    var template = '<div class="{{classPrefix}}"> <ul class="{{classPrefix}}-ctn" data-role="items"> {{#each items}} <li data-role="item" class="{{../classPrefix}}-item" data-value="{{matchKey}}">{{highlightItem ../classPrefix matchKey}}</li> {{/each}} </ul> </div>';
 
     // keyCode
     var KEY = {
@@ -158,8 +194,11 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             submitOnEnter: true, // 回车是否会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             locator: 'data',
-            filter: 'startsWith', // 输出过滤
-            inputFilter: defaultInputFilter, // 输入过滤
+            filter: undefined, // 输出过滤
+            inputFilter: function(v) {return v;}, // 输入过滤
+            disabled: false,
+            selectFirst: false,
+            delay: 100,
             // 以下仅为组件使用
             selectedIndex: undefined,
             inputValue: '', // 同步输入框的 value
@@ -168,8 +207,13 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
 
         events: {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
+            // see _blurEvent
             'mousedown [data-role=item]': function(e) {
                 this.selectItem();
+                this._firstMousedown = true;
+            },
+            'mousedown': function() {
+                this._secondMousedown = true;
             },
             'mouseenter [data-role=item]': function(e) {
                 var i = this.items.index(e.currentTarget);
@@ -179,9 +223,9 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
 
         templateHelpers: {
             // 将匹配的高亮文字加上 hl 的样式
-            highlightItem: function(classPrefix) {
+            highlightItem: function(classPrefix, matchKey) {
                 var index = this.highlightIndex,
-                    cursor = 0, v = this.value, h = '';
+                    cursor = 0, v = matchKey || this.matchKey || '', h = '';
                 if ($.isArray(index)) {
                     for (var i = 0, l = index.length; i < l; i++) {
                         var j = index[i], start, length;
@@ -211,7 +255,7 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                     }
                     return new Handlebars.SafeString(h);
                 }
-                return this.value;
+                return v;
             }
         },
 
@@ -220,141 +264,133 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                 classPrefix: this.get('classPrefix'),
                 items: []
             };
-
             AutoComplete.superclass.parseElement.call(this);
         },
 
-        initProps: function(attribute) {
+        setup: function() {
+            var trigger = this.get('trigger'), that = this;
+
+            AutoComplete.superclass.setup.call(this);
+
+            // 初始化数据源
             this.dataSource = new DataSource({
                 source: this.get('dataSource')
             }).on('data', this._filterData, this);
-        },
 
-        setup: function() {
-            AutoComplete.superclass.setup.call(this);
-
-            var trigger = this.get('trigger'), that = this;
-            trigger.on('keyup.autocomplete', function(e) {
-                // 获取输入的值
-                var v = that.get('trigger').val(),
-                    oldInput = that.get('inputValue');
-
-                that.set('inputValue', v);
-
-                // 如果输入为空，则清空并隐藏
-                if (!v) {
-                    that.hide();
-                    that.set('data', []);
-                    return;
-                }
-
-                // 模版为空，则隐藏
-                if (!that.get('data').length) {
-                    that.hide();
-                    return;
-                }
-
-                // 如果输入变化才显示
-                if (oldInput !== v) {
-                    that.show();
-                }
-            }).on('keydown.autocomplete', function(e) {
-                var currentIndex = that.get('selectedIndex');
-
-                switch (e.which) {
-                    // top arrow
-                    case KEY.UP:
-                        e.preventDefault();
-                        if (!that.get('visible') && that.get('data').length) {
-                            that.show();
-                            return;
-                        }
-                        if (!that.items) {
-                            return;
-                        }
-                        if (currentIndex > 0) {
-                            that.set('selectedIndex', currentIndex - 1);
-                        } else {
-                            that.set('selectedIndex', that.items.length - 1);
-                        }
-                        break;
-
-                    // bottom arrow
-                    case KEY.DOWN:
-                        e.preventDefault();
-                        if (!that.get('visible') && that.get('data').length) {
-                            that.show();
-                            return;
-                        }
-                        if (!that.items) {
-                            return;
-                        }
-                        if (currentIndex < that.items.length - 1) {
-                            that.set('selectedIndex', currentIndex + 1);
-                        } else {
-                            that.set('selectedIndex', 0);
-                        }
-                        break;
-
-                    // left arrow
-                    case KEY.LEFT:
-                        break;
-
-                    // right arrow
-                    case KEY.RIGHT:
-                        if (!that.get('visible')) {
-                            return;
-                        }
-                        that.selectItem();
-                        break;
-
-                    // enter
-                    case KEY.ENTER:
-                        // 是否阻止回车提交表单
-                        if (!that.get('submitOnEnter')) {
-                            e.preventDefault();
-                        }
-                        if (!that.get('visible')) {
-                            return;
-                        }
-                        that.selectItem();
-                        break;
-                }
-            }).on('blur.autocomplete', function(e) {
-                that.hide();
-            }).attr('autocomplete', 'off');
-
+            this._initFilter(); // 初始化 filter
+            this._blurHide([trigger]);
             this._tweakAlignDefaultValue();
-        },
 
-        show: function() {
-            AutoComplete.superclass.show.call(this);
-            this._setPosition();
+            trigger
+                .attr('autocomplete', 'off')
+                .on('blur.autocomplete', $.proxy(this._blurEvent, this))
+                .on('keydown.autocomplete', $.proxy(this._keydownEvent, this))
+                .on('keyup.autocomplete', function() {
+                    clearTimeout(that._timeout);
+                    that._timeout = setTimeout(function() {
+                        that._keyupEvent.call(that);
+                    }, that.get('delay'));
+                });
         },
 
         destroy: function() {
+            this._clear();
             this.element.remove();
             AutoComplete.superclass.destroy.call(this);
         },
 
+        // Public Methods
+        // --------------
+
         selectItem: function() {
-            this.get('trigger').focus();
             this.hide();
 
-            var item = this.currentItem;
+            var item = this.currentItem,
+                index = this.get('selectedIndex'),
+                data = this.get('data')[index];
+
             if (item) {
-                var value = item.attr('data-value');
-                this.get('trigger').val(value);
-                this.set('inputValue', value);
-                this.trigger('itemSelect', value);
+                var matchKey = item.attr('data-value');
+                this.get('trigger').val(matchKey);
+                this.set('inputValue', matchKey);
+                this.trigger('itemSelect', data);
+                this._clear();
             }
         },
 
-        // 调整 align 属性的默认值
-        _tweakAlignDefaultValue: function() {
-            var align = this.get('align');
-            align.baseElement = this.get('trigger');
-            this.set('align', align);
+        setInputValue: function(val) {
+            if (this.get('inputValue') !== val) {
+                // 进入处理流程
+                this._start = true;
+                this.set('inputValue', val);
+                // 避免光标移动到尾部 #44
+                var trigger = this.get('trigger');
+                if (trigger.val() !== val) {
+                    trigger.val(val);
+                }
+            }
+        },
+
+        // Private Methods
+        // ---------------
+
+        _initFilter: function() {
+            var filter = this.get('filter'), filterOptions;
+
+            // 设置 filter 的默认值
+            if (filter === undefined) {
+                // 异步请求的时候一般不需要过滤器
+                if (this.dataSource.get('type') === 'url') {
+                    filter = null;
+                } else {
+                    filter = {
+                        name: 'startsWith',
+                        func: Filter['startsWith'],
+                        options: {
+                            key: 'value'
+                        }
+                    };
+                }
+            } else {
+                // object 的情况
+                // {
+                //   name: '',
+                //   options: {}
+                // }
+                if ($.isPlainObject(filter)) {
+                    if (Filter[filter.name]) {
+                        filter = {
+                            name: filter.name,
+                            func: Filter[filter.name],
+                            options: filter.options
+                        };
+                    } else {
+                        filter = null;
+                    }
+                } else if ($.isFunction(filter)) {
+                    filter = {
+                        func: filter
+                    };
+                } else {
+                    // 从组件内置的 FILTER 获取
+                    if (Filter[filter]) {
+                        filter = {
+                            name: filter,
+                            func: Filter[filter]
+                        };
+                    } else {
+                        filter = null;
+                    }
+                }
+            }
+            // filter 为 null，设置为 default
+            if (!filter) {
+                filter = {
+                    name: 'default',
+                    func: Filter['default']
+                };
+            }
+            this.set('filter', filter);
         },
 
         // 过滤数据
@@ -365,36 +401,156 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             // 获取目标数据
             data = locateResult(locator, data);
 
-            // 如果 filter 不是 `function`，则从组件内置的 FILTER 获取
-            if (!$.isFunction(filter)) {
-                filter = Filter[filter];
-            }
-            if (filter && $.isFunction(filter)) {
-                data = filter.call(this, data, this.realValue);
-            } else {
-                data = defaultOutputFilter.call(this, data);
-            }
+            // 进行过滤
+            data = filter.func.call(this, data, this.queryValue, filter.options);
+
             this.set('data', data);
+        },
+
+        _blurEvent: function() {
+            // https://github.com/aralejs/autocomplete/issues/26
+            if (!this._secondMousedown) {
+                this.hide();
+            } else if (this._firstMousedown) {
+                this.get('trigger').focus();
+                this.hide();
+            }
+            delete this._firstMousedown;
+            delete this._secondMousedown;
+        },
+
+        _keyupEvent: function() {
+            if (this.get('disabled')) return;
+
+            if (this._keyupStart) {
+                delete this._keyupStart;
+                // 获取输入的值
+                var v = this.get('trigger').val();
+                this.setInputValue(v);
+            }
+        },
+
+        _keydownEvent: function(e) {
+            if (this.get('disabled')) return;
+
+            switch (e.which) {
+                case KEY.ESC:
+                    this.hide();
+                    break;
+
+                // top arrow
+                case KEY.UP:
+                    this._keyUp(e);
+                    break;
+
+                // bottom arrow
+                case KEY.DOWN:
+                    this._keyDown(e);
+                    break;
+
+                // left arrow
+                case KEY.LEFT:
+                // right arrow
+                case KEY.RIGHT:
+                    break;
+
+                // enter
+                case KEY.ENTER:
+                    this._keyEnter(e);
+                    break;
+
+                // default 继续执行 keyup
+                default:
+                    this._keyupStart = true;
+            }
+        },
+
+        _keyUp: function(e) {
+            e.preventDefault();
+            if (this.get('data').length) {
+                if (!this.get('visible')) {
+                    this.show();
+                    return;
+                }
+                this._step(-1);
+            }
+        },
+
+        _keyDown: function(e) {
+            e.preventDefault();
+            if (this.get('data').length) {
+                if (!this.get('visible')) {
+                    this.show();
+                    return;
+                }
+                this._step(1);
+            }
+        },
+
+        _keyEnter: function(e) {
+            if (this.get('visible')) {
+                this.selectItem();
+
+                // 是否阻止回车提交表单
+                if (!this.get('submitOnEnter')) {
+                    e.preventDefault();
+                }
+            }
+        },
+
+        // 选项上下移动
+        _step: function(direction) {
+            var currentIndex = this.get('selectedIndex');
+            if (direction === -1) { // 反向
+                if (currentIndex > 0) {
+                    this.set('selectedIndex', currentIndex - 1);
+                } else {
+                    this.set('selectedIndex', this.items.length - 1);
+                }
+            } else if (direction === 1) { // 正向
+                if (currentIndex < this.items.length - 1) {
+                    this.set('selectedIndex', currentIndex + 1);
+                } else {
+                    this.set('selectedIndex', 0);
+                }
+            }
         },
 
         _clear: function(attribute) {
             this.$('[data-role=items]').empty();
-            this.items = null;
-            this.currentItem = null;
             this.set('selectedIndex', -1);
+            delete this.items;
+            delete this.lastIndex;
+            delete this.currentItem;
+        },
+
+        // 调整 align 属性的默认值
+        _tweakAlignDefaultValue: function() {
+            var align = this.get('align');
+            align.baseElement = this.get('trigger');
+            this.set('align', align);
         },
 
         _onRenderInputValue: function(val) {
-            if (val) {
-                this.realValue = this.get('inputFilter').call(this, val);
-                this.dataSource.getData(this.realValue);
+            if (this._start && val) {
+                this.queryValue = this.get('inputFilter').call(this, val);
+                // 如果 query 为空则跳出
+                if (this.queryValue) {
+                    this.dataSource.getData(this.queryValue);
+                }
             }
+            if (val === '') {
+                this.hide();
+                this.set('data', []);
+            }
+            delete this._start;
         },
 
-        _onRenderData: function(val) {
+        _onRenderData: function(data) {
             // 渲染无数据则隐藏
-            if (!val.length) {
+            if (!data.length) {
                 this._clear();
+                this.hide();
                 return;
             }
             // 清除下拉状态
@@ -402,12 +558,18 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             this.set('selectedIndex', -1);
 
             // 渲染下拉
-            this.model.items = val;
+            this.model.items = data;
             this.renderPartial('[data-role=items]');
 
             // 初始化下拉的状态
             this.items = this.$('[data-role=items]').children();
             this.currentItem = null;
+
+            if (this.get('selectFirst')) {
+                this.set('selectedIndex', 0);
+            }
+
+            this.show();
         },
 
         _onRenderSelectedIndex: function(index) {
@@ -420,7 +582,8 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
                 .eq(index)
                 .addClass(className);
 
-            this.trigger('indexChange', index);
+            this.trigger('indexChange', index, this.lastIndex);
+            this.lastIndex = index;
         }
     });
 
@@ -458,17 +621,5 @@ define("#autocomplete/0.8.0/autocomplete-debug", ["./data-source-debug", "./filt
             return p;
         }
         return data;
-    }
-
-    function defaultInputFilter(v) {
-        return v;
-    }
-
-    function defaultOutputFilter(data) {
-        var result = [];
-        $.each(data, function(index, value) {
-            result.push({value: value});
-        });
-        return result;
     }
 });

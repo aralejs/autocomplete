@@ -20,27 +20,27 @@ define(function(require) {
                 data = null;
             });
 
-            test('start width a', function() {
+            it('start width a', function() {
                 var result = Filter.startsWith(data, 'a');
-                expect(result).toEqual([
-                    {value: 'about', highlightIndex: [[0, 1]]},
-                    {value: 'abuse', highlightIndex: [[0, 1]]}
+                expect(result).to.eql([
+                    {matchKey: 'about', highlightIndex: [[0, 1]]},
+                    {matchKey: 'abuse', highlightIndex: [[0, 1]]}
                 ]);
             });
 
-            test('start width none', function() {
+            it('start width none', function() {
                 var result = Filter.startsWith(data, '');
-                expect(result).toEqual([
-                    {value: 'about'},
-                    {value: 'abuse'},
-                    {value: 'but'},
-                    {value: 'buffer'}
+                expect(result).to.eql([
+                    {matchKey: 'about'},
+                    {matchKey: 'abuse'},
+                    {matchKey: 'but'},
+                    {matchKey: 'buffer'}
                 ]);
             });
 
-            test('start width more', function() {
+            it('start width more', function() {
                 var result = Filter.startsWith(data, 'abc');
-                expect(result).toEqual([]);
+                expect(result).to.eql([]);
             });
 
         });

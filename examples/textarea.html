@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8">
+    <title>Autocomplete - Textarea</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="nico 0.1.0" />
+    <link type="image/x-icon" href="../static/css/favicon.ico" rel="icon">
+    <link rel="stylesheet" href="../static/css/normalize.css" />
+    <link rel="stylesheet" href="../static/css/site.css" />
+    <link rel="stylesheet" href="../static/css/solarized.css" />
+    <script src="https://a.alipayobjects.com/seajs/1.2.1/sea.js"></script>
+    <script src="../static/js/arale-helper.js"></script>
+    <script src="../static/js/site.js"></script><script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36247332-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://ssl.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<script>
+  (function() {
+    var data;
+    seajs._package = data = {"name":"autocomplete","version":"1.0.0","root":"arale","description":"自动补全组件","tag":"widget","homepage":"http://aralejs.org/autocomplete/","author":"popomore <sakura9515@gmail.com>","repository":{"type":"git","url":"https://github.com/aralejs/autocomplete.git"},"bugs":{"url":"https://github.com/aralejs/autocomplete/issues"},"license":"MIT","dependencies":{"$":"$","handlebars":"gallery/handlebars/1.0.0/handlebars","selection":"gallery/selection/0.9.0/selection","base":"arale/base/1.0.1/base","templatable":"arale/widget/1.0.2/templatable","overlay":"arale/overlay/0.9.13/overlay"},"tests":["autocomplete","data-source","filter"],"output":{"autocomplete.js":".","textarea-complete.js":"."},"scripts":{"test":"make test"}}
+    data.dependencies && (delete data.dependencies['$'])
+    data.devDependencies && (delete data.devDependencies['$'])
+
+    seajs.config({ alias: data.dependencies })
+    seajs.config({ alias: data.devDependencies })
+    seajs.config({ alias: {"autocomplete":"../src/autocomplete.js","data-source":"../src/data-source.js","filter":"../src/filter.js","textarea-complete":"../src/textarea-complete.js"} })
+  })();
+</script>
+    <!--[if lt IE 9]>
+    <script src="../static/js/html5shiv.js"></script>
+    <![endif]-->
+    
+  </head>
+  <body>
+    <div id="body-wrapper">
+      <aside id="sidebar-wrapper">
+        <h1><a href="../">Autocomplete</a><sup class="package-root"><a href="/">arale</a></sup></h1>
+        <p class="version">当前版本：<span>1.0.0</span></p>
+        <p class="description">自动补全组件</p>
+        <a class="source" href="https://github.com/aralejs/autocomplete.git" target="_blank">View the Project</a>
+        <ul id="navigation" role="navigation">
+          <li><a href="../">文档</a></li>
+          <li><a href="../examples/">演示</a></li>
+          <li><a href="../history.html">历史</a></li>
+          <li><a class="test-link" href="../tests/runner.html" target="_blank">用例</a></li>
+          <li><a class="issue-link" href="https://github.com/aralejs/autocomplete/issues" target="_blank">讨论</a></li>
+        </ul>
+        
+<ol id="sidenav">
+  <li><a href="../examples/">基本操作</a></li>
+  <li><a href="../examples/data-source.html">数据源</a></li>
+  <li><a href="../examples/filter.html">过滤器</a></li>
+  <li><a href="../examples/email.html">Email 自动补全</a></li>
+  <li><a href="../examples/textarea.html">Textarea</a></li>
+</ol>
+
+<ul id="module-output">
+    <li class="module-multiable">多模块</li>
+    <li><a data-file="autocomplete.js" href="../dist/autocomplete.js">■</a></li>
+    <li><a data-file="textarea-complete.js" href="../dist/textarea-complete.js">■</a></li> 
+</ul>
+<div id="output-card">
+    <h3>arale/autocomplete/1.0.0/<a target="_blank" id="output-file"></a></h3>
+    <p>这是模块的输出文件，请 require 或 seajs.use 以上 ID 来使用本文件，具体 API 请阅读文档。</p>
+</div>
+
+      </aside>
+      <div id="content-wrapper">
+        <div id="content">
+<article class="hentry">
+  <h1 class="entry-title">Textarea</h1>
+  <div class="entry-content">
+    <style>
+textarea {
+    width: 500px;
+    height: 200px;
+}
+</style>
+
+<script>
+seajs.use('../src/autocomplete.css');
+</script>
+
+<p>输入 @ 可自动补全用户名</p>
+
+<form action="">
+    <textarea id="acTrigger"></textarea>
+</form>
+
+<script type="text/x-handlebars" id="acTriggerTemplte">
+<div class="{{classPrefix}}">
+    <ul class="{{classPrefix}}-ctn" data-role="items">
+        {{#each items}}
+            <li data-role="item" class="{{../classPrefix}}-item" data-value="@{{value}} ">{{text}}</li>
+        {{/each}}
+    </ul>
+</div>
+</script>
+
+<script>
+seajs.use(['textarea-complete', '$'], function(TextareaComplete, $) {
+    new TextareaComplete({
+        trigger: '#acTrigger',
+        cursor: [15, 5],
+        dataSource: [
+          {nickName:'popomore', realName: 'Haoliang Gao'},
+          {nickName:'lepture', realName: 'Hsaoming Yang'},
+          {nickName:'afc163', realName: 'Xingmin Zhu'},
+          {nickName:'shawn', realName: 'Shuai Shao'}
+        ],
+        submitOnEnter: false,
+        selectFirst: true,
+        template: $('#acTriggerTemplte').html(),
+        inputFilter: function(q) {
+            var m = q.match(/@[^@]*$/);
+            return (m && m.length) ? m[0] : '';
+        },
+        filter: function(data, query) {
+            var result = [], self = this;
+            if (!query) return result;
+            query = query.substring(1);
+            var reg = new RegExp('^' + query);
+            $.each(data, function(index, item) {
+                if (reg.test(item.nickName) || reg.test(item.realName)) {
+                    result.push({
+                        value: item.nickName,
+                        text: item.nickName + ' (' + item.realName + ')'
+                    });
+                }
+            });
+            return result;
+        }
+    }).render();
+});
+</script>
+<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'arale/autocomplete/1.0.0/textarea-complete'</span>, <span class="string">'$'</span>], <span class="keyword">function</span>(TextareaComplete, $) {
+    <span class="keyword">new</span> TextareaComplete({
+        trigger: <span class="string">'#acTrigger'</span>,
+        cursor: [<span class="number">15</span>, <span class="number">5</span>],
+        dataSource: [
+          {nickName:<span class="string">'popomore'</span>, realName: <span class="string">'Haoliang Gao'</span>},
+          {nickName:<span class="string">'lepture'</span>, realName: <span class="string">'Hsaoming Yang'</span>},
+          {nickName:<span class="string">'afc163'</span>, realName: <span class="string">'Xingmin Zhu'</span>},
+          {nickName:<span class="string">'shawn'</span>, realName: <span class="string">'Shuai Shao'</span>}
+        ],
+        submitOnEnter: <span class="literal">false</span>,
+        selectFirst: <span class="literal">true</span>,
+        template: $(<span class="string">'#acTriggerTemplte'</span>).html(),
+        inputFilter: <span class="keyword">function</span>(q) {
+            <span class="keyword">var</span> m = q.match(<span class="regexp">/@[^@]*$/</span>);
+            <span class="keyword">return</span> (m &amp;&amp; m.length) ? m[<span class="number">0</span>] : <span class="string">''</span>;
+        },
+        filter: <span class="keyword">function</span>(data, query) {
+            <span class="keyword">var</span> result = [], self = <span class="keyword">this</span>;
+            <span class="keyword">if</span> (!query) <span class="keyword">return</span> result;
+            query = query.substring(<span class="number">1</span>);
+            <span class="keyword">var</span> reg = <span class="keyword">new</span> RegExp(<span class="string">'^'</span> + query);
+            $.each(data, <span class="keyword">function</span>(index, item) {
+                <span class="keyword">if</span> (reg.test(item.nickName) || reg.test(item.realName)) {
+                    result.push({
+                        value: item.nickName,
+                        text: item.nickName + <span class="string">' ('</span> + item.realName + <span class="string">')'</span>
+                    });
+                }
+            });
+            <span class="keyword">return</span> result;
+        }
+    }).render();
+});
+</code></pre></div>
+  </div>
+</article>
+</div>
+      </div>
+      
+    </div>
+    <div id="footer-wrapper">
+      <footer>
+        <p class="powered">
+        <a href="http://aralejs.org">Arale</a> •
+        <a href="http://seajs.org">SeaJS</a> •
+        <a href="https://github.com/spmjs/spm">spm</a> •
+        <a href="http://lab.lepture.com/nico/">nico</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

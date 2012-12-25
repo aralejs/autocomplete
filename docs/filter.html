@@ -1,77 +1,177 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE HTML>
+<html lang="zh">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-    <title>Autocomplete - 过滤器 Filter</title><link rel="stylesheet" href="http://alipay.github.com/liquidluck-theme-arale/assets/app.min.css">
-    <link rel="shortcut icon" href="http://alipay.github.com/liquidluck-theme-arale/assets/favicon.ico" type="image/x-icon" />
-    <script src="http://seajs.org/dist/sea.js"></script>
-    <script src="http://alipay.github.com/liquidluck-theme-arale/tools/arale-helper.js"></script>
+    <title>Autocomplete - 过滤器 Filter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="nico 0.1.0" />
+    <link type="image/x-icon" href="../static/css/favicon.ico" rel="icon">
+    <link rel="stylesheet" href="../static/css/normalize.css" />
+    <link rel="stylesheet" href="../static/css/site.css" />
+    <link rel="stylesheet" href="../static/css/solarized.css" />
+    <script src="https://a.alipayobjects.com/seajs/1.2.1/sea.js"></script>
+    <script src="../static/js/arale-helper.js"></script>
+    <script src="../static/js/site.js"></script><script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36247332-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://ssl.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<script>
+  (function() {
+    var data;
+    seajs._package = data = {"name":"autocomplete","version":"1.0.0","root":"arale","description":"自动补全组件","tag":"widget","homepage":"http://aralejs.org/autocomplete/","author":"popomore <sakura9515@gmail.com>","repository":{"type":"git","url":"https://github.com/aralejs/autocomplete.git"},"bugs":{"url":"https://github.com/aralejs/autocomplete/issues"},"license":"MIT","dependencies":{"$":"$","handlebars":"gallery/handlebars/1.0.0/handlebars","selection":"gallery/selection/0.9.0/selection","base":"arale/base/1.0.1/base","templatable":"arale/widget/1.0.2/templatable","overlay":"arale/overlay/0.9.13/overlay"},"tests":["autocomplete","data-source","filter"],"output":{"autocomplete.js":".","textarea-complete.js":"."},"scripts":{"test":"make test"}}
+    data.dependencies && (delete data.dependencies['$'])
+    data.devDependencies && (delete data.devDependencies['$'])
+
+    seajs.config({ alias: data.dependencies })
+    seajs.config({ alias: data.devDependencies })
+    seajs.config({ alias: {"autocomplete":"../src/autocomplete.js","data-source":"../src/data-source.js","filter":"../src/filter.js","textarea-complete":"../src/textarea-complete.js"} })
+  })();
+</script>
     <!--[if lt IE 9]>
-      <script src="http://alipay.github.com/liquidluck-theme-arale/assets/html5shiv.js"></script>
+    <script src="../static/js/html5shiv.js"></script>
     <![endif]-->
+    
   </head>
   <body>
-    <header id="header">
-      <div class="container">
-        <a title="Home" class="icon-home" href="/" id="logo">Arale</a>
-        <div class="wrapper fn-clear">
-          
-          <nav class="global-nav" role="navigation">
-            <ul class="fn-clear">
-              <li class="developer-guides"><a href="/developer-guides/">开发指南</a></li>
-              <li class="user-guides"><a href="/components/">组件文档</a> • <a style="padding-left:0;" href="/mapping.html">Map</a></li>
-            </ul>
-          </nav>
-          <nav class="top-nav" role="navigation">
-            <ul class="fn-clear">
-              <li class="first"><a target="_blank" href="http://seajs.org">SeaJS</a></li>
-              <li class="last"><a target="_blank" href="https://github.com/seajs/spm/wiki">SPM</a></li>
-            </ul>
-          </nav>
-          
-        </div>
-      </div>
-    </header>
+    <div id="body-wrapper">
+      <aside id="sidebar-wrapper">
+        <h1><a href="../">Autocomplete</a><sup class="package-root"><a href="/">arale</a></sup></h1>
+        <p class="version">当前版本：<span>1.0.0</span></p>
+        <p class="description">自动补全组件</p>
+        <a class="source" href="https://github.com/aralejs/autocomplete.git" target="_blank">View the Project</a>
+        <ul id="navigation" role="navigation">
+          <li><a href="../">文档</a></li>
+          <li><a href="../examples/">演示</a></li>
+          <li><a href="../history.html">历史</a></li>
+          <li><a class="test-link" href="../tests/runner.html" target="_blank">用例</a></li>
+          <li><a class="issue-link" href="https://github.com/aralejs/autocomplete/issues" target="_blank">讨论</a></li>
+        </ul>
+        
+<ol id="sidenav">
+  <li><a href="../">AutoComplete</a></li>
+  <li><a href="../docs/data-source.html">数据源 dataSource</a></li>
+  <li><a href="../docs/filter.html">过滤器 Filter</a></li>
+  <li><a href="../docs/design.html">设计模型</a></li>
+</ol>
 
-    <div id="main">
-      <div class="container fn-clear">
-<div class="markdown-body">
-  <h1 class="entry-title"><a id="back-to-module" href="../">Autocomplete</a> - 过滤器 Filter</h1>
-  <p>过滤是 autocomplete 数据操作的核心环节，将 dataSource 的数据根据一些规则进行处理，返回的数据再进行模版渲染。</p>
-<p>过滤器的输入有两个</p>
+<ul id="module-output">
+    <li class="module-multiable">多模块</li>
+    <li><a data-file="autocomplete.js" href="../dist/autocomplete.js">■</a></li>
+    <li><a data-file="textarea-complete.js" href="../dist/textarea-complete.js">■</a></li> 
+</ul>
+<div id="output-card">
+    <h3>arale/autocomplete/1.0.0/<a target="_blank" id="output-file"></a></h3>
+    <p>这是模块的输出文件，请 require 或 seajs.use 以上 ID 来使用本文件，具体 API 请阅读文档。</p>
+</div>
+
+      </aside>
+      <div id="content-wrapper">
+        <div id="content">
+<article class="hentry">
+  <h1 class="entry-title">过滤器 Filter</h1>
+  <div class="entry-content">
+    <p>过滤器接受数据源和输入的值，最后输出给模板进行渲染</p>
+<h2 id="%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F">使用方式</h2>
+<p>直接指定使用</p>
+
+<pre>filter: &#39;startsWith&#39;
+</pre>
+<h2 id="%E5%86%85%E7%BD%AE%E7%9A%84%E8%BF%87%E6%BB%A4%E5%99%A8">内置的过滤器</h2><h3 id="default">default</h3>
+<p>按原样输出，指定 <code>filter = &#39;&#39;</code> 会调用这个过滤器。</p>
+<h3 id="startswith">startsWith</h3>
+<p>从头开始全匹配输入的值</p>
+
+<p>支持参数：</p>
+
+<ul>
+<li> key: 如果是对象数组，key 为需要过滤的那个字段，默认值为 <code>value</code>。</li>
+</ul>
+
+<p>示例：提供 dataSource</p>
+
+<pre>[
+  {title: &#39;abc&#39;},
+  {title: &#39;abd&#39;},
+  {title: &#39;bcd&#39;}
+]
+</pre>
+
+<p>输入 <code>a</code> 后显示 abc 和 abd，进行如下设置</p>
+
+<pre>filter: {
+    name: &#39;startsWith&#39;,
+    options: {
+        key: &#39;title&#39;
+    }
+}
+</pre>
+<h2 id="%E8%87%AA%E5%AE%9A%E4%B9%89">自定义</h2>
+<p>提供三个参数</p>
 
 <ol>
-<li>dataSource 的返回值</li>
-<li>input 过滤后的返回值</li>
+<li>data: dataSource 的返回值</li>
+<li>query: input 过滤后的返回值</li>
+<li>options: 自定义属性</li>
 </ol>
-<p>过滤器的输出直接给模版引擎</p>
 
-<h3 id="toc_0">使用方式</h3>
+<p>返回结果也要是一个数组，但结构有变化。</p>
+<h3 id="filter-%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2">filter 中的数据转换</h3>
+<p>过滤器的输入（也就是数据源的输出）支持两个类型：字符串数组和对象数组，最终 filter 输出的仅为对象数组。</p>
 
-<pre><code>filter: 'startsWith'</code></pre>
+<p>输出的对象需要提供：</p>
 
-<h2 id="toc_1">过滤规则</h2>
+<ul>
+<li><p>matchKey</p>
 
-<h3 id="toc_2">startsWith</h3>
-<p>从头开始全匹配输入的值</p>
-<p>提供 dataSource</p>
+<p>被匹配的值，最后显示的内容。如果是字符串则取本身，如果是对象通过 options/key 来指定那个属性为 matchKey。</p></li>
+<li><p>highlightIndex</p>
 
-<pre><code>['abc', 'abd', 'bcd']</code></pre>
-<p>输入 <code>a</code> 后显示 abc 和 abd</p>
+<p>这个属性是为了增加高亮被匹配值的配置，渲染模版时会增加 <code>item-hl</code> 样式。</p>
 
+<p>highlightIndex 为一个二位数组，确定被匹配字符的位置。描述了多个高亮元素的索引值，aba 中第一个 a 的索引值为 [0, 1]，第二个 a 的索引值为 [2, 3]。</p>
+
+<pre>{matchKey: &#39;aba&#39;, highlightIndex:[[0, 1], [2, 3]]}
+</pre>
+
+<pre>&lt;span class=&quot;item-hl&quot;&gt;a&lt;span&gt;b&lt;span class=&quot;item-hl&quot;&gt;c&lt;span&gt;
+</pre></li>
+</ul>
+
+<p>示例：</p>
+
+<pre>&#47;&#47; 输入
+[&#39;aba&#39;, &#39;abb&#39;, &#39;abc&#39;]
+
+&#47;&#47; 输出
+[
+  {matchKey: &#39;aba&#39;, highlightIndex:[[0, 1], [2, 3]]},
+  {matchKey: &#39;abb&#39;, highlightIndex:[[0, 1]]},
+  {matchKey: &#39;abc&#39;, highlightIndex:[[0, 1]]},
+]
+</pre>
+
+  </div>
+</article>
 </div>
-<div class="sidebar sidebar-components"></div>
       </div>
+      
     </div>
-
-    <footer id="footer">
-      <div class="container">
-        <div class="copyright">
-          <p>&copy; 2012 aralejs.org</p>
-          <p>除非另有声明，本站所有代码遵循 MIT 协议</p>
-        </div>
-      </div>
-    </footer>
+    <div id="footer-wrapper">
+      <footer>
+        <p class="powered">
+        <a href="http://aralejs.org">Arale</a> •
+        <a href="http://seajs.org">SeaJS</a> •
+        <a href="https://github.com/spmjs/spm">spm</a> •
+        <a href="http://lab.lepture.com/nico/">nico</a>
+        </p>
+      </footer>
+    </div>
   </body>
 </html>
