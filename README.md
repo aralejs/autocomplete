@@ -119,15 +119,15 @@ ac = new AutoComplete({
     }
     ```
     
-    也可以自己发送请求获取数据，`return false` 阻止 data 事件，可查看 [dataSource](http://aralejs.org/autocomplete/docs/data-source.html)
+    也可以自己发送请求获取数据，`return false` 阻止同步返回，使用 `done` 异步返回数据。
     
     ```
-    dataSource: function(value) {
+    dataSource: function(value, done) {
         var that = this;
         $.ajax('test.json?v=' + value, {
             dataType: 'jsonp'
         }).success(function(data) {
-            that.trigger('data', data);
+            done(data);
         })
         return false;
     }

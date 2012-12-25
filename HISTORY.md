@@ -2,6 +2,12 @@
 
 ---
 
+## 1.1.0 [milestone](https://github.com/aralejs/autocomplete/issues?milestone=4&state=closed)
+
+`tag:new` [#45](https://github.com/aralejs/autocomplete/issues/45) dataSource 新增 abort 接口，可以阻止异步请求
+
+`tag:changed` dataSource 类型为 function 时，异步返回由 `this.trigger('data', data)` 改为 `done(data)`。
+
 ## 1.0.0 [milestone](https://github.com/aralejs/autocomplete/issues?milestone=3&state=closed)
 
 `tag:new` [#37](https://github.com/aralejs/autocomplete/issues/37) 拆分出 textarea-complete，单独支持 textarea。

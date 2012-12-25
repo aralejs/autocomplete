@@ -45,6 +45,18 @@ source.getData('a');
 
 value 为输入框过滤后的值(realValue)
 
+### abort
+
+阻止之前发送的请求，在调用 abort 时只会阻止正在发送中的请求，这些请求不会执行回调
+
+```
+source.getData('a'); // 已执行
+source.getData('a'); // 请求中
+source.getData('a'); // 请求中
+source.abort(); // 阻止 2 和 3 的执行
+source.getData('a'); 
+```
+
 ## 事件
 
 ### data
