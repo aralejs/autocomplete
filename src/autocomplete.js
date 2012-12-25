@@ -385,23 +385,16 @@ define(function(require, exports, module) {
                     this.dataSource.getData(this.queryValue);
                 }
             }
-            if (val === '') {
-                this.hide();
+            if (val === '' || !this.queryValue) {
                 this.set('data', []);
+                this.hide();
             }
             delete this._start;
         },
 
         _onRenderData: function(data) {
-            // 渲染无数据则隐藏
-            if (!data.length) {
-                this._clear();
-                this.hide();
-                return;
-            }
-            // 清除下拉状态
-            this.items = null;
-            this.set('selectedIndex', -1);
+            // 清除状态
+            this._clear();
 
             // 渲染下拉
             this.model.items = data;
@@ -415,7 +408,12 @@ define(function(require, exports, module) {
                 this.set('selectedIndex', 0);
             }
 
-            this.show();
+            // data-role=items 无内容才隐藏
+            if ($.trim(this.$('[data-role=items]').text())) {
+                this.show();
+            } else {
+                this.hide();
+            }
         },
 
         _onRenderSelectedIndex: function(index) {

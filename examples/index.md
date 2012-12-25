@@ -74,10 +74,16 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 <script id="acTrigger4-template" type="text/x-handlebars-template">
   <div class="{{classPrefix}}">
     <input type="text" value="" class="{{classPrefix}}-input" style="margin:5px;">
+    
     <ul class="{{classPrefix}}-ctn" data-role="items">
+      {{#if items}}
       {{#each items}}
         <li data-role="item" class="{{../classPrefix}}-item" data-value="{{matchKey}}">{{matchKey}}</li>
       {{/each}}
+      {{/if}}
+      {{#unless items}}
+        <li class="{{classPrefix}}-item">不存在</li>
+      {{/unless}}
     </ul>
   </div>
 </script>
