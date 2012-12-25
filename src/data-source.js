@@ -10,13 +10,13 @@ define(function(require, exports, module) {
             type: 'array'
         },
 
-        // 每次发送请求会将 id 记录到 callbacks 中，返回后会从中删除
-        // 如果 abort 会清空 callbacks，之前的请求结果都不会执行
-        id: 0,
-        callbacks: [],
-
         initialize: function(config) {
             DataSource.superclass.initialize.call(this, config);
+
+            // 每次发送请求会将 id 记录到 callbacks 中，返回后会从中删除
+            // 如果 abort 会清空 callbacks，之前的请求结果都不会执行
+            this.id = 0;
+            this.callbacks = [];
 
             var source = this.get('source');
             if (isString(source)) {

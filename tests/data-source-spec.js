@@ -145,6 +145,42 @@ define(function(require) {
             expect(spy).to.be.called.withArgs({});
             stub.restore();
         });
+        it('abort', function(done) {
+            var stub = sinon.stub($, 'ajax').returns({
+                success: function(callback) {
+                    setTimeout(function() {
+                        callback(['a']);
+                    }, 10);
+                    return this;
+                },
+                error: function(callback) {
+                    return this;
+                }
+            });
+            var source = new DataSource({
+                source: './test.json?q={{query}}'
+            });
+
+            var spy = sinon.spy(source, '_done');
+
+            source.getData('a');
+            expect(source.callbacks.length).to.be(1);
+
+            source.getData('a');
+            expect(source.callbacks.length).to.be(2);
+
+            source.abort();
+            expect(source.callbacks.length).to.be(0);
+
+            source.getData('a');
+            expect(source.callbacks.length).to.be(1);
+
+            setTimeout(function() {
+                expect(spy).to.be.called.once();
+                stub.restore();
+                done();
+            }, 500);
+        });
     });
 
 });
