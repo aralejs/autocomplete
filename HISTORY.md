@@ -8,6 +8,8 @@
 
 `tag:changed` dataSource 类型为 function 时，异步返回由 `this.trigger('data', data)` 改为 `done(data)`。
 
+`tag:improved` [#47](https://github.com/aralejs/autocomplete/issues/47) 返回数据为空仍然显示，`data-role=items` 内容为空才隐藏
+
 ## 1.0.0 [milestone](https://github.com/aralejs/autocomplete/issues?milestone=3&state=closed)
 
 `tag:new` [#37](https://github.com/aralejs/autocomplete/issues/37) 拆分出 textarea-complete，单独支持 textarea。
