@@ -62,13 +62,13 @@ define(function(require, exports, module) {
             }
             $.ajax(url, options)
                 .success(function(data) {
-                    if ($.inArray(callbackId, that.callbacks)) {
+                    if ($.inArray(callbackId, that.callbacks) > -1) {
                         delete that.callbacks[callbackId];
                         that._done(data);
                     }
                 })
                 .error(function() {
-                    if ($.inArray(callbackId, that.callbacks)) {
+                    if ($.inArray(callbackId, that.callbacks) > -1) {
                         delete that.callbacks[callbackId];
                         that._done({});
                     }
@@ -90,7 +90,7 @@ define(function(require, exports, module) {
         _getFunctionData: function(query) {
             var that = this, func = this.get('source');
             // 如果返回 false 可阻止执行
-            function _done(data) {
+            function done(data) {
                 that._done(data);
             }
             var data = func.call(this, query, done);

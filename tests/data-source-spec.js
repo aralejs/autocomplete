@@ -50,52 +50,67 @@ define(function(require) {
             }).to.throwError();
         });
         it('type is array', function() {
+            var spy = sinon.spy();
             var param = [1, 2, 3];
             var source = new DataSource({
                 source: param
-            }).on('data', function(data) {
-                expect(data).to.eql(param);
-            }).getData();
+            }).on('data', spy).getData();
+            expect(spy).to.be.called.withArgs(param);
         });
 
         it('type is object', function() {
+            var spy = sinon.spy();
             var param = {
                 data: 1
             };
             var source = new DataSource({
                 source: param
-            }).on('data', function(data) {
-                expect(data).to.eql(param);
-            }).getData();
+            }).on('data', spy).getData();
+            expect(spy).to.be.called.withArgs(param);
         });
 
         it('type is function', function() {
+            var spy = sinon.spy();
             var source = new DataSource({
                 source: function(q) {
                     return [
                         q + '@163.com'
                     ];
                 }
-            }).on('data', function(data) {
-                expect(data).to.eql(['a@163.com']);
-            }).getData('a');
+            }).on('data', spy).getData('a');
+            expect(spy).to.be.called.withArgs(['a@163.com']);
         });
 
         it('type is function return false', function() {
-            var beCalled = false;
+            var spy = sinon.spy();
             var source = new DataSource({
                 source: function(q) {
                     return false;
                 }
-            }).on('data', function(data) {
-                beCalled = true;
-            }).getData('a');
+            }).on('data', spy).getData('a');
+            expect(spy).not.to.be.called();
+        });
 
-            expect(beCalled).not.to.be.ok();
+        it('type is function async', function(done) {
+            var spy = sinon.spy();
+            var source = new DataSource({
+                source: function(q, done) {
+                    setTimeout(function() {
+                        done();
+                    }, 10);
+                    return false;
+                }
+            }).on('data', spy).getData('a');
+
+            setTimeout(function() {
+                expect(spy).to.be.called();
+                done();
+            }, 500);
         });
 
         it('type is url', function() {
-            var spy = sinon.stub($, 'ajax').returns({
+            var spy = sinon.spy();
+            var stub = sinon.stub($, 'ajax').returns({
                 success: function(callback) {
                   callback([1, 2, 3]);
                   return this;
@@ -106,15 +121,15 @@ define(function(require) {
 
             var source = new DataSource({
                 source: './test.json?q={{query}}'
-            }).on('data', function(data) {
-                expect(data).to.eql([1, 2, 3]);
-            }).getData('a');
-            expect(spy).to.be.called.withArgs('./test.json?q=a');
-            spy.restore();
+            }).on('data', spy).getData('a');
+            expect(stub).to.be.called.match('./test.json?q=a');
+            expect(spy).to.be.called.withArgs([1, 2, 3]);
+            stub.restore();
         });
 
         it('type is url when error', function() {
-            var spy = sinon.stub($, 'ajax').returns({
+            var spy = sinon.spy();
+            var stub = sinon.stub($, 'ajax').returns({
                 success: function(callback) {
                     return this;
                 },
@@ -126,10 +141,9 @@ define(function(require) {
 
             var source = new DataSource({
                 source: './test.json?q={{query}}'
-            }).on('data', function(data) {
-                expect(data).to.eql({});
-            }).getData('a');
-            spy.restore();
+            }).on('data', spy).getData('a');
+            expect(spy).to.be.called.withArgs({});
+            stub.restore();
         });
     });
 
