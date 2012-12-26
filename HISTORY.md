@@ -12,7 +12,7 @@
 
 `tag:improved` [#47](https://github.com/aralejs/autocomplete/issues/47) 返回数据为空仍然显示，`data-role=items` 内容为空才隐藏
 
-`tag:fixed` dataSource ajax 请求添加时间戳
+`tag:improved` [#52](https://github.com/aralejs/autocomplete/issues/52) dataSource ajax 请求添加时间戳模板，url 可以写 `q={{query}&t={{timestamp}}`
 
 ## 1.0.0 [milestone](https://github.com/aralejs/autocomplete/issues?milestone=3&state=closed)
 

@@ -47,10 +47,14 @@ define(function(require, exports, module) {
 
         _getUrlData: function(query) {
             var that = this, options;
+            var obj = {
+                query: query ? encodeURIComponent(query) : '',
+                timestamp: new Date().getTime()
+            };
             var url = this.get('source')
-                .replace(/{{query}}/g, query ? encodeURIComponent(query) : '');
-            url += (url.indexOf('&') > -1 ? '&' : '') +
-              '_timestamp=' + new Date().getTime();
+                .replace(/{{(.*?)}}/g, function(all, match) {
+                    return obj[match];
+                });
 
             var callbackId = 'callback_' + this.id++;
             this.callbacks.push(callbackId);

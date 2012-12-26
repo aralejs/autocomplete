@@ -99,7 +99,7 @@ ac = new AutoComplete({
 
     提供一个 URL，通过 ajax 返回数据，返回的数据也可以通过 `locator` 查找。
     
-    URL 提供一个模版参数 `./test.json?v={{query}}`，query 是输入的值（如果使用了 `inputFilter` 则是过滤后的值）。
+    URL 提供模版参数 `./test.json?v={{query}}&t={{timestamp}}`，query 是输入的值（如果使用了 `inputFilter` 则是过滤后的值），timestamp 为时间戳。
 
     如果 URL 为 http 或 https 开头，会用 jsonp 发送请求，否则为 ajax _(0.9.0+ 支持 ajax)_。
 
