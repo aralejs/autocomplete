@@ -57,6 +57,8 @@ source.abort(); // 阻止 2 和 3 的执行
 source.getData('a'); 
 ```
 
+但是 function 不支持 abort，abort 是针对 ajax 异步的处理，function 随意性比较大。如果要用 function 并且支持 abort，可以参考 `_getUrlData` 方法。
+
 ## 事件
 
 ### data
