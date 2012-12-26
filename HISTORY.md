@@ -8,6 +8,8 @@
 
 `tag:changed` dataSource 类型为 function 时，异步返回由 `this.trigger('data', data)` 改为 `done(data)`。
 
+`tag:changed` 如果 inputFilter 过滤后的值没有变化也不做处理
+
 `tag:improved` [#47](https://github.com/aralejs/autocomplete/issues/47) 返回数据为空仍然显示，`data-role=items` 内容为空才隐藏
 
 `tag:fixed` dataSource ajax 请求添加时间戳
