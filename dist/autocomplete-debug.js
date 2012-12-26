@@ -37,8 +37,13 @@ define("arale/autocomplete/1.1.0/data-source-debug", [ "arale/base/1.0.1/base-de
         },
         _getUrlData: function(query) {
             var that = this, options;
-            var url = this.get("source").replace(/{{query}}/g, query ? encodeURIComponent(query) : "");
-            url += (url.indexOf("&") > -1 ? "&" : "") + "_timestamp=" + new Date().getTime();
+            var obj = {
+                query: query ? encodeURIComponent(query) : "",
+                timestamp: new Date().getTime()
+            };
+            var url = this.get("source").replace(/{{(.*?)}}/g, function(all, match) {
+                return obj[match];
+            });
             var callbackId = "callback_" + this.id++;
             this.callbacks.push(callbackId);
             if (/^(https?:\/\/)/.test(url)) {
