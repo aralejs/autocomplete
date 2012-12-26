@@ -384,9 +384,10 @@ define(function(require, exports, module) {
 
         _onRenderInputValue: function(val) {
             if (this._start && val) {
+                var oldQueryValue = this.queryValue;
                 this.queryValue = this.get('inputFilter').call(this, val);
-                // 如果 query 为空则跳出
-                if (this.queryValue) {
+                // 如果 query 为空或者相等则不处理
+                if (this.queryValue && this.queryValue !== oldQueryValue) {
                     this.dataSource.abort();
                     this.dataSource.getData(this.queryValue);
                 }
