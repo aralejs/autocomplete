@@ -145,6 +145,11 @@ define(function(require, exports, module) {
             AutoComplete.superclass.destroy.call(this);
         },
 
+        hide: function() {
+            this.dataSource.abort();
+            AutoComplete.superclass.hide.call(this);
+        },
+
         // Public Methods
         // --------------
 
@@ -382,6 +387,7 @@ define(function(require, exports, module) {
                 this.queryValue = this.get('inputFilter').call(this, val);
                 // 如果 query 为空则跳出
                 if (this.queryValue) {
+                    this.dataSource.abort();
                     this.dataSource.getData(this.queryValue);
                 }
             }
