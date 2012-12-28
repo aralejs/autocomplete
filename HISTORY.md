@@ -14,6 +14,8 @@
 
 `tag:improved` [#52](https://github.com/aralejs/autocomplete/issues/52) dataSource ajax 请求添加时间戳模板，url 可以写 `q={{query}&t={{timestamp}}`
 
+`tag:fixed` 修复Enter 也会触发 keyup 的问题
+
 ## 1.0.0 [milestone](https://github.com/aralejs/autocomplete/issues?milestone=3&state=closed)
 
 `tag:new` [#37](https://github.com/aralejs/autocomplete/issues/37) 拆分出 textarea-complete，单独支持 textarea。
