@@ -390,8 +390,18 @@ define(function(require, exports, module) {
 
         _onRenderInputValue: function(val) {
             if (this._start && val) {
+                var minChars = this.get('minChars');
+                var maxChars = this.get('maxChars');
                 var oldQueryValue = this.queryValue;
                 this.queryValue = this.get('inputFilter').call(this, val);
+                var length = this.queryValue.length;
+
+                if ((minChars && length < minChars) || (maxChars && length > maxChars)) {
+                    this.set('data', []);
+                    this.hide();
+                    return;
+                }
+
                 // 如果 query 为空或者相等则不处理
                 if (this.queryValue && this.queryValue !== oldQueryValue) {
                     this.dataSource.abort();
