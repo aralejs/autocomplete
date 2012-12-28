@@ -121,6 +121,7 @@ define("arale/autocomplete/1.1.0/autocomplete-debug", [ "./data-source-debug", "
             trigger.attr("autocomplete", "off").on("blur.autocomplete", $.proxy(this._blurEvent, this)).on("keydown.autocomplete", $.proxy(this._keydownEvent, this)).on("keyup.autocomplete", function() {
                 clearTimeout(that._timeout);
                 that._timeout = setTimeout(function() {
+                    that._timeout = null;
                     that._keyupEvent.call(that);
                 }, that.get("delay"));
             });
@@ -131,6 +132,8 @@ define("arale/autocomplete/1.1.0/autocomplete-debug", [ "./data-source-debug", "
             AutoComplete.superclass.destroy.call(this);
         },
         hide: function() {
+            // 隐藏的时候取消请求或回调
+            if (this._timeout) clearTimeout(this._timeout);
             this.dataSource.abort();
             AutoComplete.superclass.hide.call(this);
         },
@@ -249,6 +252,8 @@ define("arale/autocomplete/1.1.0/autocomplete-debug", [ "./data-source-debug", "
         },
         _keydownEvent: function(e) {
             if (this.get("disabled")) return;
+            // 先清空状态
+            delete this._keyupStart;
             switch (e.which) {
               case KEY.ESC:
                 this.hide();
