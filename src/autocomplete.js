@@ -134,6 +134,7 @@ define(function(require, exports, module) {
                 .on('keyup.autocomplete', function() {
                     clearTimeout(that._timeout);
                     that._timeout = setTimeout(function() {
+                        that._timeout = null;
                         that._keyupEvent.call(that);
                     }, that.get('delay'));
                 });
@@ -146,6 +147,8 @@ define(function(require, exports, module) {
         },
 
         hide: function() {
+            // 隐藏的时候取消请求或回调
+            if (this._timeout) clearTimeout(this._timeout);
             this.dataSource.abort();
             AutoComplete.superclass.hide.call(this);
         },
@@ -283,6 +286,9 @@ define(function(require, exports, module) {
 
         _keydownEvent: function(e) {
             if (this.get('disabled')) return;
+
+            // 先清空状态
+            delete this._keyupStart;
 
             switch (e.which) {
                 case KEY.ESC:
