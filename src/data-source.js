@@ -85,7 +85,7 @@ define(function(require, exports, module) {
             return source;
         },
 
-        _getObjectData: function(query) {
+        _getObjectData: function() {
             var source = this.get('source');
             this._done(source);
             return source;

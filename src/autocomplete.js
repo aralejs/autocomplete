@@ -54,7 +54,7 @@ define(function(require, exports, module) {
         events: {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
             // see _blurEvent
-            'mousedown [data-role=item]': function(e) {
+            'mousedown [data-role=item]': function() {
                 this.selectItem();
                 this._firstMousedown = true;
             },
@@ -189,7 +189,7 @@ define(function(require, exports, module) {
         // ---------------
 
         _initFilter: function() {
-            var filter = this.get('filter'), filterOptions;
+            var filter = this.get('filter');
 
             // 设置 filter 的默认值
             if (filter === undefined) {
@@ -373,7 +373,7 @@ define(function(require, exports, module) {
             }
         },
 
-        _clear: function(attribute) {
+        _clear: function() {
             this.$('[data-role=items]').empty();
             this.set('selectedIndex', -1);
             delete this.items;
@@ -467,7 +467,7 @@ define(function(require, exports, module) {
         if ($.isFunction(locator)) {
             return locator.call(this, data);
         } else if (isString(locator)) {
-            var s = locator.split('.'), p = data, o;
+            var s = locator.split('.'), p = data;
             while (s.length) {
                 var v = s.shift();
                 if (!p[v]) {

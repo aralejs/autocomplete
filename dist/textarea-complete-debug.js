@@ -55,7 +55,7 @@ define("arale/autocomplete/1.1.0/autocomplete-debug", [ "./data-source-debug", "
         events: {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
             // see _blurEvent
-            "mousedown [data-role=item]": function(e) {
+            "mousedown [data-role=item]": function() {
                 this.selectItem();
                 this._firstMousedown = true;
             },
@@ -165,7 +165,7 @@ define("arale/autocomplete/1.1.0/autocomplete-debug", [ "./data-source-debug", "
         // Private Methods
         // ---------------
         _initFilter: function() {
-            var filter = this.get("filter"), filterOptions;
+            var filter = this.get("filter");
             // 设置 filter 的默认值
             if (filter === undefined) {
                 // 异步请求的时候一般不需要过滤器
@@ -333,7 +333,7 @@ define("arale/autocomplete/1.1.0/autocomplete-debug", [ "./data-source-debug", "
                 }
             }
         },
-        _clear: function(attribute) {
+        _clear: function() {
             this.$("[data-role=items]").empty();
             this.set("selectedIndex", -1);
             delete this.items;
@@ -413,7 +413,7 @@ define("arale/autocomplete/1.1.0/autocomplete-debug", [ "./data-source-debug", "
         if ($.isFunction(locator)) {
             return locator.call(this, data);
         } else if (isString(locator)) {
-            var s = locator.split("."), p = data, o;
+            var s = locator.split("."), p = data;
             while (s.length) {
                 var v = s.shift();
                 if (!p[v]) {
@@ -501,7 +501,7 @@ define("arale/autocomplete/1.1.0/data-source-debug", [ "arale/base/1.0.1/base-de
             this._done(source);
             return source;
         },
-        _getObjectData: function(query) {
+        _getObjectData: function() {
             var source = this.get("source");
             this._done(source);
             return source;
