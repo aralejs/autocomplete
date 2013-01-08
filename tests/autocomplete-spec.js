@@ -507,6 +507,24 @@ define(function(require) {
 
 
         });
+
+        it('should show when same value', function() {
+            ac = new AutoComplete({
+                trigger: '#test',
+                selectFirst: true,
+                dataSource: ['abc', 'abd', 'cbd']
+            }).render();
+
+            ac.setInputValue('a');
+            expect(ac.get('visible')).to.be.ok();
+
+            ac.setInputValue('');
+            expect(ac.get('visible')).not.to.be.ok();
+
+            ac.setInputValue('a');
+            expect(ac.get('visible')).to.be.ok();
+        });
+        
     });
 
 });

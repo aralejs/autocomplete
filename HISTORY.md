@@ -2,6 +2,10 @@
 
 ---
 
+## 1.1.1
+
+`tag:fixed` 修复输入相同值不显示的问题, 看[用例](http://aralejs.org/autocomplete/tests/runner.html?grep=Autocomplete%20should%20show%20when%20same%20value)
+
 ## 1.1.0 [milestone](https://github.com/aralejs/autocomplete/issues?milestone=4&state=closed)
 
 `tag:new` [#45](https://github.com/aralejs/autocomplete/issues/45) dataSource 新增 abort 接口，可以阻止异步请求

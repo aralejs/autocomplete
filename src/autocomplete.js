@@ -397,6 +397,8 @@ define(function(require, exports, module) {
                     this.dataSource.abort();
                     this.dataSource.getData(this.queryValue);
                 }
+            } else {
+                this.queryValue = '';
             }
             if (val === '' || !this.queryValue) {
                 this.set('data', []);
