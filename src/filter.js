@@ -16,9 +16,15 @@ define(function(require, exports, module) {
             return result;
         },
 
+        // options: {
+        //   key: 'value'
+        // }
         'startsWith': function(data, query, options) {
             var result = [], l = query.length,
                 reg = new RegExp('^' + query);
+
+            if (!l) return [];
+
             $.each(data, function(index, item) {
                 var o = {}, matchKey = getMatchKey(item, options);
 

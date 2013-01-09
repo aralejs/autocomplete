@@ -20,3 +20,4 @@ build
 _site
 node_modules
 sea-modules
+tests/coverage.html

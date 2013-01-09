@@ -33,7 +33,7 @@ define(function(require, exports, module) {
         },
 
         getData: function(query) {
-            return this['_get' + capitalize(this.get('type')) + 'Data'](query);
+            return this['_get' + capitalize(this.get('type') || '') + 'Data'](query);
         },
 
         abort: function() {
@@ -112,9 +112,6 @@ define(function(require, exports, module) {
     }
 
     function capitalize(str) {
-        if (!str) {
-            return '';
-        }
         return str.replace(
             /^([a-z])/,
             function(f, m) {
