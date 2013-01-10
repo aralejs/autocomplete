@@ -69,40 +69,7 @@ define(function(require, exports, module) {
 
         templateHelpers: {
             // 将匹配的高亮文字加上 hl 的样式
-            highlightItem: function(classPrefix, matchKey) {
-                var index = this.highlightIndex,
-                    cursor = 0, v = matchKey || this.matchKey || '', h = '';
-                if ($.isArray(index)) {
-                    for (var i = 0, l = index.length; i < l; i++) {
-                        var j = index[i], start, length;
-                        if ($.isArray(j)) {
-                            start = j[0];
-                            length = j[1] - j[0];
-                        } else {
-                            start = j;
-                            length = 1;
-                        }
-
-                        if (start > cursor) {
-                            h += v.substring(cursor, start);
-                        }
-                        if (start < v.length) {
-                            h += '<span class="' + classPrefix + '-item-hl">' +
-                                v.substr(start, length) +
-                                '</span>';
-                        }
-                        cursor = start + length;
-                        if (cursor >= v.length) {
-                            break;
-                        }
-                    }
-                    if (v.length > cursor) {
-                        h += v.substring(cursor, v.length);
-                    }
-                    return new Handlebars.SafeString(h);
-                }
-                return v;
-            }
+            highlightItem: highlightItem
         },
 
         parseElement: function() {
@@ -188,6 +155,80 @@ define(function(require, exports, module) {
         // Private Methods
         // ---------------
 
+        // 1. 判断输入值，调用数据源
+        _onRenderInputValue: function(val) {
+            if (this._start && val) {
+                var oldQueryValue = this.queryValue;
+                this.queryValue = this.get('inputFilter').call(this, val);
+                // 如果 query 为空或者相等则不处理
+                if (this.queryValue && this.queryValue !== oldQueryValue) {
+                    this.dataSource.abort();
+                    this.dataSource.getData(this.queryValue);
+                }
+            } else {
+                this.queryValue = '';
+            }
+            if (val === '' || !this.queryValue) {
+                this.set('data', []);
+                this.hide();
+            }
+            delete this._start;
+        },
+
+        // 2. 数据源返回，过滤数据
+        _filterData: function(data) {
+            var filter = this.get('filter'),
+                locator = this.get('locator');
+
+            // 获取目标数据
+            data = locateResult(locator, data);
+
+            // 进行过滤
+            data = filter.func.call(this, data, this.queryValue, filter.options);
+
+            this.set('data', data);
+        },
+
+        // 3. 通过数据渲染模板
+        _onRenderData: function(data) {
+            // 清除状态
+            this._clear();
+
+            // 渲染下拉
+            this.model.items = data;
+            this.renderPartial('[data-role=items]');
+
+            // 初始化下拉的状态
+            this.items = this.$('[data-role=items]').children();
+            this.currentItem = null;
+
+            if (this.get('selectFirst')) {
+                this.set('selectedIndex', 0);
+            }
+
+            // data-role=items 无内容才隐藏
+            if ($.trim(this.$('[data-role=items]').text())) {
+                this.show();
+            } else {
+                this.hide();
+            }
+        },
+
+        // 键盘控制上下移动
+        _onRenderSelectedIndex: function(index) {
+            if (index === -1) return;
+            var className = this.get('classPrefix') + '-item-hover';
+            if (this.currentItem) {
+                this.currentItem.removeClass(className);
+            }
+            this.currentItem = this.items
+                .eq(index)
+                .addClass(className);
+
+            this.trigger('indexChange', index, this.lastIndex);
+            this.lastIndex = index;
+        },
+
         _initFilter: function() {
             var filter = this.get('filter');
 
@@ -245,20 +286,6 @@ define(function(require, exports, module) {
                 };
             }
             this.set('filter', filter);
-        },
-
-        // 过滤数据
-        _filterData: function(data) {
-            var filter = this.get('filter'),
-                locator = this.get('locator');
-
-            // 获取目标数据
-            data = locateResult(locator, data);
-
-            // 进行过滤
-            data = filter.func.call(this, data, this.queryValue, filter.options);
-
-            this.set('data', data);
         },
 
         _blurEvent: function() {
@@ -386,64 +413,9 @@ define(function(require, exports, module) {
             var align = this.get('align');
             align.baseElement = this.get('trigger');
             this.set('align', align);
-        },
-
-        _onRenderInputValue: function(val) {
-            if (this._start && val) {
-                var oldQueryValue = this.queryValue;
-                this.queryValue = this.get('inputFilter').call(this, val);
-                // 如果 query 为空或者相等则不处理
-                if (this.queryValue && this.queryValue !== oldQueryValue) {
-                    this.dataSource.abort();
-                    this.dataSource.getData(this.queryValue);
-                }
-            } else {
-                this.queryValue = '';
-            }
-            if (val === '' || !this.queryValue) {
-                this.set('data', []);
-                this.hide();
-            }
-            delete this._start;
-        },
-
-        _onRenderData: function(data) {
-            // 清除状态
-            this._clear();
-
-            // 渲染下拉
-            this.model.items = data;
-            this.renderPartial('[data-role=items]');
-
-            // 初始化下拉的状态
-            this.items = this.$('[data-role=items]').children();
-            this.currentItem = null;
-
-            if (this.get('selectFirst')) {
-                this.set('selectedIndex', 0);
-            }
-
-            // data-role=items 无内容才隐藏
-            if ($.trim(this.$('[data-role=items]').text())) {
-                this.show();
-            } else {
-                this.hide();
-            }
-        },
-
-        _onRenderSelectedIndex: function(index) {
-            if (index === -1) return;
-            var className = this.get('classPrefix') + '-item-hover';
-            if (this.currentItem) {
-                this.currentItem.removeClass(className);
-            }
-            this.currentItem = this.items
-                .eq(index)
-                .addClass(className);
-
-            this.trigger('indexChange', index, this.lastIndex);
-            this.lastIndex = index;
         }
+
+
     });
 
     module.exports = AutoComplete;
@@ -480,5 +452,40 @@ define(function(require, exports, module) {
             return p;
         }
         return data;
+    }
+
+    function highlightItem(classPrefix, matchKey) {
+        var index = this.highlightIndex,
+            cursor = 0, v = matchKey || this.matchKey || '', h = '';
+        if ($.isArray(index)) {
+            for (var i = 0, l = index.length; i < l; i++) {
+                var j = index[i], start, length;
+                if ($.isArray(j)) {
+                    start = j[0];
+                    length = j[1] - j[0];
+                } else {
+                    start = j;
+                    length = 1;
+                }
+
+                if (start > cursor) {
+                    h += v.substring(cursor, start);
+                }
+                if (start < v.length) {
+                    h += '<span class="' + classPrefix + '-item-hl">' +
+                        v.substr(start, length) +
+                        '</span>';
+                }
+                cursor = start + length;
+                if (cursor >= v.length) {
+                    break;
+                }
+            }
+            if (v.length > cursor) {
+                h += v.substring(cursor, v.length);
+            }
+            return new Handlebars.SafeString(h);
+        }
+        return v;
     }
 });
