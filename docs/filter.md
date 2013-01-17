@@ -49,6 +49,35 @@ filter: {
 }
 ```
 
+### stringMatch
+
+全局匹配字符串，只要有匹配到就会返回
+
+支持参数：
+
+ -  key: 如果是对象数组，key 为需要过滤的那个字段，默认值为 `value`。
+
+示例：提供 dataSource
+
+```
+[
+  {title: 'abc'},
+  {title: 'abd'},
+  {title: 'bcd'}
+]
+```
+
+输入 `c` 后显示 abc 和 bcd，进行如下设置
+
+```
+filter: {
+    name: 'stringMatch',
+    options: {
+        key: 'title'
+    }
+}
+```
+
 ## 自定义
 
 提供三个参数
