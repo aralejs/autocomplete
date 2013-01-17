@@ -1,4 +1,4 @@
-define("arale/autocomplete/1.1.1/data-source-debug", [ "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "$-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.0/data-source-debug", [ "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "$-debug" ], function(require, exports, module) {
     var Base = require("arale/base/1.0.1/base-debug");
     var $ = require("$-debug");
     var DataSource = Base.extend({
@@ -26,7 +26,7 @@ define("arale/autocomplete/1.1.1/data-source-debug", [ "arale/base/1.0.1/base-de
             }
         },
         getData: function(query) {
-            return this["_get" + capitalize(this.get("type")) + "Data"](query);
+            return this["_get" + capitalize(this.get("type") || "") + "Data"](query);
         },
         abort: function() {
             this.callbacks = [];
@@ -94,16 +94,13 @@ define("arale/autocomplete/1.1.1/data-source-debug", [ "arale/base/1.0.1/base-de
         return Object.prototype.toString.call(str) === "[object String]";
     }
     function capitalize(str) {
-        if (!str) {
-            return "";
-        }
         return str.replace(/^([a-z])/, function(f, m) {
             return m.toUpperCase();
         });
     }
 });
 
-define("arale/autocomplete/1.1.1/filter-debug", [ "$-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.0/filter-debug", [ "$-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Filter = {
         "default": function(data, query, options) {
@@ -118,8 +115,12 @@ define("arale/autocomplete/1.1.1/filter-debug", [ "$-debug" ], function(require,
             });
             return result;
         },
+        // options: {
+        //   key: 'value'
+        // }
         startsWith: function(data, query, options) {
-            var result = [], l = query.length, reg = new RegExp("^" + query);
+            var result = [], l = query.length, reg = new RegExp("^" + escapeKeyword(query));
+            if (!l) return [];
             $.each(data, function(index, item) {
                 var o = {}, matchKey = getMatchKey(item, options);
                 if ($.isPlainObject(item)) {
@@ -140,6 +141,23 @@ define("arale/autocomplete/1.1.1/filter-debug", [ "$-debug" ], function(require,
                 }
             });
             return result;
+        },
+        stringMatch: function(data, query, options) {
+            query = query || "";
+            var result = [], l = query.length;
+            if (!l) return [];
+            $.each(data, function(index, item) {
+                var o = {}, matchKey = getMatchKey(item, options);
+                if ($.isPlainObject(item)) {
+                    o = $.extend({}, item);
+                }
+                if (matchKey.indexOf(query) > -1) {
+                    o.matchKey = matchKey;
+                    o.highlightIndex = stringMatch(matchKey, query);
+                    result.push(o);
+                }
+            });
+            return result;
         }
     };
     module.exports = Filter;
@@ -152,9 +170,32 @@ define("arale/autocomplete/1.1.1/filter-debug", [ "$-debug" ], function(require,
             return item;
         }
     }
+    function stringMatch(matchKey, query) {
+        var r = [], a = matchKey.split("");
+        var queryIndex = 0, q = query.split("");
+        for (var i = 0, l = a.length; i < l; i++) {
+            var v = a[i];
+            if (v == q[queryIndex]) {
+                if (queryIndex === q.length - 1) {
+                    r.push([ i - q.length + 1, i + 1 ]);
+                    queryIndex = 0;
+                    continue;
+                }
+                queryIndex++;
+            } else {
+                queryIndex = 0;
+            }
+        }
+        return r;
+    }
+    // 转义正则关键字
+    var keyword = /(\[|\[|\]|\^|\$|\||\(|\)|\{|\}|\+|\*|\?)/g;
+    function escapeKeyword(str) {
+        return (str || "").replace(keyword, "\\$1");
+    }
 });
 
-define("arale/autocomplete/1.1.1/autocomplete-debug", [ "./data-source-debug", "./filter-debug", "$-debug", "arale/overlay/0.9.13/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.0/autocomplete-debug", [ "./data-source-debug", "./filter-debug", "$-debug", "arale/overlay/0.9.13/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Overlay = require("arale/overlay/0.9.13/overlay-debug");
     var Templatable = require("arale/widget/1.0.2/templatable-debug");
@@ -211,7 +252,9 @@ define("arale/autocomplete/1.1.1/autocomplete-debug", [ "./data-source-debug", "
         events: {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
             // see _blurEvent
-            "mousedown [data-role=item]": function() {
+            "mousedown [data-role=item]": function(e) {
+                var i = this.items.index(e.currentTarget);
+                this.set("selectedIndex", i);
                 this.selectItem();
                 this._firstMousedown = true;
             },
@@ -219,42 +262,17 @@ define("arale/autocomplete/1.1.1/autocomplete-debug", [ "./data-source-debug", "
                 this._secondMousedown = true;
             },
             "mouseenter [data-role=item]": function(e) {
-                var i = this.items.index(e.currentTarget);
-                this.set("selectedIndex", i);
+                var className = this.get("classPrefix") + "-item-hover";
+                $(e.currentTarget).addClass(className);
+            },
+            "mouseleave [data-role=item]": function(e) {
+                var className = this.get("classPrefix") + "-item-hover";
+                $(e.currentTarget).removeClass(className);
             }
         },
         templateHelpers: {
             // 将匹配的高亮文字加上 hl 的样式
-            highlightItem: function(classPrefix, matchKey) {
-                var index = this.highlightIndex, cursor = 0, v = matchKey || this.matchKey || "", h = "";
-                if ($.isArray(index)) {
-                    for (var i = 0, l = index.length; i < l; i++) {
-                        var j = index[i], start, length;
-                        if ($.isArray(j)) {
-                            start = j[0];
-                            length = j[1] - j[0];
-                        } else {
-                            start = j;
-                            length = 1;
-                        }
-                        if (start > cursor) {
-                            h += v.substring(cursor, start);
-                        }
-                        if (start < v.length) {
-                            h += '<span class="' + classPrefix + '-item-hl">' + v.substr(start, length) + "</span>";
-                        }
-                        cursor = start + length;
-                        if (cursor >= v.length) {
-                            break;
-                        }
-                    }
-                    if (v.length > cursor) {
-                        h += v.substring(cursor, v.length);
-                    }
-                    return new Handlebars.SafeString(h);
-                }
-                return v;
-            }
+            highlightItem: highlightItem
         },
         parseElement: function() {
             this.model = {
@@ -320,6 +338,65 @@ define("arale/autocomplete/1.1.1/autocomplete-debug", [ "./data-source-debug", "
         },
         // Private Methods
         // ---------------
+        // 1. 判断输入值，调用数据源
+        _onRenderInputValue: function(val) {
+            if (this._start && val) {
+                var oldQueryValue = this.queryValue;
+                this.queryValue = this.get("inputFilter").call(this, val);
+                // 如果 query 为空或者相等则不处理
+                if (this.queryValue && this.queryValue !== oldQueryValue) {
+                    this.dataSource.abort();
+                    this.dataSource.getData(this.queryValue);
+                }
+            } else {
+                this.queryValue = "";
+            }
+            if (val === "" || !this.queryValue) {
+                this.set("data", []);
+                this.hide();
+            }
+            delete this._start;
+        },
+        // 2. 数据源返回，过滤数据
+        _filterData: function(data) {
+            var filter = this.get("filter"), locator = this.get("locator");
+            // 获取目标数据
+            data = locateResult(locator, data);
+            // 进行过滤
+            data = filter.func.call(this, data, this.queryValue, filter.options);
+            this.set("data", data);
+        },
+        // 3. 通过数据渲染模板
+        _onRenderData: function(data) {
+            // 清除状态
+            this._clear();
+            // 渲染下拉
+            this.model.items = data;
+            this.renderPartial("[data-role=items]");
+            // 初始化下拉的状态
+            this.items = this.$("[data-role=items]").children();
+            this.currentItem = null;
+            if (this.get("selectFirst")) {
+                this.set("selectedIndex", 0);
+            }
+            // data-role=items 无内容才隐藏
+            if ($.trim(this.$("[data-role=items]").text())) {
+                this.show();
+            } else {
+                this.hide();
+            }
+        },
+        // 键盘控制上下移动
+        _onRenderSelectedIndex: function(index) {
+            if (index === -1) return;
+            var className = this.get("classPrefix") + "-item-hover";
+            if (this.currentItem) {
+                this.currentItem.removeClass(className);
+            }
+            this.currentItem = this.items.eq(index).addClass(className);
+            this.trigger("indexChange", index, this.lastIndex);
+            this.lastIndex = index;
+        },
         _initFilter: function() {
             var filter = this.get("filter");
             // 设置 filter 的默认值
@@ -376,15 +453,6 @@ define("arale/autocomplete/1.1.1/autocomplete-debug", [ "./data-source-debug", "
                 };
             }
             this.set("filter", filter);
-        },
-        // 过滤数据
-        _filterData: function(data) {
-            var filter = this.get("filter"), locator = this.get("locator");
-            // 获取目标数据
-            data = locateResult(locator, data);
-            // 进行过滤
-            data = filter.func.call(this, data, this.queryValue, filter.options);
-            this.set("data", data);
         },
         _blurEvent: function() {
             // https://github.com/aralejs/autocomplete/issues/26
@@ -501,53 +569,6 @@ define("arale/autocomplete/1.1.1/autocomplete-debug", [ "./data-source-debug", "
             var align = this.get("align");
             align.baseElement = this.get("trigger");
             this.set("align", align);
-        },
-        _onRenderInputValue: function(val) {
-            if (this._start && val) {
-                var oldQueryValue = this.queryValue;
-                this.queryValue = this.get("inputFilter").call(this, val);
-                // 如果 query 为空或者相等则不处理
-                if (this.queryValue && this.queryValue !== oldQueryValue) {
-                    this.dataSource.abort();
-                    this.dataSource.getData(this.queryValue);
-                }
-            } else {
-                this.queryValue = "";
-            }
-            if (val === "" || !this.queryValue) {
-                this.set("data", []);
-                this.hide();
-            }
-            delete this._start;
-        },
-        _onRenderData: function(data) {
-            // 清除状态
-            this._clear();
-            // 渲染下拉
-            this.model.items = data;
-            this.renderPartial("[data-role=items]");
-            // 初始化下拉的状态
-            this.items = this.$("[data-role=items]").children();
-            this.currentItem = null;
-            if (this.get("selectFirst")) {
-                this.set("selectedIndex", 0);
-            }
-            // data-role=items 无内容才隐藏
-            if ($.trim(this.$("[data-role=items]").text())) {
-                this.show();
-            } else {
-                this.hide();
-            }
-        },
-        _onRenderSelectedIndex: function(index) {
-            if (index === -1) return;
-            var className = this.get("classPrefix") + "-item-hover";
-            if (this.currentItem) {
-                this.currentItem.removeClass(className);
-            }
-            this.currentItem = this.items.eq(index).addClass(className);
-            this.trigger("indexChange", index, this.lastIndex);
-            this.lastIndex = index;
         }
     });
     module.exports = AutoComplete;
@@ -582,5 +603,35 @@ define("arale/autocomplete/1.1.1/autocomplete-debug", [ "./data-source-debug", "
             return p;
         }
         return data;
+    }
+    function highlightItem(classPrefix, matchKey) {
+        var index = this.highlightIndex, cursor = 0, v = matchKey || this.matchKey || "", h = "";
+        if ($.isArray(index)) {
+            for (var i = 0, l = index.length; i < l; i++) {
+                var j = index[i], start, length;
+                if ($.isArray(j)) {
+                    start = j[0];
+                    length = j[1] - j[0];
+                } else {
+                    start = j;
+                    length = 1;
+                }
+                if (start > cursor) {
+                    h += v.substring(cursor, start);
+                }
+                if (start < v.length) {
+                    h += '<span class="' + classPrefix + '-item-hl">' + v.substr(start, length) + "</span>";
+                }
+                cursor = start + length;
+                if (cursor >= v.length) {
+                    break;
+                }
+            }
+            if (v.length > cursor) {
+                h += v.substring(cursor, v.length);
+            }
+            return new Handlebars.SafeString(h);
+        }
+        return v;
     }
 });
