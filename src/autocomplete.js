@@ -54,7 +54,9 @@ define(function(require, exports, module) {
         events: {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
             // see _blurEvent
-            'mousedown [data-role=item]': function() {
+            'mousedown [data-role=item]': function(e) {
+                var i = this.items.index(e.currentTarget);
+                this.set('selectedIndex', i);
                 this.selectItem();
                 this._firstMousedown = true;
             },
@@ -62,8 +64,12 @@ define(function(require, exports, module) {
                 this._secondMousedown = true;
             },
             'mouseenter [data-role=item]': function(e) {
-                var i = this.items.index(e.currentTarget);
-                this.set('selectedIndex', i);
+                var className = this.get('classPrefix') + '-item-hover';
+                $(e.currentTarget).addClass(className);
+            },
+            'mouseleave [data-role=item]': function(e) {
+                var className = this.get('classPrefix') + '-item-hover';
+                $(e.currentTarget).removeClass(className);
             }
         },
 

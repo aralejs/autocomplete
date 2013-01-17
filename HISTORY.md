@@ -2,6 +2,10 @@
 
 ---
 
+## 1.1.2
+
+`tag:improved` [#55](https://github.com/aralejs/autocomplete/issues/55) 鼠标 hover 的时候 selectedIndex 不变化
+
 ## 1.1.1
 
 `tag:fixed` 修复输入相同值不显示的问题, 看[用例](http://aralejs.org/autocomplete/tests/runner.html?grep=Autocomplete%20should%20show%20when%20same%20value)
