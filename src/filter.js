@@ -21,7 +21,7 @@ define(function(require, exports, module) {
         // }
         'startsWith': function(data, query, options) {
             var result = [], l = query.length,
-                reg = new RegExp('^' + query);
+                reg = new RegExp('^' + escapeKeyword(query));
 
             if (!l) return [];
 
@@ -59,6 +59,12 @@ define(function(require, exports, module) {
         } else {
             return item;
         }
+    }
+
+    // 转义正则关键字
+    var keyword = /(\[|\[|\]|\^|\$|\||\(|\)|\{|\}|\+|\*|\?)/g;
+    function escapeKeyword (str) {
+      return (str || '').replace(keyword, '\\$1');
     }
 });
 

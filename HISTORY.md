@@ -4,6 +4,8 @@
 
 ## 1.1.2
 
+`tag:fixed` [#56](https://github.com/aralejs/autocomplete/issues/56) 修复 startsWith 特殊字符报错的情况
+
 `tag:improved` [#55](https://github.com/aralejs/autocomplete/issues/55) 鼠标 hover 的时候 selectedIndex 不变化
 
 ## 1.1.1

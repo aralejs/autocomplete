@@ -22,7 +22,7 @@
         "templatable":"arale/widget/1.0.2/templatable",
         "overlay":"arale/overlay/0.9.13/overlay"
     },
-    "tests": ["autocomplete", "data-source", "filter"],
+    "tests": ["autocomplete", "data-source", "filter", "issue"],
     "output": {
         "autocomplete.js": ".",
         "textarea-complete.js": "."
