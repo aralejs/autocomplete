@@ -2,7 +2,9 @@
 
 ---
 
-## 1.1.2
+## 1.2.0
+
+`tag:new` [#48](https://github.com/aralejs/autocomplete/issues/48) filter 增加 stringMatch
 
 `tag:fixed` [#56](https://github.com/aralejs/autocomplete/issues/56) 修复 startsWith 特殊字符报错的情况
 

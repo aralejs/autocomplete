@@ -7,8 +7,8 @@ define(function(require) {
         beforeEach(function() {
             data = [
                 'about',
-                {value: 'abuse'},
-                {title: 'absolute'},
+                {value: 'abuse abbess'},
+                {title: 'absolute abbey'},
                 'but',
                 'buffer'
             ];
@@ -22,8 +22,8 @@ define(function(require) {
                 var result = Filter['default'](data);
                 expect(result).to.eql([
                     {matchKey: 'about'},
-                    {matchKey: 'abuse', value: 'abuse'},
-                    {matchKey: '', title: 'absolute'},
+                    {matchKey: 'abuse abbess', value: 'abuse abbess'},
+                    {matchKey: '', title: 'absolute abbey'},
                     {matchKey: 'but'},
                     {matchKey: 'buffer'}
                 ]);
@@ -33,8 +33,8 @@ define(function(require) {
                 var result = Filter['default'](data, 'a', {key: 'title'});
                 expect(result).to.eql([
                     {matchKey: 'about'},
-                    {matchKey: '', value: 'abuse'},
-                    {matchKey: 'absolute', title: 'absolute'},
+                    {matchKey: '', value: 'abuse abbess'},
+                    {matchKey: 'absolute abbey', title: 'absolute abbey'},
                     {matchKey: 'but'},
                     {matchKey: 'buffer'}
                 ]);
@@ -46,7 +46,7 @@ define(function(require) {
                 var result = Filter.startsWith(data, 'a');
                 expect(result).to.eql([
                     {matchKey: 'about', highlightIndex: [[0, 1]]},
-                    {matchKey: 'abuse', value: 'abuse', highlightIndex: [[0, 1]]}
+                    {matchKey: 'abuse abbess', value: 'abuse abbess', highlightIndex: [[0, 1]]}
                 ]);
             });
 
@@ -64,7 +64,17 @@ define(function(require) {
                 var result = Filter.startsWith(data, 'a', {key: 'title'});
                 expect(result).to.eql([
                     {matchKey: 'about', highlightIndex: [[0, 1]]},
-                    {matchKey: 'absolute', title: 'absolute', highlightIndex: [[0, 1]]}
+                    {matchKey: 'absolute abbey', title: 'absolute abbey', highlightIndex: [[0, 1]]}
+                ]);
+            });
+        });
+
+        describe('stringMatch', function() {
+            it('match a', function() {
+                var result = Filter.stringMatch(data, 'ab', {key: 'title'});
+                expect(result).to.eql([
+                    {matchKey: 'about', highlightIndex: [[0, 2]]},
+                    {matchKey: 'absolute abbey', title: 'absolute abbey', highlightIndex: [[0, 2], [9, 11]]}
                 ]);
             });
         });

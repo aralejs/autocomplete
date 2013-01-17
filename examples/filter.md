@@ -57,3 +57,16 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 });
 ````
 
+## 全字符匹配
+
+<input id="acTrigger3" type="text" value="" />
+
+````javascript
+seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+    new AutoComplete({
+        trigger: '#acTrigger3',
+        dataSource: ['abc abd', 'bcd tcd', 'cbdc abdc'],
+        filter: 'stringMatch'
+    }).render();
+});
+````

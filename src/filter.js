@@ -46,6 +46,29 @@ define(function(require, exports, module) {
                 }
             });
             return result;
+        },
+
+
+        'stringMatch': function(data, query, options) {
+            query = query || '';
+            var result = [], l = query.length;
+
+            if (!l) return [];
+
+            $.each(data, function(index, item) {
+                var o = {}, matchKey = getMatchKey(item, options);
+
+                if ($.isPlainObject(item)) {
+                    o = $.extend({}, item);
+                }
+
+                if (matchKey.indexOf(query) > -1) {
+                    o.matchKey = matchKey;
+                    o.highlightIndex = stringMatch(matchKey, query);
+                    result.push(o);
+                }
+            });
+            return result;
         }
     };
 
@@ -59,6 +82,25 @@ define(function(require, exports, module) {
         } else {
             return item;
         }
+    }
+
+    function stringMatch(matchKey, query) {
+        var r = [], a = matchKey.split('');
+        var queryIndex = 0, q = query.split('');
+        for (var i = 0, l = a.length; i < l; i++) {
+            var v = a[i];
+            if (v == q[queryIndex]) {
+                if (queryIndex === q.length -1) {
+                    r.push([i - q.length + 1,i + 1]);
+                    queryIndex = 0;
+                    continue;
+                }
+                queryIndex++;
+            } else {
+                queryIndex = 0;
+            }
+        }
+        return r;
     }
 
     // 转义正则关键字
