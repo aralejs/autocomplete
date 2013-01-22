@@ -65,6 +65,7 @@ define(function(require, exports, module) {
             },
             'mouseenter [data-role=item]': function(e) {
                 var className = this.get('classPrefix') + '-item-hover';
+                if (this.currentItem) this.currentItem.removeClass(className);
                 $(e.currentTarget).addClass(className);
             },
             'mouseleave [data-role=item]': function(e) {
