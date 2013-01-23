@@ -296,6 +296,8 @@ define(function(require, exports, module) {
         },
 
         _blurEvent: function() {
+            if ($.browser.msie) return;
+
             // https://github.com/aralejs/autocomplete/issues/26
             if (!this._secondMousedown) {
                 this.hide();
