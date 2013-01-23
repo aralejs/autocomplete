@@ -66,6 +66,7 @@ define("arale/autocomplete/1.2.0/autocomplete-debug", [ "./data-source-debug", "
             },
             "mouseenter [data-role=item]": function(e) {
                 var className = this.get("classPrefix") + "-item-hover";
+                if (this.currentItem) this.currentItem.removeClass(className);
                 $(e.currentTarget).addClass(className);
             },
             "mouseleave [data-role=item]": function(e) {
@@ -258,6 +259,7 @@ define("arale/autocomplete/1.2.0/autocomplete-debug", [ "./data-source-debug", "
             this.set("filter", filter);
         },
         _blurEvent: function() {
+            if ($.browser.msie) return;
             // https://github.com/aralejs/autocomplete/issues/26
             if (!this._secondMousedown) {
                 this.hide();
