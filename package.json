@@ -24,7 +24,7 @@
             "overlay": "arale/overlay/1.0.1/overlay"
         },
         "devAlias": {
-            "puerh": "popomore/puerh/0.1.0/puerh-debug"
+            "puerh": "popomore/puerh/0.1.0/puerh"
         },
         "output": [
             "autocomplete.js",

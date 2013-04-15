@@ -1,7 +1,7 @@
 define(function(require) {
 
     var sinon = require('sinon');
-    var expect = require('expect');
+    var expect = require('puerh');
     var Filter = require('filter');
     var AutoComplete = require('autocomplete');
     var $ = require('$');
