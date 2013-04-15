@@ -1,7 +1,9 @@
 define(function(require) {
 
-    var Filter = require('../src/filter');
-    var AutoComplete = require('../src/autocomplete');
+    var sinon = require('sinon');
+    var expect = require('expect');
+    var Filter = require('filter');
+    var AutoComplete = require('autocomplete');
     var $ = require('$');
 
     Filter.test = function() {
