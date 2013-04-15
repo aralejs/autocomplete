@@ -196,6 +196,7 @@ define(function(require) {
         });
 
         it('should be hide when trigger blur #26', function() {
+            if ($.browser.msie) return;
             var input = $('#test');
             ac = new AutoComplete({
                 trigger: '#test',
@@ -526,7 +527,6 @@ define(function(require) {
             ac.setInputValue('a');
             expect(ac.get('visible')).to.be.ok();
         });
-        
     });
 
 });
