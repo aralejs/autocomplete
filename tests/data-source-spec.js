@@ -1,6 +1,8 @@
 define(function(require) {
 
-    var DataSource = require('../src/data-source');
+    var sinon = require('sinon');
+    var expect = require('puerh');
+    var DataSource = require('data-source');
     var $ = require('$');
 
     describe('DataSource', function() {

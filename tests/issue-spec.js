@@ -1,8 +1,9 @@
 define(function(require) {
 
+  var expect = require('puerh');
   var $ = require('$');
-  var Filter = require('../src/filter');
-  var AutoComplete = require('../src/autocomplete');
+  var Filter = require('filter');
+  var AutoComplete = require('autocomplete');
 
   describe('Issue', function() {
     it('#56 start with (', function() {
