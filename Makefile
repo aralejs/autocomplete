@@ -31,7 +31,7 @@ test-src:
 test-dist:
 	@$(MAKE) test-src url=tests/runner.html?dist
 
-test: test-src test-dist
+test: test-src
 
 coverage:
 	@rm -fr _site/src-cov
