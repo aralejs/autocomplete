@@ -21,3 +21,4 @@ _site
 node_modules
 sea-modules
 tests/coverage.html
+.cache
