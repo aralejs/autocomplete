@@ -101,17 +101,17 @@ define(function(require, exports, module) {
             this._blurHide([trigger]);
             this._tweakAlignDefaultValue();
 
-            trigger
-                .attr('autocomplete', 'off')
-                .on('blur.autocomplete', $.proxy(this._blurEvent, this))
-                .on('keydown.autocomplete', $.proxy(this._keydownEvent, this))
-                .on('keyup.autocomplete', function() {
+            trigger.attr('autocomplete', 'off');
+            this.delegateEvents(trigger, 'blur.autocomplete', $.proxy(this._blurEvent, this));
+            this.delegateEvents(trigger, 'keydown.autocomplete', $.proxy(this._keydownEvent, this));
+            this.delegateEvents(trigger, 'keyup.autocomplete', function() {
                     clearTimeout(that._timeout);
                     that._timeout = setTimeout(function() {
                         that._timeout = null;
                         that._keyupEvent.call(that);
                     }, that.get('delay'));
                 });
+
         },
 
         destroy: function() {
