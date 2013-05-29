@@ -1,8 +1,8 @@
-define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overlay/1.0.1/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.1/iframe-shim-debug", "arale/widget/1.0.3/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.3/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.tpl" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.1/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.1/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.tpl" ], function(require, exports, module) {
     var $ = require("$-debug");
-    var Overlay = require("arale/overlay/1.0.1/overlay-debug");
-    var Templatable = require("arale/widget/1.0.3/templatable-debug");
-    var Handlebars = require("gallery/handlebars/1.0.0/handlebars-debug");
+    var Overlay = require("arale/overlay/1.1.0/overlay-debug");
+    var Templatable = require("arale/templatable/0.9.0/templatable-debug");
+    var Handlebars = require("gallery/handlebars/1.0.1/handlebars-debug");
     var DataSource = require("./data-source-debug");
     var Filter = require("./filter-debug");
     var template = require("./autocomplete-debug.tpl");
@@ -48,9 +48,9 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             delay: 100,
             // 以下仅为组件使用
             selectedIndex: undefined,
-            inputValue: "",
+            inputValue: null,
             // 同步输入框的 value
-            data: []
+            data: null
         },
         events: {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
@@ -79,10 +79,10 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             highlightItem: highlightItem
         },
         parseElement: function() {
-            this.model = {
+            this.set("model", {
                 classPrefix: this.get("classPrefix"),
                 items: []
-            };
+            });
             AutoComplete.superclass.parseElement.call(this);
         },
         setup: function() {
@@ -96,7 +96,10 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             // 初始化 filter
             this._blurHide([ trigger ]);
             this._tweakAlignDefaultValue();
-            trigger.attr("autocomplete", "off").on("blur.autocomplete", $.proxy(this._blurEvent, this)).on("keydown.autocomplete", $.proxy(this._keydownEvent, this)).on("keyup.autocomplete", function() {
+            trigger.attr("autocomplete", "off");
+            this.delegateEvents(trigger, "blur.autocomplete", $.proxy(this._blurEvent, this));
+            this.delegateEvents(trigger, "keydown.autocomplete", $.proxy(this._keydownEvent, this));
+            this.delegateEvents(trigger, "keyup.autocomplete", function() {
                 clearTimeout(that._timeout);
                 that._timeout = setTimeout(function() {
                     that._timeout = null;
@@ -175,7 +178,9 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             // 清除状态
             this._clear();
             // 渲染下拉
-            this.model.items = data;
+            var model = this.get("model");
+            model.items = data;
+            this.set("model", model);
             this.renderPartial("[data-role=items]");
             // 初始化下拉的状态
             this.items = this.$("[data-role=items]").children();
@@ -441,8 +446,8 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
     }
 });
 
-define("arale/autocomplete/1.2.1/data-source-debug", [ "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "$-debug" ], function(require, exports, module) {
-    var Base = require("arale/base/1.0.1/base-debug");
+define("arale/autocomplete/1.2.1/data-source-debug", [ "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "$-debug" ], function(require, exports, module) {
+    var Base = require("arale/base/1.1.0/base-debug");
     var $ = require("$-debug");
     var DataSource = Base.extend({
         attrs: {
