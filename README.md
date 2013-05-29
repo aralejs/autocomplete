@@ -3,6 +3,7 @@
 ---
 
 [![Build Status](https://secure.travis-ci.org/aralejs/autocomplete.png)](https://travis-ci.org/aralejs/autocomplete)
+[![Coverage Status](https://coveralls.io/repos/aralejs/autocomplete/badge.png?branch=master)](https://coveralls.io/r/aralejs/autocomplete)
 
 自动补全组件。
 

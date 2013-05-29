@@ -47,8 +47,8 @@ define(function(require, exports, module) {
             delay: 100,
             // 以下仅为组件使用
             selectedIndex: undefined,
-            inputValue: '', // 同步输入框的 value
-            data: []
+            inputValue: null, // 同步输入框的 value
+            data: null
         },
 
         events: {
@@ -80,10 +80,10 @@ define(function(require, exports, module) {
         },
 
         parseElement: function() {
-            this.model = {
+            this.set("model", {
                 classPrefix: this.get('classPrefix'),
                 items: []
-            };
+            });
             AutoComplete.superclass.parseElement.call(this);
         },
 
@@ -202,7 +202,10 @@ define(function(require, exports, module) {
             this._clear();
 
             // 渲染下拉
-            this.model.items = data;
+            var model = this.get("model");
+            model.items = data;
+            this.set("model", model);
+
             this.renderPartial('[data-role=items]');
 
             // 初始化下拉的状态

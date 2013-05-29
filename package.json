@@ -17,11 +17,11 @@
     "spm": {
         "alias": {
             "$":"$",
-            "handlebars": "gallery/handlebars/1.0.0/handlebars",
+            "handlebars": "gallery/handlebars/1.0.1/handlebars",
             "selection": "gallery/selection/0.9.0/selection",
-            "base": "arale/base/1.0.1/base",
-            "templatable": "arale/widget/1.0.3/templatable",
-            "overlay": "arale/overlay/1.0.1/overlay"
+            "base": "arale/base/1.1.0/base",
+            "templatable": "arale/templatable/0.9.0/templatable",
+            "overlay": "arale/overlay/1.1.0/overlay"
         },
         "devAlias": {
             "puerh": "popomore/puerh/0.1.0/puerh"
