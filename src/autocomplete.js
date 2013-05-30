@@ -7,7 +7,7 @@ define(function(require, exports, module) {
     var DataSource = require('./data-source');
     var Filter = require('./filter');
 
-    var template = require('./autocomplete.tpl');
+    var template = require('./autocomplete.handlebars');
 
     // keyCode
     var KEY = {
