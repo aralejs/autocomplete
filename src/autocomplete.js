@@ -202,9 +202,9 @@ define(function(require, exports, module) {
             this._clear();
 
             // 渲染下拉
-            var model = this.get("model");
-            model.items = data;
-            this.set("model", model);
+            this.set("model", {
+                items: data
+            });
 
             this.renderPartial('[data-role=items]');
 
