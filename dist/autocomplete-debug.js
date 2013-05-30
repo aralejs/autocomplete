@@ -1,11 +1,11 @@
-define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.1/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.1/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.tpl" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.handlebars" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Overlay = require("arale/overlay/1.1.0/overlay-debug");
     var Templatable = require("arale/templatable/0.9.0/templatable-debug");
-    var Handlebars = require("gallery/handlebars/1.0.1/handlebars-debug");
+    var Handlebars = require("gallery/handlebars/1.0.2/handlebars-debug");
     var DataSource = require("./data-source-debug");
     var Filter = require("./filter-debug");
-    var template = require("./autocomplete-debug.tpl");
+    var template = require("./autocomplete-debug.handlebars");
     // keyCode
     var KEY = {
         UP: 38,
@@ -178,9 +178,9 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             // 清除状态
             this._clear();
             // 渲染下拉
-            var model = this.get("model");
-            model.items = data;
-            this.set("model", model);
+            this.set("model", {
+                items: data
+            });
             this.renderPartial("[data-role=items]");
             // 初始化下拉的状态
             this.items = this.$("[data-role=items]").children();
@@ -446,7 +446,7 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
     }
 });
 
-define("arale/autocomplete/1.2.1/data-source-debug", [ "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "$-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.1/data-source-debug", [ "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "$-debug" ], function(require, exports, module) {
     var Base = require("arale/base/1.1.0/base-debug");
     var $ = require("$-debug");
     var DataSource = Base.extend({
@@ -643,4 +643,69 @@ define("arale/autocomplete/1.2.1/filter-debug", [ "$-debug" ], function(require,
     }
 });
 
-define("arale/autocomplete/1.2.1/autocomplete-debug.tpl", [], '<div class="{{classPrefix}}">\n    <ul class="{{classPrefix}}-ctn" data-role="items">\n        {{#each items}}\n            <li data-role="item" class="{{../classPrefix}}-item" data-value="{{matchKey}}">{{highlightItem ../classPrefix matchKey}}</li>\n        {{/each}}\n    </ul>\n</div>\n');
+define("arale/autocomplete/1.2.1/autocomplete-debug.handlebars", [ "gallery/handlebars/1.0.2/handlebars-debug" ], function(require, exports, module) {
+    var Handlebars = require("gallery/handlebars/1.0.2/handlebars-debug");
+    var template = Handlebars.template;
+    module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
+        this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
+        helpers = helpers || {};
+        for (var key in Handlebars.helpers) {
+            helpers[key] = helpers[key] || Handlebars.helpers[key];
+        }
+        data = data || {};
+        var buffer = "", stack1, functionType = "function", escapeExpression = this.escapeExpression, helperMissing = helpers.helperMissing, self = this;
+        function program1(depth0, data, depth1) {
+            var buffer = "", stack1, stack2, options;
+            buffer += '\n            <li data-role="item" class="' + escapeExpression((stack1 = depth1.classPrefix, 
+            typeof stack1 === functionType ? stack1.apply(depth0) : stack1)) + '-item" data-value="';
+            if (stack2 = helpers.matchKey) {
+                stack2 = stack2.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack2 = depth0.matchKey;
+                stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2;
+            }
+            buffer += escapeExpression(stack2) + '">';
+            options = {
+                hash: {},
+                data: data
+            };
+            buffer += escapeExpression((stack1 = helpers.highlightItem, stack1 ? stack1.call(depth0, depth1.classPrefix, depth0.matchKey, options) : helperMissing.call(depth0, "highlightItem", depth1.classPrefix, depth0.matchKey, options))) + "</li>\n        ";
+            return buffer;
+        }
+        buffer += '<div class="';
+        if (stack1 = helpers.classPrefix) {
+            stack1 = stack1.call(depth0, {
+                hash: {},
+                data: data
+            });
+        } else {
+            stack1 = depth0.classPrefix;
+            stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        }
+        buffer += escapeExpression(stack1) + '">\n    <ul class="';
+        if (stack1 = helpers.classPrefix) {
+            stack1 = stack1.call(depth0, {
+                hash: {},
+                data: data
+            });
+        } else {
+            stack1 = depth0.classPrefix;
+            stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        }
+        buffer += escapeExpression(stack1) + '-ctn" data-role="items">\n        ';
+        stack1 = helpers.each.call(depth0, depth0.items, {
+            hash: {},
+            inverse: self.noop,
+            fn: self.programWithDepth(1, program1, data, depth0),
+            data: data
+        });
+        if (stack1 || stack1 === 0) {
+            buffer += stack1;
+        }
+        buffer += "\n    </ul>\n</div>\n";
+        return buffer;
+    });
+});
