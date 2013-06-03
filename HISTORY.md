@@ -4,6 +4,8 @@
 
 ## 1.2.1
 
+`tag:changed` 模板 highLightItem 需要使用 `{{{}}}`，否则会被转义
+
 `tag:improved` 升级 handlebars 为 1.0.2 , 升级 base 为 1.1.0,
 升级 templateable 为 0.9.0, 升级 overlay 为 1.1.0
 
