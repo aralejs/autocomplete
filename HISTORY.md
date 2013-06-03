@@ -4,7 +4,7 @@
 
 ## 1.2.1
 
-`tag:improved` 升级 handlebars 为 1.0.1(注意, handlebars 版本需和 templatable 中的 handlebars 一致, 不然编译会冲突), 升级 base 为 1.1.0,
+`tag:improved` 升级 handlebars 为 1.0.2 , 升级 base 为 1.1.0,
 升级 templateable 为 0.9.0, 升级 overlay 为 1.1.0
 
 ## 1.2.0
