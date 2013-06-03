@@ -129,7 +129,6 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
     var $ = require("$-debug");
     var Overlay = require("arale/overlay/1.1.0/overlay-debug");
     var Templatable = require("arale/templatable/0.9.0/templatable-debug");
-    var Handlebars = require("gallery/handlebars/1.0.2/handlebars-debug");
     var DataSource = require("arale/autocomplete/1.2.1/data-source-debug");
     var Filter = require("arale/autocomplete/1.2.1/filter-debug");
     var template = require("arale/autocomplete/1.2.1/autocomplete-debug.handlebars");
@@ -567,7 +566,7 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             if (v.length > cursor) {
                 h += v.substring(cursor, v.length);
             }
-            return new Handlebars.SafeString(h);
+            return h;
         }
         return v;
     }
@@ -799,7 +798,11 @@ define("arale/autocomplete/1.2.1/autocomplete-debug.handlebars", [ "gallery/hand
                 hash: {},
                 data: data
             };
-            buffer += escapeExpression((stack1 = helpers.highlightItem, stack1 ? stack1.call(depth0, depth1.classPrefix, depth0.matchKey, options) : helperMissing.call(depth0, "highlightItem", depth1.classPrefix, depth0.matchKey, options))) + "</li>\n        ";
+            stack2 = (stack1 = helpers.highlightItem, stack1 ? stack1.call(depth0, depth1.classPrefix, depth0.matchKey, options) : helperMissing.call(depth0, "highlightItem", depth1.classPrefix, depth0.matchKey, options));
+            if (stack2 || stack2 === 0) {
+                buffer += stack2;
+            }
+            buffer += "</li>\n        ";
             return buffer;
         }
         buffer += '<div class="';

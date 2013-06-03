@@ -3,7 +3,6 @@ define(function(require, exports, module) {
     var $ = require('$');
     var Overlay = require('overlay');
     var Templatable = require('templatable');
-    var Handlebars = require('handlebars');
     var DataSource = require('./data-source');
     var Filter = require('./filter');
 
@@ -496,7 +495,7 @@ define(function(require, exports, module) {
             if (v.length > cursor) {
                 h += v.substring(cursor, v.length);
             }
-            return new Handlebars.SafeString(h);
+            return h;
         }
         return v;
     }
