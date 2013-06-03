@@ -770,8 +770,8 @@ define("arale/autocomplete/1.2.1/filter-debug", [ "$-debug" ], function(require,
     }
 });
 
-define("arale/autocomplete/1.2.1/autocomplete-debug.handlebars", [ "gallery/handlebars/1.0.2/handlebars-debug" ], function(require, exports, module) {
-    var Handlebars = require("gallery/handlebars/1.0.2/handlebars-debug");
+define("arale/autocomplete/1.2.1/autocomplete-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+    var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
     var template = Handlebars.template;
     module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
         this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
