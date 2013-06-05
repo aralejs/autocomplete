@@ -467,9 +467,9 @@ define(function(require, exports, module) {
         return result;
     }
 
-    function highlightItem(classPrefix, matchKey) {
+    function highlightItem(classPrefix, label) {
         var index = this.highlightIndex,
-            cursor = 0, v = matchKey || this.matchKey || '', h = '';
+            cursor = 0, v = label || this.label || '', h = '';
         if ($.isArray(index)) {
             for (var i = 0, l = index.length; i < l; i++) {
                 var j = index[i], start, length;

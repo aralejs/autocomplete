@@ -35,8 +35,8 @@ define(function(require) {
             ac.setInputValue('a');
 
             expect(ac.get('data')).to.eql([
-                {label: 'abc', value: 'abc', alias: []},
-                {label: 'abd', value: 'abd', alias: []}
+                {label: 'abc', value: 'abc', alias: [], highlightIndex: [[0, 1]]},
+                {label: 'abd', value: 'abd', alias: [], highlightIndex: [[0, 1]]}
             ]);
         });
 
@@ -150,8 +150,8 @@ define(function(require) {
 
                 ac.setInputValue('a');
                 expect(ac.get('data')).to.eql([
-                    {label: 'abc', value: 'abc', alias: []},
-                    {label: 'abd', value: 'abd', alias: []}
+                    {label: 'abc', value: 'abc', alias: [], highlightIndex: [[0, 1]]},
+                    {label: 'abd', value: 'abd', alias: [], highlightIndex: [[0, 1]]}
                 ]);
             });
 
@@ -169,8 +169,8 @@ define(function(require) {
 
                 ac.setInputValue('a');
                 expect(ac.get('data')).to.eql([
-                    {label: 'abc', value: 'abc', alias: []},
-                    {label: 'abd', value: 'abd', alias: []}
+                    {label: 'abc', value: 'abc', alias: [], highlightIndex: [[0, 1]]},
+                    {label: 'abd', value: 'abd', alias: [], highlightIndex: [[0, 1]]}
                 ]);
             });
 
@@ -189,8 +189,8 @@ define(function(require) {
 
                 ac.setInputValue('a');
                 expect(ac.get('data')).to.eql([
-                    {label: 'abc', value: 'abc', alias: []},
-                    {label: 'abd', value: 'abd', alias: []}
+                    {label: 'abc', value: 'abc', alias: [], highlightIndex: [[0, 1]]},
+                    {label: 'abd', value: 'abd', alias: [], highlightIndex: [[0, 1]]}
                 ]);
             });
         });
@@ -346,7 +346,7 @@ define(function(require) {
             }).render();
 
             ac.set('data', [
-                {matchKey: 'abcdefg', highlightIndex: [[0, 1]]}
+                {label: 'abcdefg', highlightIndex: [[0, 1]]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
@@ -356,7 +356,7 @@ define(function(require) {
             delete ac.oldInput;
 
             ac.set('data', [
-                {matchKey: 'abcdefg', highlightIndex: [[1, 2], [3, 4]]}
+                {label: 'abcdefg', highlightIndex: [[1, 2], [3, 4]]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
@@ -367,7 +367,7 @@ define(function(require) {
             delete ac.oldInput;
 
             ac.set('data', [
-                {matchKey: 'abcdefg', highlightIndex: [[0, 1], [3, 7], [8, 9]]}
+                {label: 'abcdefg', highlightIndex: [[0, 1], [3, 7], [8, 9]]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
@@ -378,7 +378,7 @@ define(function(require) {
             delete ac.oldInput;
 
             ac.set('data', [
-                {matchKey: 'abcdefg', highlightIndex: [1, 4]}
+                {label: 'abcdefg', highlightIndex: [1, 4]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
@@ -389,7 +389,7 @@ define(function(require) {
             delete ac.oldInput;
 
             ac.set('data', [
-                {matchKey: 'abcdefg', highlightIndex: [6, 8]}
+                {label: 'abcdefg', highlightIndex: [6, 8]}
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)

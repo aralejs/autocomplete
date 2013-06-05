@@ -29,10 +29,10 @@ define(function(require) {
             var data;
             beforeEach(function() {
                 data = [
-                    {label: 'aa', value: 'aa', alias: []},
-                    {label: 'ba', value: 'ba', alias: []},
-                    {label: 'ac', value: 'ac', alias: []},
-                    {label: 'bc1', value: 'bc1', alias: [], other: 'bc2'},
+                    {label: 'aa1', value: 'aa2', alias: []},
+                    {label: 'ba1', value: 'ba2', alias: []},
+                    {label: 'ac1', value: 'ac2', alias: []},
+                    {label: 'bc1', value: 'bc2', alias: [], other: 'bc2'},
                     {label: 'ad1', value: 'ad2', alias: []},
                     {label: 'ae1', value: 'ae2', alias:['be']}
                 ];
@@ -44,8 +44,8 @@ define(function(require) {
             it('start width a', function() {
                 var result = Filter.startsWith(data, 'a');
                 expect(result).to.eql([
-                    {label: 'aa', value: 'aa', alias: []},
-                    {label: 'ac', value: 'ac', alias: []},
+                    {label: 'aa1', value: 'aa2', alias: []},
+                    {label: 'ac1', value: 'ac2', alias: []},
                     {label: 'ad1', value: 'ad2', alias: []},
                     {label: 'ae1', value: 'ae2', alias:['be']}
                 ]);
@@ -54,8 +54,8 @@ define(function(require) {
             it('start width b', function() {
                 var result = Filter.startsWith(data, 'b');
                 expect(result).to.eql([
-                    {label: 'ba', value: 'ba', alias: []},
-                    {label: 'bc1', value: 'bc1', alias: [], other: 'bc2'},
+                    {label: 'ba1', value: 'ba2', alias: []},
+                    {label: 'bc1', value: 'bc2', alias: [], other: 'bc2'},
                     {label: 'ae1', value: 'ae2', alias:['be']}
                 ]);
             });
@@ -74,15 +74,15 @@ define(function(require) {
         describe('stringMatch', function() {
             it('match a', function() {
                 var data = [
-                   {label: 'abc', value: 'abc', alias: []},
-                   {label: 'bcd', value: 'bcd', alias: []},
-                   {label: 'dce', value: 'dce', alias: ['bcd']}
+                   {label: 'abc1', value: 'abc', alias: []},
+                   {label: 'bcd1', value: 'bcd', alias: []},
+                   {label: 'dce1', value: 'dce', alias: ['bcd']}
                 ];
                 var result = Filter.stringMatch(data, 'bc');
                 expect(result).to.eql([
-                   {label: 'abc', value: 'abc', alias: []},
-                   {label: 'bcd', value: 'bcd', alias: []},
-                   {label: 'dce', value: 'dce', alias: ['bcd']}
+                   {label: 'abc1', value: 'abc', alias: []},
+                   {label: 'bcd1', value: 'bcd', alias: []},
+                   {label: 'dce1', value: 'dce', alias: ['bcd']}
                 ]);
             });
         });

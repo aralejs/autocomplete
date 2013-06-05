@@ -8,12 +8,12 @@ define(function(require) {
   describe('Issue', function() {
     it('#56 start with (', function() {
       var data = [
-        {label: 'about', value: 'about', alias: []},
-        {label: '(abc', value: '(abc', alias: []}
+        {label: 'about1', value: 'about', alias: []},
+        {label: '(abc1', value: '(abc', alias: []}
       ];
       var result = Filter.startsWith(data, '(a');
       expect(result).to.eql([
-        {label: '(abc', value: '(abc', alias: []}
+        {label: '(abc1', value: '(abc', alias: []}
       ]);
     });
 
