@@ -35,8 +35,8 @@ define(function(require) {
             ac.setInputValue('a');
 
             expect(ac.get('data')).to.eql([
-                {matchKey: 'abc', highlightIndex: [[0, 1]]},
-                {matchKey: 'abd', highlightIndex: [[0, 1]]}
+                {label: 'abc', value: 'abc', alias: []},
+                {label: 'abd', value: 'abd', alias: []}
             ]);
         });
 
@@ -150,8 +150,8 @@ define(function(require) {
 
                 ac.setInputValue('a');
                 expect(ac.get('data')).to.eql([
-                    {matchKey: 'abc', highlightIndex: [[0, 1]]},
-                    {matchKey: 'abd', highlightIndex: [[0, 1]]}
+                    {label: 'abc', value: 'abc', alias: []},
+                    {label: 'abd', value: 'abd', alias: []}
                 ]);
             });
 
@@ -169,8 +169,8 @@ define(function(require) {
 
                 ac.setInputValue('a');
                 expect(ac.get('data')).to.eql([
-                    {matchKey: 'abc', highlightIndex: [[0, 1]]},
-                    {matchKey: 'abd', highlightIndex: [[0, 1]]}
+                    {label: 'abc', value: 'abc', alias: []},
+                    {label: 'abd', value: 'abd', alias: []}
                 ]);
             });
 
@@ -189,8 +189,8 @@ define(function(require) {
 
                 ac.setInputValue('a');
                 expect(ac.get('data')).to.eql([
-                    {matchKey: 'abc', highlightIndex: [[0, 1]]},
-                    {matchKey: 'abd', highlightIndex: [[0, 1]]}
+                    {label: 'abc', value: 'abc', alias: []},
+                    {label: 'abd', value: 'abd', alias: []}
                 ]);
             });
         });
@@ -224,7 +224,7 @@ define(function(require) {
             var input = $('#test');
             ac = new AutoComplete({
                 trigger: '#test',
-                template: '<div><p data-role="other">a</p><ul data-role="items">{{#each items}}<li data-role="item">{{matchKey}}</li>{{/each}}</ul></div>',
+                template: '<div><p data-role="other">a</p><ul data-role="items">{{#each items}}<li data-role="item">{{label}}</li>{{/each}}</ul></div>',
                 dataSource: ['abc']
             }).render();
             ac.setInputValue('a');
