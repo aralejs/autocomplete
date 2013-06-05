@@ -241,14 +241,7 @@ define(function(require) {
                     trigger: '#test',
                     dataSource: []
                 });
-
-                expect(ac.get('filter')).to.eql({
-                    name: 'startsWith',
-                    func: Filter['startsWith'],
-                    options: {
-                        key: 'value'
-                    }
-                });
+                expect(ac.get('filter')).to.eql(Filter['startsWith']);
             });
             it('should be "default" when ajax by default', function() {
                 var input = $('#test');
@@ -256,11 +249,7 @@ define(function(require) {
                     trigger: '#test',
                     dataSource: './data.json'
                 });
-
-                expect(ac.get('filter')).to.eql({
-                    name: 'default',
-                    func: Filter['default']
-                });
+                expect(ac.get('filter')).to.eql(Filter['default']);
             });
             it('should be "default" when "", null, false', function() {
                 var input = $('#test');
@@ -270,10 +259,7 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'default',
-                    func: Filter['default']
-                });
+                expect(ac.get('filter')).to.eql(Filter['default']);
             });
             it('should support string', function() {
                 var input = $('#test');
@@ -283,10 +269,7 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'test',
-                    func: Filter.test
-                });
+                expect(ac.get('filter')).to.eql(Filter.test);
             });
 
             it('should support string but not exist', function() {
@@ -297,10 +280,7 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'default',
-                    func: Filter['default']
-                });
+                expect(ac.get('filter')).to.eql(Filter['default']);
             });
             it('should support function', function() {
                 var input = $('#test');
@@ -311,45 +291,17 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    func: func
-                });
-            });
-            it('should support object', function() {
-                var input = $('#test');
-                ac = new AutoComplete({
-                    trigger: '#test',
-                    filter: {
-                        name: 'startsWith',
-                        options: {
-                            key: 'title'
-                        }
-                    },
-                    dataSource: []
-                });
-
-                expect(ac.get('filter')).to.eql({
-                    name: 'startsWith',
-                    options: {
-                        key: 'title'
-                    },
-                    func: Filter.startsWith
-                });
+                expect(ac.get('filter')).to.eql(func);
             });
             it('should support object but not exist', function() {
                 var input = $('#test');
                 ac = new AutoComplete({
                     trigger: '#test',
-                    filter: {
-                        name: 'notExist'
-                    },
+                    filter: 'notExist',
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'default',
-                    func: Filter['default']
-                });
+                expect(ac.get('filter')).to.eql(Filter['default']);
             });
             it('should be called with 3 param', function() {
                 var input = $('#test');
@@ -357,17 +309,13 @@ define(function(require) {
                 Filter.filter = spy;
                 ac = new AutoComplete({
                     trigger: '#test',
-                    filter: {
-                        name: 'filter',
-                        options: {
-                            key: 'value'
-                        }
-                    },
+                    filter: 'filter',
                     dataSource: ['abc']
                 }).render();
 
                 ac.setInputValue('a');
-                expect(spy).to.be.called.withArgs(['abc'], 'a', {key: 'value'});
+                var data = [{label: 'abc', value: 'abc', alias: []}];
+                expect(spy).to.be.called.withArgs(data, 'a');
             });
         });
 

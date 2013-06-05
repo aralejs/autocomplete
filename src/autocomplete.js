@@ -39,7 +39,7 @@ define(function(require, exports, module) {
             submitOnEnter: true, // 回车是否会提交表单
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             locator: 'data',
-            filter: undefined, // 输出过滤
+            filter: null, // 输出过滤
             inputFilter: function(v) {return v;}, // 输入过滤
             disabled: false,
             selectFirst: false,
@@ -190,7 +190,7 @@ define(function(require, exports, module) {
             data = locateResult(locator, data);
 
             // 进行过滤
-            data = filter.func.call(this, normalize(data), this.queryValue);
+            data = filter.call(this, normalize(data), this.queryValue);
 
             this.set('data', data);
         },
@@ -238,62 +238,34 @@ define(function(require, exports, module) {
             this.lastIndex = index;
         },
 
+        // 初始化 filter
+        // 支持的格式
+        //   1. null: 使用默认的 startWith
+        //   2. string: 从 Filter 中找
+        //   3. function: 自定义
         _initFilter: function() {
             var filter = this.get('filter');
 
-            // 设置 filter 的默认值
-            if (filter === undefined) {
-                // 异步请求的时候一般不需要过滤器
+            // 字符串
+            if (isString(filter)) {
+                // 从组件内置的 FILTER 获取
+                if (Filter[filter]) {
+                    filter = Filter[filter];
+                } else {
+                    filter = Filter['default'];
+                }
+            }
+
+            // 非函数为默认值
+            else if (!$.isFunction(filter)) {
+                // 异步请求的时候不需要过滤器
                 if (this.dataSource.get('type') === 'url') {
-                    filter = null;
+                    filter = Filter['default'];
                 } else {
-                    filter = {
-                        name: 'startsWith',
-                        func: Filter['startsWith'],
-                        options: {
-                            key: 'value'
-                        }
-                    };
-                }
-            } else {
-                // object 的情况
-                // {
-                //   name: '',
-                //   options: {}
-                // }
-                if ($.isPlainObject(filter)) {
-                    if (Filter[filter.name]) {
-                        filter = {
-                            name: filter.name,
-                            func: Filter[filter.name],
-                            options: filter.options
-                        };
-                    } else {
-                        filter = null;
-                    }
-                } else if ($.isFunction(filter)) {
-                    filter = {
-                        func: filter
-                    };
-                } else {
-                    // 从组件内置的 FILTER 获取
-                    if (Filter[filter]) {
-                        filter = {
-                            name: filter,
-                            func: Filter[filter]
-                        };
-                    } else {
-                        filter = null;
-                    }
+                    filter = Filter['startsWith'];
                 }
             }
-            // filter 为 null，设置为 default
-            if (!filter) {
-                filter = {
-                    name: 'default',
-                    func: Filter['default']
-                };
-            }
+
             this.set('filter', filter);
         },
 
