@@ -18,6 +18,25 @@ define(function(require) {
             data = null;
         });
 
+        it('normalize', function() {
+            var data = [
+                'aa',
+                {title: 'ab'},
+                {value: 'ac'},
+                {label: 'ad1', other: 'ad2'},
+                {label: 'ae1', value: 'ae2'},
+                {label: 'af1', value: 'af2', alias:['af3']}
+            ];
+            var result = Filter['default'](data);
+            expect(result).to.eql([
+                {label: 'aa', value: 'aa', alias: []},
+                {label: 'ac', value: 'ac', alias: []},
+                {label: 'ad1', value: 'ad1', alias: [], other: 'ad2'},
+                {label: 'ae1', value: 'ae2', alias: []},
+                {label: 'af1', value: 'af2', alias:['af3']}
+            ]);
+        });
+
         describe('default', function() {
             it('return all', function() {
                 var result = Filter['default'](data);
@@ -29,7 +48,7 @@ define(function(require) {
                     {matchKey: 'buffer'}
                 ]);
             });
-            
+
             it('return all when set option key', function() {
                 var result = Filter['default'](data, 'a', {key: 'title'});
                 expect(result).to.eql([

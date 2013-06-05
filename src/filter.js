@@ -6,12 +6,10 @@ define(function(require, exports, module) {
         'default': function(data, query, options) {
             var result = [];
             $.each(data, function(index, item) {
-                var o = {}, matchKey = getMatchKey(item, options);
-                if ($.isPlainObject(item)) {
-                    o = $.extend({}, item);
+                item = normalize(item);
+                if (item) {
+                    result.push(item);
                 }
-                o.matchKey = matchKey;
-                result.push(o);
             });
             return result;
         },
@@ -73,6 +71,28 @@ define(function(require, exports, module) {
     };
 
     module.exports = Filter;
+
+    // {
+    //    label: '', 显示的字段
+    //    value: '', 匹配的字段
+    //    alias: []  其他匹配的字段
+    // }
+    function normalize(obj) {
+        if (typeof obj === 'string') {
+            return {
+                label: obj,
+                value: obj,
+                alias: []
+            };
+        } else if (Object.prototype.toString.call(obj) === '[object Object]') {
+            if (!obj.value && !obj.label) return null;
+            obj.value || (obj.value = obj.label);
+            obj.label || (obj.label = obj.value);
+            obj.alias || (obj.alias = []);
+            return obj;
+        }
+        return null;
+    }
 
     function getMatchKey(item, options) {
         if ($.isPlainObject(item)) {
