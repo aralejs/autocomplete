@@ -45,7 +45,7 @@ define(function(require, exports, module) {
             selectFirst: false,
             delay: 100,
             // 以下仅为组件使用
-            selectedIndex: undefined,
+            selectedIndex: null,
             inputValue: null, // 同步输入框的 value
             data: null
         },
@@ -87,7 +87,7 @@ define(function(require, exports, module) {
         },
 
         setup: function() {
-            var trigger = this.get('trigger'), that = this;
+            var trigger = this.get('trigger');
 
             AutoComplete.superclass.setup.call(this);
 
@@ -101,16 +101,16 @@ define(function(require, exports, module) {
             this._tweakAlignDefaultValue();
 
             trigger.attr('autocomplete', 'off');
-            this.delegateEvents(trigger, 'blur.autocomplete', $.proxy(this._blurEvent, this));
-            this.delegateEvents(trigger, 'keydown.autocomplete', $.proxy(this._keydownEvent, this));
+            this.delegateEvents(trigger, 'blur.autocomplete', this._blurEvent);
+            this.delegateEvents(trigger, 'keydown.autocomplete', this._keydownEvent);
             this.delegateEvents(trigger, 'keyup.autocomplete', function() {
-                    clearTimeout(that._timeout);
-                    that._timeout = setTimeout(function() {
-                        that._timeout = null;
-                        that._keyupEvent.call(that);
-                    }, that.get('delay'));
-                });
-
+                clearTimeout(this._timeout);
+                var that = this;
+                this._timeout = setTimeout(function() {
+                    that._timeout = null;
+                    that._keyupEvent.call(that);
+                }, this.get('delay'));
+            });
         },
 
         destroy: function() {
@@ -425,8 +425,6 @@ define(function(require, exports, module) {
             align.baseElement = this.get('trigger');
             this.set('align', align);
         }
-
-
     });
 
     module.exports = AutoComplete;
