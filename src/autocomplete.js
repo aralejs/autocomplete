@@ -467,7 +467,7 @@ define(function(require, exports, module) {
         return result;
     }
 
-    function highlightItem(classPrefix, label) {
+    function highlightItem(label, classPrefix) {
         var index = this.highlightIndex,
             cursor = 0, v = label || this.label || '', h = '';
         if ($.isArray(index)) {
@@ -485,7 +485,8 @@ define(function(require, exports, module) {
                     h += v.substring(cursor, start);
                 }
                 if (start < v.length) {
-                    h += '<span class="' + classPrefix + '-item-hl">' +
+                    var className = classPrefix ? ('class="' + classPrefix + '-item-hl"') : '';
+                    h += '<span ' + className + '>' +
                         v.substr(start, length) +
                         '</span>';
                 }
