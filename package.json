@@ -5,9 +5,10 @@
     "description": "自动补全组件",
     "keywords": ["widget"],
     "homepage": "http://aralejs.org/autocomplete/",
-    "author": "popomore <sakura9515@gmail.com>",
+    "author": "贯高 <sakura9515@gmail.com>",
     "maintainers": [
-        "贯高 <guangao@alipay.com>"
+        "贯高 <sakura9515@gmail.com>",
+        "乔花 <shengyan1985@gmail.com>"
     ],
     "repository": {
         "type": "git",
