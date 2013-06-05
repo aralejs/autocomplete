@@ -6,6 +6,9 @@
     "keywords": ["widget"],
     "homepage": "http://aralejs.org/autocomplete/",
     "author": "popomore <sakura9515@gmail.com>",
+    "maintainers": [
+        "guangao <guangao@alipay.com>"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/aralejs/autocomplete.git"
