@@ -4,69 +4,59 @@ define(function(require) {
     var Filter = require('filter');
 
     describe('Filter', function() {
-        var data;
-        beforeEach(function() {
-            data = [
-                'about',
-                {value: 'abuse abbess'},
-                {title: 'absolute abbey'},
-                'but',
-                'buffer'
-            ];
-        });
-        afterEach(function() {
-            data = null;
-        });
-
-        it('normalize', function() {
-            var data = [
-                'aa',
-                {title: 'ab'},
-                {value: 'ac'},
-                {label: 'ad1', other: 'ad2'},
-                {label: 'ae1', value: 'ae2'},
-                {label: 'af1', value: 'af2', alias:['af3']}
-            ];
+        xit('normalize', function() {
+            //data = [
+            //    'aa',
+            //    'ba',
+            //    {title: 'ab'},
+            //    {value: 'ac'},
+            //    {label: 'bc1', other: 'bc2'},
+            //    {label: 'ad1', value: 'ad2'},
+            //    {label: 'ae1', value: 'ae2', alias:['be']}
+            //];
             var result = Filter['default'](data);
             expect(result).to.eql([
                 {label: 'aa', value: 'aa', alias: []},
+                {label: 'ba', value: 'ba', alias: []},
                 {label: 'ac', value: 'ac', alias: []},
-                {label: 'ad1', value: 'ad1', alias: [], other: 'ad2'},
-                {label: 'ae1', value: 'ae2', alias: []},
-                {label: 'af1', value: 'af2', alias:['af3']}
+                {label: 'bc1', value: 'bc1', alias: [], other: 'bc2'},
+                {label: 'ad1', value: 'ad2', alias: []},
+                {label: 'ae1', value: 'ae2', alias:['be']}
             ]);
         });
 
-        describe('default', function() {
-            it('return all', function() {
-                var result = Filter['default'](data);
-                expect(result).to.eql([
-                    {matchKey: 'about'},
-                    {matchKey: 'abuse abbess', value: 'abuse abbess'},
-                    {matchKey: '', title: 'absolute abbey'},
-                    {matchKey: 'but'},
-                    {matchKey: 'buffer'}
-                ]);
-            });
-
-            it('return all when set option key', function() {
-                var result = Filter['default'](data, 'a', {key: 'title'});
-                expect(result).to.eql([
-                    {matchKey: 'about'},
-                    {matchKey: '', value: 'abuse abbess'},
-                    {matchKey: 'absolute abbey', title: 'absolute abbey'},
-                    {matchKey: 'but'},
-                    {matchKey: 'buffer'}
-                ]);
-            });
-        });
-
         describe('startsWith', function() {
+            var data;
+            beforeEach(function() {
+                data = [
+                    {label: 'aa', value: 'aa', alias: []},
+                    {label: 'ba', value: 'ba', alias: []},
+                    {label: 'ac', value: 'ac', alias: []},
+                    {label: 'bc1', value: 'bc1', alias: [], other: 'bc2'},
+                    {label: 'ad1', value: 'ad2', alias: []},
+                    {label: 'ae1', value: 'ae2', alias:['be']}
+                ];
+            });
+            afterEach(function() {
+                data = null;
+            });
+
             it('start width a', function() {
                 var result = Filter.startsWith(data, 'a');
                 expect(result).to.eql([
-                    {matchKey: 'about', highlightIndex: [[0, 1]]},
-                    {matchKey: 'abuse abbess', value: 'abuse abbess', highlightIndex: [[0, 1]]}
+                    {label: 'aa', value: 'aa', alias: []},
+                    {label: 'ac', value: 'ac', alias: []},
+                    {label: 'ad1', value: 'ad2', alias: []},
+                    {label: 'ae1', value: 'ae2', alias:['be']}
+                ]);
+            });
+
+            it('start width b', function() {
+                var result = Filter.startsWith(data, 'b');
+                expect(result).to.eql([
+                    {label: 'ba', value: 'ba', alias: []},
+                    {label: 'bc1', value: 'bc1', alias: [], other: 'bc2'},
+                    {label: 'ae1', value: 'ae2', alias:['be']}
                 ]);
             });
 
@@ -79,22 +69,20 @@ define(function(require) {
                 var result = Filter.startsWith(data, 'abc');
                 expect(result).to.eql([]);
             });
-
-            it('option key is title', function() {
-                var result = Filter.startsWith(data, 'a', {key: 'title'});
-                expect(result).to.eql([
-                    {matchKey: 'about', highlightIndex: [[0, 1]]},
-                    {matchKey: 'absolute abbey', title: 'absolute abbey', highlightIndex: [[0, 1]]}
-                ]);
-            });
         });
 
         describe('stringMatch', function() {
             it('match a', function() {
-                var result = Filter.stringMatch(data, 'ab', {key: 'title'});
+                var data = [
+                   {label: 'abc', value: 'abc', alias: []},
+                   {label: 'bcd', value: 'bcd', alias: []},
+                   {label: 'dce', value: 'dce', alias: ['bcd']}
+                ];
+                var result = Filter.stringMatch(data, 'bc');
                 expect(result).to.eql([
-                    {matchKey: 'about', highlightIndex: [[0, 2]]},
-                    {matchKey: 'absolute abbey', title: 'absolute abbey', highlightIndex: [[0, 2], [9, 11]]}
+                   {label: 'abc', value: 'abc', alias: []},
+                   {label: 'bcd', value: 'bcd', alias: []},
+                   {label: 'dce', value: 'dce', alias: ['bcd']}
                 ]);
             });
         });

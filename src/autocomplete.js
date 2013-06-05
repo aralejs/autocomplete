@@ -190,7 +190,7 @@ define(function(require, exports, module) {
             data = locateResult(locator, data);
 
             // 进行过滤
-            data = filter.func.call(this, data, this.queryValue, filter.options);
+            data = filter.func.call(this, normalize(data), this.queryValue);
 
             this.set('data', data);
         },
@@ -433,6 +433,10 @@ define(function(require, exports, module) {
         return Object.prototype.toString.call(str) === '[object String]';
     }
 
+    function isObject(obj) {
+        return Object.prototype.toString.call(obj) === '[object Object]';
+    }
+
     // 通过 locator 找到 data 中的某个属性的值
     // 1. locator 支持 function，函数返回值为结果
     // 2. locator 支持 string，而且支持点操作符寻址
@@ -461,6 +465,34 @@ define(function(require, exports, module) {
             return p;
         }
         return data;
+    }
+
+
+    // 标准格式，不匹配则忽略
+    //
+    //   {
+    //     label: '', 显示的字段
+    //     value: '', 匹配的字段
+    //     alias: []  其他匹配的字段
+    //   }
+    function normalize(data) {
+        var result = [];
+        $.each(data, function(index, item) {
+            if (isString(item)) {
+                result.push({
+                    label: item,
+                    value: item,
+                    alias: []
+                });
+            } else if (isObject(item)) {
+                if (!item.value && !item.label) return;
+                item.value || (item.value = item.label);
+                item.label || (item.label = item.value);
+                item.alias || (item.alias = []);
+                result.push(item);
+            }
+        });
+        return result;
     }
 
     function highlightItem(classPrefix, matchKey) {
