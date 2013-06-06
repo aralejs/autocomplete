@@ -475,6 +475,32 @@ define(function(require) {
             ac.setInputValue('a');
             expect(ac.get('visible')).to.be.ok();
         });
+
+        it('normalize', function() {
+            ac = new AutoComplete({
+                trigger: '#test',
+                filter: 'default',
+                dataSource: [
+                    'aa',
+                    'ba',
+                    {title: 'ab'},
+                    {value: 'ac'},
+                    {label: 'bc', other: 'bc'},
+                    {label: 'ad', value: 'ad'},
+                    {label: 'ae', value: 'ae', alias:['be']}
+                ]
+            }).render();
+
+            ac.setInputValue('a');
+            expect(ac.get('data')).to.eql([
+                {label: 'aa', value: 'aa', alias: []},
+                {label: 'ba', value: 'ba', alias: []},
+                {label: 'ac', value: 'ac', alias: []},
+                {label: 'bc', value: 'bc', alias: [], other: 'bc'},
+                {label: 'ad', value: 'ad', alias: []},
+                {label: 'ae', value: 'ae', alias:['be']}
+            ]);
+        });
     });
 
 });

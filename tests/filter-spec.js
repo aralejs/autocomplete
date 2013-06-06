@@ -4,27 +4,6 @@ define(function(require) {
     var Filter = require('filter');
 
     describe('Filter', function() {
-        xit('normalize', function() {
-            //data = [
-            //    'aa',
-            //    'ba',
-            //    {title: 'ab'},
-            //    {value: 'ac'},
-            //    {label: 'bc1', other: 'bc2'},
-            //    {label: 'ad1', value: 'ad2'},
-            //    {label: 'ae1', value: 'ae2', alias:['be']}
-            //];
-            var result = Filter['default'](data);
-            expect(result).to.eql([
-                {label: 'aa', value: 'aa', alias: []},
-                {label: 'ba', value: 'ba', alias: []},
-                {label: 'ac', value: 'ac', alias: []},
-                {label: 'bc1', value: 'bc1', alias: [], other: 'bc2'},
-                {label: 'ad1', value: 'ad2', alias: []},
-                {label: 'ae1', value: 'ae2', alias:['be']}
-            ]);
-        });
-
         describe('startsWith', function() {
             var data;
             beforeEach(function() {
