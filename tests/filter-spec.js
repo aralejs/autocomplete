@@ -85,6 +85,20 @@ define(function(require) {
                    {label: 'dce1', value: 'dce', alias: ['bcd']}
                 ]);
             });
+
+            it('highlight', function() {
+                var data = [
+                   {label: 'abc', value: 'abc', alias: []},
+                   {label: 'bcd', value: 'bcd', alias: []},
+                   {label: 'dce', value: 'dce', alias: ['bcd']}
+                ];
+                var result = Filter.stringMatch(data, 'bc');
+                expect(result).to.eql([
+                   {label: 'abc', value: 'abc', alias: [], highlightIndex: [[1, 3]]},
+                   {label: 'bcd', value: 'bcd', alias: [], highlightIndex: [[0, 2]]},
+                   {label: 'dce', value: 'dce', alias: ['bcd']}
+                ]);
+            });
         });
     });
 
