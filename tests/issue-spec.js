@@ -2,7 +2,6 @@ define(function(require) {
 
   var expect = require('puerh');
   var $ = require('$');
-  var Filter = require('filter');
   var AutoComplete = require('autocomplete');
 
   describe('Issue', function() {
@@ -15,7 +14,7 @@ define(function(require) {
         'buffer',
         '(abc'
       ];
-      var result = Filter.startsWith(data, '(a');
+      var result = AutoComplete._filter.startsWith(data, '(a');
       expect(result).to.eql([
         {matchKey: '(abc', highlightIndex: [[0, 2]]}
       ]);

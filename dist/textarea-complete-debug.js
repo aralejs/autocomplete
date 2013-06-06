@@ -1,4 +1,4 @@
-define("arale/autocomplete/1.2.1/textarea-complete-debug", [ "$-debug", "gallery/selection/0.9.0/selection-debug", "./autocomplete-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.handlebars" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.1/textarea-complete-debug", [ "$-debug", "gallery/selection/0.9.0/selection-debug", "./autocomplete-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.handlebars" ], function(require, exports, module) {
     var $ = require("$-debug");
     var selection = require("gallery/selection/0.9.0/selection-debug");
     var AutoComplete = require("./autocomplete-debug");
@@ -125,7 +125,7 @@ define("arale/autocomplete/1.2.1/textarea-complete-debug", [ "$-debug", "gallery
     module.exports = TextareaComplete;
 });
 
-define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "arale/autocomplete/1.2.1/data-source-debug", "arale/autocomplete/1.2.1/filter-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "arale/autocomplete/1.2.1/data-source-debug", "arale/autocomplete/1.2.1/filter-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Overlay = require("arale/overlay/1.1.0/overlay-debug");
     var Templatable = require("arale/templatable/0.9.0/templatable-debug");
@@ -507,6 +507,8 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             this.set("align", align);
         }
     });
+    // 以便写测试用例
+    AutoComplete._filter = Filter;
     module.exports = AutoComplete;
     function isString(str) {
         return Object.prototype.toString.call(str) === "[object String]";

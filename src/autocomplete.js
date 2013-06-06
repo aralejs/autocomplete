@@ -429,7 +429,11 @@ define(function(require, exports, module) {
 
     });
 
+    // 以便写测试用例
+    AutoComplete._filter = Filter;
+
     module.exports = AutoComplete;
+
 
     function isString(str) {
         return Object.prototype.toString.call(str) === '[object String]';

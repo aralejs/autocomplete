@@ -2,7 +2,7 @@ define(function(require) {
 
     var sinon = require('sinon');
     var expect = require('puerh');
-    var DataSource = require('data-source');
+    var DataSource = require('../src/data-source');
     var $ = require('$');
 
     describe('DataSource', function() {

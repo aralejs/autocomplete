@@ -2,11 +2,10 @@ define(function(require) {
 
     var sinon = require('sinon');
     var expect = require('puerh');
-    var Filter = require('filter');
     var AutoComplete = require('autocomplete');
     var $ = require('$');
 
-    Filter.test = function() {
+    AutoComplete._filter.test = function() {
         return [];
     };
 
@@ -242,13 +241,10 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'startsWith',
-                    func: Filter['startsWith'],
-                    options: {
-                        key: 'value'
-                    }
-                });
+                var filter = ac.get('filter');
+
+                expect(filter.name).to.eql('startsWith');
+                expect(filter.options.key).to.eql("value");
             });
             it('should be "default" when ajax by default', function() {
                 var input = $('#test');
@@ -257,10 +253,7 @@ define(function(require) {
                     dataSource: './data.json'
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'default',
-                    func: Filter['default']
-                });
+                expect(ac.get('filter').name).to.eql('default');
             });
             it('should be "default" when "", null, false', function() {
                 var input = $('#test');
@@ -270,10 +263,7 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'default',
-                    func: Filter['default']
-                });
+                expect(ac.get('filter').name).to.eql('default');
             });
             it('should support string', function() {
                 var input = $('#test');
@@ -283,10 +273,7 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'test',
-                    func: Filter.test
-                });
+                expect(ac.get('filter').name).to.eql('test');
             });
 
             it('should support string but not exist', function() {
@@ -297,10 +284,7 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'default',
-                    func: Filter['default']
-                });
+                expect(ac.get('filter').name).to.eql('default');
             });
             it('should support function', function() {
                 var input = $('#test');
@@ -328,13 +312,7 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'startsWith',
-                    options: {
-                        key: 'title'
-                    },
-                    func: Filter.startsWith
-                });
+                expect(ac.get('filter').name).to.eql('startsWith');
             });
             it('should support object but not exist', function() {
                 var input = $('#test');
@@ -346,15 +324,12 @@ define(function(require) {
                     dataSource: []
                 });
 
-                expect(ac.get('filter')).to.eql({
-                    name: 'default',
-                    func: Filter['default']
-                });
+                expect(ac.get('filter').name).to.eql('default');
             });
             it('should be called with 3 param', function() {
                 var input = $('#test');
                 var spy = sinon.spy();
-                Filter.filter = spy;
+                AutoComplete._filter.filter = spy;
                 ac = new AutoComplete({
                     trigger: '#test',
                     filter: {
