@@ -38,5 +38,22 @@ define(function(require) {
       input.remove();
       ac.destroy();
     });
+
+    it('#72 start with \\', function() {
+      var ac, input = $('<input id="test" type="text" value="" />')
+        .appendTo(document.body);
+
+      ac = new AutoComplete({
+          trigger: '#test',
+          dataSource: []
+      }).render();
+
+      expect(function() {
+        ac.setInputValue('\\');
+      }).not.to.throwError();
+
+      input.remove();
+      ac.destroy();
+    });
   });
 });
