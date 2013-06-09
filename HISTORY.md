@@ -9,6 +9,8 @@
 `tag:improved` 升级 handlebars 为 1.0.2 , 升级 base 为 1.1.0,
 升级 templateable 为 0.9.0, 升级 overlay 为 1.1.0
 
+`tag:fixed` #72 修复输入特殊字符报错的问题
+
 ## 1.2.0
 
 `tag:new` [#48](https://github.com/aralejs/autocomplete/issues/48) filter 增加 stringMatch
