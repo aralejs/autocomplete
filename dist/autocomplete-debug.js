@@ -638,7 +638,7 @@ define("arale/autocomplete/1.2.1/filter-debug", [ "$-debug" ], function(require,
         return r;
     }
     // 转义正则关键字
-    var keyword = /(\[|\[|\]|\^|\$|\||\(|\)|\{|\}|\+|\*|\?)/g;
+    var keyword = /(\[|\[|\]|\^|\$|\||\(|\)|\{|\}|\+|\*|\?|\\)/g;
     function escapeKeyword(str) {
         return (str || "").replace(keyword, "\\$1");
     }
