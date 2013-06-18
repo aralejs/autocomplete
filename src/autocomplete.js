@@ -298,7 +298,8 @@ define(function(require, exports, module) {
         },
 
         _blurEvent: function() {
-            if ($.browser.msie) return;
+            var isIE = (window.navigator.userAgent || "").toLowerCase().indexOf("msie") !== -1;
+            if (isIE) return;
 
             // https://github.com/aralejs/autocomplete/issues/26
             if (!this._secondMousedown) {
