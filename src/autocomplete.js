@@ -7,6 +7,8 @@ define(function(require, exports, module) {
     var Filter = require('./filter');
 
     var template = require('./autocomplete.handlebars');
+    
+    var isIE = (window.navigator.userAgent || "").toLowerCase().indexOf("msie") !== -1;
 
     // keyCode
     var KEY = {
@@ -298,7 +300,7 @@ define(function(require, exports, module) {
         },
 
         _blurEvent: function() {
-            if ($.browser.msie) return;
+            if (isIE) return;
 
             // https://github.com/aralejs/autocomplete/issues/26
             if (!this._secondMousedown) {
