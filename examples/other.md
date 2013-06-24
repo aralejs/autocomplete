@@ -2,13 +2,15 @@
 
 ---
 
+## 选中后新开窗口
+
 <form action="">
   <input id="acTrigger" type="text" value="" />
 </form>
 
 ````javascript
 seajs.use('../src/autocomplete.css');
-seajs.use(['autocomplete', './other.handlebars', '$'], function(AutoComplete, template, $) {
+seajs.use(['autocomplete', './other.handlebars'], function(AutoComplete, template) {
   ac = new AutoComplete({
     trigger: '#acTrigger',
     template: template,
@@ -18,6 +20,5 @@ seajs.use(['autocomplete', './other.handlebars', '$'], function(AutoComplete, te
       '信息 '
     ]
   }).render();
-
 });
 ````

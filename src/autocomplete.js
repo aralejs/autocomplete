@@ -7,7 +7,7 @@ define(function(require, exports, module) {
     var Filter = require('./filter');
 
     var template = require('./autocomplete.handlebars');
-    
+
     var isIE = (window.navigator.userAgent || "").toLowerCase().indexOf("msie") !== -1;
 
     // keyCode
@@ -39,7 +39,7 @@ define(function(require, exports, module) {
             },
             template: template,
             submitOnEnter: true, // 回车是否会提交表单
-            selectItem: true, 
+            selectItem: true, // 选中时是否调用 selectItem 方法
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             locator: 'data',
             filter: undefined, // 输出过滤
@@ -57,9 +57,10 @@ define(function(require, exports, module) {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
             // see _blurEvent
             'mousedown [data-role=item]': function(e) {
+                var i = this.items.index(e.currentTarget);
+                this.set('selectedIndex', i);
+
                 if (this.get('selectItem')) {
-                    var i = this.items.index(e.currentTarget);
-                    this.set('selectedIndex', i);
                     this.selectItem();
                     this._firstMousedown = true;
                 }
@@ -67,8 +68,11 @@ define(function(require, exports, module) {
             'mousedown': function() {
                 this._secondMousedown = true;
             },
-            'click': function() {
-                this.hide();
+            'click [data-role=item]': function() {
+                // 在非 selectItem 时隐藏浮层 
+                if (!this.get('selectItem')) {
+                    this.hide();
+                }
             },
             'mouseenter [data-role=item]': function(e) {
                 var className = this.get('classPrefix') + '-item-hover';
@@ -138,6 +142,8 @@ define(function(require, exports, module) {
         // --------------
 
         selectItem: function() {
+            this.hide();
+
             var item = this.currentItem,
                 index = this.get('selectedIndex'),
                 data = this.get('data')[index];
