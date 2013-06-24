@@ -34,6 +34,8 @@ define("arale/autocomplete/1.2.2/autocomplete-debug", [ "$-debug", "arale/overla
             template: template,
             submitOnEnter: true,
             // 回车是否会提交表单
+            selectItem: true,
+            // 选中时是否调用 selectItem 方法
             dataSource: [],
             //数据源，支持 Array, URL, Object, Function
             locator: "data",
@@ -58,11 +60,19 @@ define("arale/autocomplete/1.2.2/autocomplete-debug", [ "$-debug", "arale/overla
             "mousedown [data-role=item]": function(e) {
                 var i = this.items.index(e.currentTarget);
                 this.set("selectedIndex", i);
-                this.selectItem();
-                this._firstMousedown = true;
+                if (this.get("selectItem")) {
+                    this.selectItem();
+                    this._firstMousedown = true;
+                }
             },
             mousedown: function() {
                 this._secondMousedown = true;
+            },
+            "click [data-role=item]": function() {
+                // 在非 selectItem 时隐藏浮层 
+                if (!this.get("selectItem")) {
+                    this.hide();
+                }
             },
             "mouseenter [data-role=item]": function(e) {
                 var className = this.get("classPrefix") + "-item-hover";
@@ -126,7 +136,9 @@ define("arale/autocomplete/1.2.2/autocomplete-debug", [ "$-debug", "arale/overla
             if (item) {
                 var matchKey = item.attr("data-value");
                 this.get("trigger").val(matchKey);
-                this.set("inputValue", matchKey);
+                this.set("inputValue", matchKey, {
+                    silent: true
+                });
                 this.trigger("itemSelect", data);
                 this._clear();
             }
