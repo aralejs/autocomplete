@@ -4,6 +4,7 @@ define(function(require) {
     var expect = require('puerh');
     var AutoComplete = require('autocomplete');
     var $ = require('$');
+    var isIE = (window.navigator.userAgent || "").toLowerCase().indexOf("msie") !== -1;
 
     AutoComplete._filter.test = function() {
         return [];
@@ -195,7 +196,7 @@ define(function(require) {
         });
 
         it('should be hide when trigger blur #26', function() {
-            if ($.browser.msie) return;
+            if (isIE) return;
             var input = $('#test');
             ac = new AutoComplete({
                 trigger: '#test',
