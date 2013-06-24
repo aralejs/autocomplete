@@ -39,6 +39,7 @@ define(function(require, exports, module) {
             },
             template: template,
             submitOnEnter: true, // 回车是否会提交表单
+            selectItem: true, 
             dataSource: [], //数据源，支持 Array, URL, Object, Function
             locator: 'data',
             filter: undefined, // 输出过滤
@@ -56,13 +57,18 @@ define(function(require, exports, module) {
             // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
             // see _blurEvent
             'mousedown [data-role=item]': function(e) {
-                var i = this.items.index(e.currentTarget);
-                this.set('selectedIndex', i);
-                this.selectItem();
-                this._firstMousedown = true;
+                if (this.get('selectItem')) {
+                    var i = this.items.index(e.currentTarget);
+                    this.set('selectedIndex', i);
+                    this.selectItem();
+                    this._firstMousedown = true;
+                }
             },
             'mousedown': function() {
                 this._secondMousedown = true;
+            },
+            'click': function() {
+                this.hide();
             },
             'mouseenter [data-role=item]': function(e) {
                 var className = this.get('classPrefix') + '-item-hover';
@@ -132,8 +138,6 @@ define(function(require, exports, module) {
         // --------------
 
         selectItem: function() {
-            this.hide();
-
             var item = this.currentItem,
                 index = this.get('selectedIndex'),
                 data = this.get('data')[index];
@@ -141,7 +145,7 @@ define(function(require, exports, module) {
             if (item) {
                 var matchKey = item.attr('data-value');
                 this.get('trigger').val(matchKey);
-                this.set('inputValue', matchKey);
+                this.set('inputValue', matchKey, {silent: true});
                 this.trigger('itemSelect', data);
                 this._clear();
             }

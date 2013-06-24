@@ -1,0 +1,27 @@
+{{#if hot}}
+<div class="{{classPrefix}}">
+  <ul class="{{classPrefix}}-ctn" data-role="items">
+    <li data-role="item" class="{{classPrefix}}-item">
+      <a href="" target="_blank">实名认证</a>
+    </li>
+    <li data-role="item" class="{{classPrefix}}-item">
+      <a href="" target="_blank">实名认证</a>
+    </li>
+  </ul>
+</div>
+{{else}}
+<div class="{{classPrefix}}">
+  <ul class="{{classPrefix}}-ctn" data-role="items">
+    {{#if items}}
+      {{#each items}}
+        <li data-role="item" class="{{../classPrefix}}-item" data-value="{{matchKey}}">
+          <a href="http://www.baidu.com" target="_blank">{{{highlightItem ../classPrefix matchKey}}}</a>
+        </li>
+      {{/each}}
+    {{else}}
+        <li class="{{../classPrefix}}-item">无匹配的产品和服务</li>
+    {{/if}}
+  </ul>
+  <p><a href="" target="_blank">“信用卡”相关的帮助</a></p>
+</div>
+{{/if}}
