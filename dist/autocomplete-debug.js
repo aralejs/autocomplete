@@ -1,6 +1,6 @@
-define("arale/autocomplete/1.2.2/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.1/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.handlebars" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.2/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.1/overlay-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.1/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.handlebars" ], function(require, exports, module) {
     var $ = require("$-debug");
-    var Overlay = require("arale/overlay/1.1.0/overlay-debug");
+    var Overlay = require("arale/overlay/1.1.1/overlay-debug");
     var Templatable = require("arale/templatable/0.9.1/templatable-debug");
     var DataSource = require("./data-source-debug");
     var Filter = require("./filter-debug");
@@ -460,8 +460,8 @@ define("arale/autocomplete/1.2.2/autocomplete-debug", [ "$-debug", "arale/overla
     }
 });
 
-define("arale/autocomplete/1.2.2/data-source-debug", [ "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "$-debug" ], function(require, exports, module) {
-    var Base = require("arale/base/1.1.0/base-debug");
+define("arale/autocomplete/1.2.2/data-source-debug", [ "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "$-debug" ], function(require, exports, module) {
+    var Base = require("arale/base/1.1.1/base-debug");
     var $ = require("$-debug");
     var DataSource = Base.extend({
         attrs: {

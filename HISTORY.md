@@ -2,6 +2,10 @@
 
 ---
 
+## 1.2.2
+
+`tag:improved` 升级 base 到 1.1.1, templatable 到 0.9.1, overlay 到 1.1.1
+
 ## 1.2.1
 
 `tag:changed` 模板 highLightItem 需要使用 `{{{}}}`，否则会被转义
