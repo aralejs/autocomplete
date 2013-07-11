@@ -1,7 +1,7 @@
 define(function(require) {
 
     var sinon = require('sinon');
-    var expect = require('puerh');
+    var expect = require('expect');
     var AutoComplete = require('autocomplete');
     var $ = require('$');
     var isIE = (window.navigator.userAgent || "").toLowerCase().indexOf("msie") !== -1;
@@ -65,10 +65,10 @@ define(function(require) {
             var getData = sinon.spy(ac.dataSource, 'getData');
 
             ac.setInputValue('');
-            expect(getData).not.to.be.called();
+            expect(getData.called).not.to.be(true);
 
             ac.setInputValue('a');
-            expect(getData).to.be.called();
+            expect(getData.called).to.be(true);
             getData.restore();
         });
 
@@ -99,19 +99,17 @@ define(function(require) {
                 var spy = sinon.spy(ac, '_onRenderInputValue');
 
                 ac.setInputValue('a');
-                expect(spy).to.be.called.withArgs('a');
-                expect(spy).to.be.called.once();
+                expect(spy.withArgs('a').calledOnce).to.be(true);
 
                 ac._keyupEvent.call(ac);
-                expect(spy).to.be.called.once();
+                expect(spy.calledOnce).to.be(true);
 
                 ac.setInputValue('ab');
-                expect(spy).to.be.called.withArgs('ab');
-                expect(spy).to.be.called.twice();
+                expect(spy.withArgs('ab').calledOnce).to.be(true);
 
                 ac.setInputValue('a');
-                expect(spy).to.be.called.withArgs('a');
-                expect(spy).to.be.called.thrice();
+                expect(spy.withArgs('a').calledTwice).to.be(true);
+
                 spy.restore();
             });
 
@@ -128,11 +126,10 @@ define(function(require) {
                 var spy = sinon.spy(ac.dataSource, 'getData');
 
                 ac.setInputValue('a');
-                expect(spy).to.be.called.withArgs('filter-a');
-                expect(spy).to.be.called.once();
+                expect(spy.withArgs('filter-a').calledOnce).to.be(true);
 
                 ac.setInputValue('');
-                expect(spy).to.be.called.once();
+                expect(spy.calledOnce).to.be(true);
                 spy.restore();
             });
         });
@@ -343,7 +340,7 @@ define(function(require) {
                 }).render();
 
                 ac.setInputValue('a');
-                expect(spy).to.be.called.withArgs(['abc'], 'a', {key: 'value'});
+                expect(spy.withArgs(['abc'], 'a', {key: 'value'}).called).to.be(true);
             });
         });
 

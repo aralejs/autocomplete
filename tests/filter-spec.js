@@ -1,7 +1,7 @@
 define(function(require) {
 
-    var expect = require('puerh');
-    var Filter = require('../src/filter');
+    var expect = require('expect');
+    var Filter = require('filter');
 
     describe('Filter', function() {
         var data;

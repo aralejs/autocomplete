@@ -26,9 +26,6 @@
             "templatable": "arale/templatable/0.9.1/templatable",
             "overlay": "arale/overlay/1.1.1/overlay"
         },
-        "devAlias": {
-            "puerh": "popomore/puerh/0.1.0/puerh"
-        },
         "output": [
             "autocomplete.js",
             "textarea-complete.js"

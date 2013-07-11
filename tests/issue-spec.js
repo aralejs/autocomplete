@@ -1,6 +1,6 @@
 define(function(require) {
 
-  var expect = require('puerh');
+  var expect = require('expect');
   var $ = require('$');
   var AutoComplete = require('autocomplete');
 
@@ -33,6 +33,9 @@ define(function(require) {
       var item = ac.$('li').eq(1);
       item.mouseenter();
       expect(item.hasClass('ui-autocomplete-item-hover')).to.be.ok();
+      item.mouseleave();
+      expect(item.hasClass('ui-autocomplete-item-hover')).not.to.be.ok();
+
       expect(ac.get('selectedIndex')).to.be(-1);
 
       input.remove();
