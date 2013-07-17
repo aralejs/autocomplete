@@ -3,21 +3,13 @@ define(function(require, exports, module) {
   var $ = require('$');
   var Overlay = require('overlay');
   var Templatable = require('templatable');
+  var Handlebars = require('handlebars');
   var DataSource = require('./data-source');
   var Filter = require('./filter');
+  var Input = require('./input');
 
+  var IE678 = /\bMSIE [678]\.0\b/.test(navigator.userAgent);
   var template = require('./autocomplete.handlebars');
-
-  // keyCode
-  var KEY = {
-    UP: 38,
-    DOWN: 40,
-    LEFT: 37,
-    RIGHT: 39,
-    ENTER: 13,
-    ESC: 27,
-    BACKSPACE: 8
-  };
 
   var AutoComplete = Overlay.extend({
 
@@ -25,54 +17,47 @@ define(function(require, exports, module) {
 
     attrs: {
       // 触发元素
-      trigger: {
-        value: null, // required
-        getter: function(val) {
-          return $(val);
-        }
-      },
+      trigger: null,
       classPrefix: 'ui-autocomplete',
       align: {
         baseXY: [0, '100%']
       },
-      template: template,
       submitOnEnter: true, // 回车是否会提交表单
       dataSource: [], //数据源，支持 Array, URL, Object, Function
       locator: 'data',
-      filter: null, // 输出过滤
+      // 输出过滤
+      filter: null,
+      // 输入过滤
       inputFilter: function(v) {
         return v;
-      }, // 输入过滤
+      },
       disabled: false,
       selectFirst: false,
       delay: 100,
+      // 以下为模板相关
+      model: {
+        value: {
+          items: []
+        },
+        getter: function(val) {
+          val.classPrefix || (val.classPrefix = this.get('classPrefix'));
+          return val;
+        }
+      },
+      template: template,
+      footer: '',
+      header: '',
+      html: '{{label}}',
       // 以下仅为组件使用
       selectedIndex: null,
-      inputValue: null, // 同步输入框的 value
-      data: null
+      data: []
     },
 
     events: {
-      // mousedown 先于 blur 触发，选中后再触发 blur 隐藏浮层
-      // see _blurEvent
-      'mousedown [data-role=item]': function(e) {
-        var i = this.items.index(e.currentTarget);
-        this.set('selectedIndex', i);
-        this.selectItem();
-        this._firstMousedown = true;
-      },
-      'mousedown': function() {
-        this._secondMousedown = true;
-      },
-      'mouseenter [data-role=item]': function(e) {
-        var className = this.get('classPrefix') + '-item-hover';
-        if (this.currentItem) this.currentItem.removeClass(className);
-        $(e.currentTarget).addClass(className);
-      },
-      'mouseleave [data-role=item]': function(e) {
-        var className = this.get('classPrefix') + '-item-hover';
-        $(e.currentTarget).removeClass(className);
-      }
+      'mousedown': '_handleMouseDown',
+      'click [data-role=item]': '_handleSelection',
+      'mouseenter [data-role=item]': '_handleMouseMove',
+      'mouseleave [data-role=item]': '_handleMouseMove'
     },
 
     templateHelpers: {
@@ -81,109 +66,69 @@ define(function(require, exports, module) {
     },
 
     parseElement: function() {
-      this.set("model", {
-        classPrefix: this.get('classPrefix'),
-        items: []
-      });
+      var t = ['header', 'footer', 'html'];
+      for (var i in t) {
+        Handlebars.registerPartial(t[i], this.get(t[i]));
+      }
       AutoComplete.superclass.parseElement.call(this);
     },
 
     setup: function() {
-      var trigger = this.get('trigger');
-
       AutoComplete.superclass.setup.call(this);
 
-      // 初始化数据源
-      this.dataSource = new DataSource({
-        source: this.get('dataSource')
-      }).on('data', this._filterData, this);
-
-      this._initFilter(); // 初始化 filter
-      this._blurHide([trigger]);
+      this._isOpen = false;
+      this._initInput(); // 初始化输入框
+      this._initDataSource(); // 初始化数据源
+      this._initFilter(); // 初始化过滤器
+      this._bindHandle(); // 绑定事件
+      this._blurHide([$(this.get('trigger'))]);
       this._tweakAlignDefaultValue();
-
-      trigger.attr('autocomplete', 'off');
-      this.delegateEvents(trigger, 'blur.autocomplete', this._blurEvent);
-      this.delegateEvents(trigger, 'keydown.autocomplete', this._keydownEvent);
-      this.delegateEvents(trigger, 'keyup.autocomplete', function() {
-        clearTimeout(this._timeout);
-        var that = this;
-        this._timeout = setTimeout(function() {
-          that._timeout = null;
-          that._keyupEvent.call(that);
-        }, this.get('delay'));
-      });
     },
 
-    destroy: function() {
-      this._clear();
-      this.element.remove();
-      AutoComplete.superclass.destroy.call(this);
+    show: function() {
+      this._isOpen = true;
+      // 无数据则不显示
+      if (this._isEmpty()) return;
+      AutoComplete.superclass.show.call(this);
     },
 
     hide: function() {
       // 隐藏的时候取消请求或回调
       if (this._timeout) clearTimeout(this._timeout);
       this.dataSource.abort();
-      AutoComplete.superclass.hide.call(this);
+      this._hide();
     },
+
+    destroy: function() {
+      this._clear();
+      if (this.input) {
+        this.input.destroy();
+        this.input = null;
+      }
+      AutoComplete.superclass.destroy.call(this);
+    },
+
 
     // Public Methods
     // --------------
 
-    selectItem: function() {
-      this.hide();
-
-      var item = this.currentItem,
-        index = this.get('selectedIndex'),
-        data = this.get('data')[index];
-
-      if (item) {
-        var matchKey = item.attr('data-value');
-        this.get('trigger').val(matchKey);
-        this.set('inputValue', matchKey);
-        this.trigger('itemSelect', data);
-        this._clear();
+    selectItem: function(index) {
+      if (this.items && index &&
+        this.items.length > index && index >= -1) {
+        this.set('selectedIndex', index);
+        this._handleSelection();
       }
     },
 
     setInputValue: function(val) {
-      if (this.get('inputValue') !== val) {
-        // 进入处理流程
-        this._start = true;
-        this.set('inputValue', val);
-        // 避免光标移动到尾部 #44
-        var trigger = this.get('trigger');
-        if (trigger.val() !== val) {
-          trigger.val(val);
-        }
-      }
+      this.input.setValue(val);
     },
 
     // Private Methods
     // ---------------
 
-    // 1. 判断输入值，调用数据源
-    _onRenderInputValue: function(val) {
-      if (this._start && val) {
-        var oldQueryValue = this.queryValue;
-        this.queryValue = this.get('inputFilter').call(this, val);
-        // 如果 query 为空或者相等则不处理
-        if (this.queryValue && this.queryValue !== oldQueryValue) {
-          this.dataSource.abort();
-          this.dataSource.getData(this.queryValue);
-        }
-      } else {
-        this.queryValue = '';
-      }
-      if (val === '' || !this.queryValue) {
-        this.set('data', []);
-        this.hide();
-      }
-      delete this._start;
-    },
 
-    // 2. 数据源返回，过滤数据
+    // 数据源返回，过滤数据
     _filterData: function(data) {
       var filter = this.get('filter'),
         locator = this.get('locator');
@@ -192,185 +137,164 @@ define(function(require, exports, module) {
       data = locateResult(locator, data);
 
       // 进行过滤
-      data = filter.call(this, normalize(data), this.queryValue);
+      data = filter.call(this, normalize(data), this.input.get('query'));
 
       this.set('data', data);
     },
 
-    // 3. 通过数据渲染模板
+    // 通过数据渲染模板
     _onRenderData: function(data) {
-      // 清除状态
-      this._clear();
+      if (!data.length) return;
 
       // 渲染下拉
       this.set("model", {
-        items: data
+        items: data,
+        query: this.input.get('query')
       });
 
-      this.renderPartial('[data-role=items]');
+      this.renderPartial();
 
       // 初始化下拉的状态
       this.items = this.$('[data-role=items]').children();
-      this.currentItem = null;
 
       if (this.get('selectFirst')) {
         this.set('selectedIndex', 0);
       }
 
-      // data-role=items 无内容才隐藏
-      if ($.trim(this.$('[data-role=items]').text())) {
-        this.show();
-      } else {
-        this.hide();
-      }
+      // 选中后会修改 input 的值并触发下一次渲染，但第二次渲染的结果不应该显示出来。
+      // 
+      this._isOpen && this.show();
     },
 
     // 键盘控制上下移动
     _onRenderSelectedIndex: function(index) {
-      if (index === -1) return;
-      var className = this.get('classPrefix') + '-item-hover';
-      if (this.currentItem) {
-        this.currentItem.removeClass(className);
-      }
-      this.currentItem = this.items
-        .eq(index)
-        .addClass(className);
+      var hoverClass = this.get('classPrefix') + '-item-hover';
+      this.items && this.items.removeClass(hoverClass);
 
-      this.trigger('indexChange', index, this.lastIndex);
+      // -1 什么都不选
+      if (index === -1) return;
+
+      this.items.eq(index).addClass(hoverClass);
+      this.trigger('indexChanged', index, this.lastIndex);
       this.lastIndex = index;
     },
 
-    // 初始化 filter
-    // 支持的格式
-    //   1. null: 使用默认的 startWith
-    //   2. string: 从 Filter 中找
-    //   3. function: 自定义
+    // 初始化
+    // ------------
+
+    _initDataSource: function() {
+      this.dataSource = new DataSource({
+        source: this.get('dataSource')
+      });
+    },
+
+    _initInput: function() {
+      this.input = new Input({
+        element: this.get('trigger'),
+        delay: this.get('delay')
+      });
+    },
+
     _initFilter: function() {
       var filter = this.get('filter');
-
-      // 字符串
-      if (isString(filter)) {
-        // 从组件内置的 FILTER 获取
-        if (Filter[filter]) {
-          filter = Filter[filter];
-        } else {
-          filter = Filter['default'];
-        }
-      }
-      // 非函数为默认值
-      else if (!$.isFunction(filter)) {
-        // 异步请求的时候不需要过滤器
-        if (this.dataSource.get('type') === 'url') {
-          filter = Filter['default'];
-        } else {
-          filter = Filter['startsWith'];
-        }
-      }
-
+      filter = initFilter(filter, this.dataSource);
       this.set('filter', filter);
     },
 
-    _blurEvent: function() {
-      if ($.browser.msie) return;
+    // 事件绑定
+    // ------------
 
-      // https://github.com/aralejs/autocomplete/issues/26
-      if (!this._secondMousedown) {
-        this.hide();
-      } else if (this._firstMousedown) {
-        this.get('trigger').focus();
-        this.hide();
-      }
-      delete this._firstMousedown;
-      delete this._secondMousedown;
+    _bindHandle: function() {
+      this.dataSource
+        .on('data', this._filterData, this);
+
+      this.input
+        .on('blur', this.hide, this)
+        .on('focus', this._handleFocus, this)
+        .on('keyEnter', this._handleSelection, this)
+        .on('keyEsc', this.hide, this)
+        .on('keyUp keyDown', this.show, this)
+        .on('keyUp keyDown', this._handleStep, this)
+        .on('queryChanged', this._clear, this)
+        .on('queryChanged', this._handleQueryChange, this)
+        .on('queryChanged', this.show, this);
+
+      this.after('hide', function() {
+        this.set('selectedIndex', -1);
+      });
+
+      // 选中后隐藏浮层
+      this.on('itemSelected', function() {
+        this._hide();
+      });
     },
 
-    _keyupEvent: function() {
-      if (this.get('disabled')) return;
+    // 选中的处理器
+    // 1. 鼠标点击触发
+    // 2. 回车触发
+    // 3. selectItem 触发
+    _handleSelection: function(e) {
+      var isMouse = e ? e.type === 'click' : false;
+      var index = isMouse ? this.items.index(e.currentTarget) : this.get('selectedIndex');
+      var item = this.items.eq(index);
+      var data = this.get('data')[index];
 
-      if (this._keyupStart) {
-        delete this._keyupStart;
-        // 获取输入的值
-        var v = this.get('trigger').val();
-        this.setInputValue(v);
-      }
-    },
-
-    _keydownEvent: function(e) {
-      if (this.get('disabled')) return;
-
-      // 先清空状态
-      delete this._keyupStart;
-
-      switch (e.which) {
-        case KEY.ESC:
-          this.hide();
-          break;
-
-          // top arrow
-        case KEY.UP:
-          this._keyUp(e);
-          break;
-
-          // bottom arrow
-        case KEY.DOWN:
-          this._keyDown(e);
-          break;
-
-          // left arrow
-        case KEY.LEFT:
-          // right arrow
-        case KEY.RIGHT:
-          break;
-
-          // enter
-        case KEY.ENTER:
-          this._keyEnter(e);
-          break;
-
-          // default 继续执行 keyup
-        default:
-          this._keyupStart = true;
-      }
-    },
-
-    _keyUp: function(e) {
-      e.preventDefault();
-      if (this.get('data').length) {
-        if (!this.get('visible')) {
-          this.show();
-          return;
-        }
-        this._step(-1);
-      }
-    },
-
-    _keyDown: function(e) {
-      e.preventDefault();
-      if (this.get('data').length) {
-        if (!this.get('visible')) {
-          this.show();
-          return;
-        }
-        this._step(1);
-      }
-    },
-
-    _keyEnter: function(e) {
-      if (this.get('visible')) {
-        this.selectItem();
+      if (index >= 0 && item) {
+        this.input.setValue(data.label);
+        this.set('selectedIndex', index, {silent: true});
 
         // 是否阻止回车提交表单
-        if (!this.get('submitOnEnter')) {
-          e.preventDefault();
-        }
+        if (e && !isMouse && !this.get('submitOnEnter')) e.preventDefault();
+
+        this.trigger('itemSelected', data, item);
       }
+    },
+
+    _handleFocus: function() {
+      this._isOpen = true;
+    },
+
+    _handleMouseMove: function(e) {
+      var hoverClass = this.get('classPrefix') + '-item-hover';
+      this.items.removeClass(hoverClass);
+      if (e.type === 'mouseenter') {
+        var index = this.items.index(e.currentTarget);
+        this.set('selectedIndex', index, {
+          silent: true
+        });
+        this.items.eq(index).addClass(hoverClass);
+      }
+    },
+
+    _handleMouseDown: function(e) {
+      if (IE678) {
+          var trigger = this.input.get('element')[0];
+          trigger.onbeforedeactivate = function() {
+            window.event.returnValue = false;
+            trigger.onbeforedeactivate = null;
+          };
+        }
+      e.preventDefault();
+    },
+
+    _handleStep: function(e) {
+      e.preventDefault();
+      this.get('visible') &&
+        this._step(e.type === 'keyUp' ? -1 : 1);
+    },
+
+    _handleQueryChange: function(val, prev) {
+      if (this.get('disabled')) return;
+
+      this.dataSource.abort();
+      this.dataSource.getData(val);
     },
 
     // 选项上下移动
     _step: function(direction) {
       var currentIndex = this.get('selectedIndex');
       if (direction === -1) { // 反向
-        if (currentIndex > 0) {
+        if (currentIndex > -1) {
           this.set('selectedIndex', currentIndex - 1);
         } else {
           this.set('selectedIndex', this.items.length - 1);
@@ -379,7 +303,7 @@ define(function(require, exports, module) {
         if (currentIndex < this.items.length - 1) {
           this.set('selectedIndex', currentIndex + 1);
         } else {
-          this.set('selectedIndex', 0);
+          this.set('selectedIndex', -1);
         }
       }
     },
@@ -389,7 +313,16 @@ define(function(require, exports, module) {
       this.set('selectedIndex', -1);
       delete this.items;
       delete this.lastIndex;
-      delete this.currentItem;
+    },
+
+    _hide: function() {
+      this._isOpen = false;
+      AutoComplete.superclass.hide.call(this);
+    },
+
+    _isEmpty: function() {
+      var data = this.get('data');
+      return !(data && data.length > 0);
     },
 
     // 调整 align 属性的默认值
@@ -442,7 +375,6 @@ define(function(require, exports, module) {
     return data;
   }
 
-
   // 标准格式，不匹配则忽略
   //
   //   {
@@ -469,6 +401,34 @@ define(function(require, exports, module) {
       }
     });
     return result;
+  }
+
+  // 初始化 filter
+  // 支持的格式
+  //   1. null: 使用默认的 startWith
+  //   2. string: 从 Filter 中找
+  //   3. function: 自定义
+
+  function initFilter(filter, dataSource) {
+    // 字符串
+    if (isString(filter)) {
+      // 从组件内置的 FILTER 获取
+      if (Filter[filter]) {
+        filter = Filter[filter];
+      } else {
+        filter = Filter['startsWith'];
+      }
+    }
+    // 非函数为默认值
+    else if (!$.isFunction(filter)) {
+      // 异步请求的时候不需要过滤器
+      if (dataSource.get('type') === 'url') {
+        filter = Filter['default'];
+      } else {
+        filter = Filter['startsWith'];
+      }
+    }
+    return filter;
   }
 
   function highlightItem(label, classPrefix) {

@@ -23,6 +23,7 @@ define(function(require, exports, module) {
           return $(val);
         }
       },
+      query: null,
       delay: 100
     },
 
@@ -33,11 +34,28 @@ define(function(require, exports, module) {
       this._bindEvents();
 
       // init query
-      this.query = this.get('element').val();
+      this.set('query', this.getValue());
+    },
+
+    focus: function() {
+      this.get('element').focus();
+    },
+
+    getValue: function() {
+      return this.get('element').val();
+    },
+
+    setValue: function(val, silent) {
+      this.get('element').val(val);
+      !silent && this._change();
     },
 
     destroy: function() {
       Input.superclass.destroy.call(this);
+    },
+
+    _onRenderValue: function(value) {
+      this._change();
     },
 
     _bindEvents: function() {
@@ -63,42 +81,46 @@ define(function(require, exports, module) {
             'paste.autocomplete'
           ].join(' ');
 
-        input.on(events, function(e) {
+        input.on(events, wrapFn(function(e) {
           if (specialKeyCodeMap[e.which]) return;
 
           clearTimeout(timer);
           timer = setTimeout(function() {
             that._change.call(that, e);
           }, this.get('delay'));
-        });
+        }, this));
       }
     },
 
     _change: function() {
-      var val = this.get('element').val();
-      var isSame = compare(this.query, val);
-      var isSameExpectWhitespace = isSame ? (val.length !== this.query.length) : false;
+      var newVal = this.getValue();
+      var oldVal = this.get('query');
+      var isSame = compare(oldVal, newVal);
+      var isSameExpectWhitespace = isSame ? (newVal.length !== oldVal.length) : false;
 
       if (isSameExpectWhitespace) {
-        this.trigger('whitespaceChanged', this.query);
+        this.trigger('whitespaceChanged', oldVal);
       }
       if (!isSame) {
-        var oldVal = this.query;
-        this.trigger('queryChanged', this.query = val, oldVal);
+        this.set('query', newVal);
+        this.trigger('queryChanged', newVal, oldVal);
       }
     },
 
     _handleFocus: function(e) {
-      this.trigger('focus', e, 'focus');
+      this.trigger('focus', e);
     },
 
     _handleBlur: function(e) {
-      this.trigger('blur', e, 'blur');
+      this.trigger('blur', e);
     },
 
     _handleKeydown: function(e) {
       var keyName = specialKeyCodeMap[e.which];
-      keyName && this.trigger('key' + ucFirst(keyName), e, keyName);
+      if (keyName) {
+        var eventKey = 'key' + ucFirst(keyName);
+        this.trigger(e.type = eventKey, e);
+      }
     }
   });
 
