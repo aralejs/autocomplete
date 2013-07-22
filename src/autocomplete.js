@@ -3,7 +3,6 @@ define(function(require, exports, module) {
   var $ = require('$');
   var Overlay = require('overlay');
   var Templatable = require('templatable');
-  var Handlebars = require('handlebars');
   var DataSource = require('./data-source');
   var Filter = require('./filter');
   var Input = require('./input');
@@ -68,7 +67,8 @@ define(function(require, exports, module) {
     parseElement: function() {
       var t = ['header', 'footer', 'html'];
       for (var i in t) {
-        Handlebars.registerPartial(t[i], this.get(t[i]));
+        this.templatePartials || (this.templatePartials = {});
+        this.templatePartials[t[i]] = this.get(t[i]);
       }
       AutoComplete.superclass.parseElement.call(this);
     },
@@ -162,7 +162,6 @@ define(function(require, exports, module) {
       }
 
       // 选中后会修改 input 的值并触发下一次渲染，但第二次渲染的结果不应该显示出来。
-      // 
       this._isOpen && this.show();
     },
 
