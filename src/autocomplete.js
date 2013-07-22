@@ -215,6 +215,7 @@ define(function(require, exports, module) {
         .on('keyUp keyDown', this.show, this)
         .on('keyUp keyDown', this._handleStep, this)
         .on('queryChanged', this._clear, this)
+        .on('queryChanged', this._hide, this)
         .on('queryChanged', this._handleQueryChange, this)
         .on('queryChanged', this.show, this);
 
