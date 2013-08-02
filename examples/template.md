@@ -8,6 +8,26 @@
 seajs.use('../src/autocomplete.css');
 </script>
 
+## 使用参数
+
+<input id="acTrigger1" type="text" value="" />
+
+````javascript
+seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+    var ac = new AutoComplete({
+        trigger: '#acTrigger1',
+        header: '<input id="xxx" type="text">',
+        footer: '<div class="{{classPrefix}}-footer">{{query}}</div>',
+        html: '{{label}}     qqq',
+        dataSource: ['abc', 'abd', 'abe', 'acd']
+    }).render();
+
+    ac.element.on('click', '#xxx', function() {
+      //alert(1);
+    })
+});
+````
+
 ## 自定义模板
 
 默认的模板可以查看 `src/autocomplete.tpl`，如果有修改模板的操作可如下自己定义

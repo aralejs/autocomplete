@@ -53,7 +53,7 @@ define(function(require, exports, module) {
     },
 
     events: {
-      'mousedown': '_handleMouseDown',
+      'mousedown [data-role=items]': '_handleMouseDown',
       'click [data-role=item]': '_handleSelection',
       'mouseenter [data-role=item]': '_handleMouseMove',
       'mouseleave [data-role=item]': '_handleMouseMove'
