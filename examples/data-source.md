@@ -5,7 +5,7 @@
 ---
 
 <script>
-seajs.use('../src/autocomplete.css');
+seajs.use('select');
 </script>
 
 在使用前先看下数据源的文档
@@ -24,7 +24,8 @@ seajs.use('autocomplete', function(AutoComplete) {
         trigger: '#acTrigger1',
         dataSource: {
             data: ['abc', 'abd', 'abe', 'acd']
-        }
+        },
+        width: 150
     }).render();
 });
 ````
@@ -39,7 +40,8 @@ seajs.use('autocomplete', function(AutoComplete) {
 seajs.use('autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger2',
-        dataSource: './data.json?q={{query}}'
+        dataSource: './data.json?q={{query}}',
+        width: 150
     }).render();
 });
 ````
@@ -66,7 +68,8 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
             .error(function(data) {
                 that.trigger('data', {});
             });
-        }
+        },
+        width: 150
     }).render();
 });
 ````
@@ -95,7 +98,8 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
                     }
                 }
             }
-        }
+        },
+        width: 150
     }).render();
 });
 ````
@@ -110,18 +114,13 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
     new AutoComplete({
         trigger: '#acTrigger5',
-        filter: {
-            name: 'startsWith',
-            options: {
-                key: 'title'
-            }
-        },
         dataSource: [
-          {title: 'abc', myprop: '123'},
-          {title: 'abd', myprop: '124'},
-          {title: 'abe', myprop: '125'},
-          {title: 'acd', myprop: '134'}
-        ]
+          {value: 'abc', myprop: '123'},
+          {value: 'abd', myprop: '124'},
+          {value: 'abe', myprop: '125'},
+          {value: 'acd', myprop: '134'}
+        ],
+        width: 150
     }).render();
 });
 ````

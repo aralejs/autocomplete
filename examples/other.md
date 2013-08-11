@@ -1,12 +1,14 @@
-# Email 自动补全
+# 其他示例
 
-- order:4
+- order:5
 
 ---
 
 <script>
-seajs.use('../src/autocomplete.css');
+seajs.use('select');
 </script>
+
+## Email 自动补全
 
 这个功能很常用，在输入账号的时候希望补全常用的邮箱后缀
 

@@ -5,7 +5,7 @@
 ----
 
 <script>
-seajs.use('../src/autocomplete.css');
+seajs.use('select');
 </script>
 
 最简单的方式只需要提供 trigger 和 datasource。
@@ -16,7 +16,8 @@ seajs.use('../src/autocomplete.css');
 seajs.use('autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger1',
-        dataSource: ['abc', 'abd', 'abe', 'acd']
+        dataSource: ['abc', 'abd', 'abe', 'acd'],
+        width: 150
     }).render();
 });
 ````
@@ -36,7 +37,8 @@ seajs.use('autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger2',
         submitOnEnter: false,
-        dataSource: ['abc', 'abd', 'abe', 'acd']
+        dataSource: ['abc', 'abd', 'abe', 'acd'],
+        width: 150
     }).render();
 });
 ````
@@ -53,7 +55,8 @@ seajs.use('autocomplete', function(AutoComplete) {
 seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
     var ac = new AutoComplete({
         trigger: '#acTrigger3',
-        dataSource: ['abc', 'abd', 'abe', 'acd']
+        dataSource: ['abc', 'abd', 'abe', 'acd'],
+        width: 150
     }).render();
 
     $('#acTrigger3-extra').click(function(e) {
@@ -65,9 +68,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 });
 ````
 
-
-
-## 可以默认选中第一个
+## 默认选中第一个
 
 <input id="acTrigger5" type="text" value="" />
 
@@ -76,7 +77,8 @@ seajs.use('autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger5',
         selectFirst: true,
-        dataSource: ['abc', 'abd', 'abe', 'acd']
+        dataSource: ['abc', 'abd', 'abe', 'acd'],
+        width: 150
     }).render();
 });
 ````
