@@ -27,7 +27,7 @@
         },
         "devAlias": {
             "puerh": "popomore/puerh/0.1.0/puerh",
-            "select": "alice/select/1.0.0/select"
+            "select": "alice/select/1.0.0/select.css"
         },
         "output": [
             "autocomplete.js",

@@ -17,7 +17,7 @@ define(function(require, exports, module) {
     attrs: {
       // 触发元素
       trigger: null,
-      classPrefix: 'ui-autocomplete',
+      classPrefix: 'ui-select',
       align: {
         baseXY: [0, '100%']
       },
@@ -26,10 +26,6 @@ define(function(require, exports, module) {
       locator: 'data',
       // 输出过滤
       filter: null,
-      // 输入过滤
-      inputFilter: function(v) {
-        return v;
-      },
       disabled: false,
       selectFirst: false,
       delay: 100,
@@ -46,7 +42,7 @@ define(function(require, exports, module) {
       template: template,
       footer: '',
       header: '',
-      html: '{{label}}',
+      html: '<a href="javascript:\'\'">{{label}}</a>',
       // 以下仅为组件使用
       selectedIndex: null,
       data: []
