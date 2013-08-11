@@ -51,7 +51,7 @@ define(function(require) {
             ac.setInputValue('');
 
             expect(ac.get('visiable')).not.to.be.ok();
-            expect(ac.get('inputValue')).to.be('');
+            expect(ac.input.getValue()).to.be('');
         });
 
         it('should not call "getData" when empty', function() {
