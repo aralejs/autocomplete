@@ -212,7 +212,7 @@ define(function(require) {
                 dataSource: ['abc']
             }).render();
             ac.setInputValue('a');
-            ac.items.eq(0).mousedown();
+            ac.items.eq(0).click();
 
             expect(ac.get('visible')).not.to.be.ok();
         });
@@ -317,13 +317,11 @@ define(function(require) {
         });
 
         it('select item', function() {
-            var input = $('#test'), beCalled = false;
+            var input = $('#test'), spy = sinon.spy();
             ac = new AutoComplete({
                 trigger: '#test',
                 dataSource: ['abc', 'abd', 'cbd']
-            }).on('itemSelect', function() {
-                beCalled = true;
-            }).render();
+            }).on('itemSelected', spy).render();
 
             ac.setInputValue('a');
             ac.set('selectedIndex', 0);
@@ -331,8 +329,8 @@ define(function(require) {
             ac.selectItem();
             expect(ac.get('visible')).to.be(false);
             expect(input.val()).to.be('abc');
-            expect(ac.get('inputValue')).to.be('abc');
-            expect(beCalled).to.be.ok();
+            expect(ac.input.getValue()).to.be('abc');
+            expect(spy.called).to.be.ok();
         });
 
         it('highlight item', function() {

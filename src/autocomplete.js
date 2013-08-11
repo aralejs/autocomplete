@@ -110,9 +110,11 @@ define(function(require, exports, module) {
     // --------------
 
     selectItem: function(index) {
-      if (this.items && index &&
-        this.items.length > index && index >= -1) {
+      if (this.items) {
+        if (index &&
+          this.items.length > index && index >= -1) {
         this.set('selectedIndex', index);
+        }
         this._handleSelection();
       }
     },
