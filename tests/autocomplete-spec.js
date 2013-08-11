@@ -337,6 +337,7 @@ define(function(require) {
             var input = $('#test'), item;
             ac = new AutoComplete({
                 trigger: '#test',
+                html: '{{{highlightItem label}}}',
                 dataSource: ['abc', 'abd', 'cbd']
             }).render();
 
@@ -345,7 +346,7 @@ define(function(require) {
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
-                .find('.ui-autocomplete-item-hl');
+                .find('.ui-select-item-hl');
             expect(item.length).to.be(1);
             expect(item.eq(0).text()).to.be('a');
             delete ac.oldInput;
@@ -355,7 +356,7 @@ define(function(require) {
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
-                .find('.ui-autocomplete-item-hl');
+                .find('.ui-select-item-hl');
             expect(item.length).to.be(2);
             expect(item.eq(0).text()).to.be('b');
             expect(item.eq(1).text()).to.be('d');
@@ -366,7 +367,7 @@ define(function(require) {
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
-                .find('.ui-autocomplete-item-hl');
+                .find('.ui-select-item-hl');
             expect(item.length).to.be(2);
             expect(item.eq(0).text()).to.be('a');
             expect(item.eq(1).text()).to.be('defg');
@@ -377,7 +378,7 @@ define(function(require) {
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
-                .find('.ui-autocomplete-item-hl');
+                .find('.ui-select-item-hl');
             expect(item.length).to.be(2);
             expect(item.eq(0).text()).to.be('b');
             expect(item.eq(1).text()).to.be('e');
@@ -388,7 +389,7 @@ define(function(require) {
             ]);
             item = ac.$('[data-role=item]')
                 .eq(0)
-                .find('.ui-autocomplete-item-hl');
+                .find('.ui-select-item-hl');
             expect(item.length).to.be(1);
             expect(item.eq(0).text()).to.be('g');
             delete ac.oldInput;
