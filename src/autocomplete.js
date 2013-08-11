@@ -405,8 +405,8 @@ define(function(require, exports, module) {
 
   // 初始化 filter
   // 支持的格式
-  //   1. null: 使用默认的 startWith
-  //   2. string: 从 Filter 中找
+  //   1. null: 使用默认的 startsWith
+  //   2. string: 从 Filter 中找，如果不存在则用 default
   //   3. function: 自定义
 
   function initFilter(filter, dataSource) {
@@ -416,7 +416,7 @@ define(function(require, exports, module) {
       if (Filter[filter]) {
         filter = Filter[filter];
       } else {
-        filter = Filter['startsWith'];
+        filter = Filter['default'];
       }
     }
     // 非函数为默认值
