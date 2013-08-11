@@ -20,14 +20,13 @@
     "spm": {
         "alias": {
             "$":"$",
-            "selection": "gallery/selection/0.9.0/selection",
             "templatable": "arale/templatable/0.9.2/templatable-debug",
             "base": "arale/base/1.1.1/base",
             "overlay": "arale/overlay/1.1.2/overlay"
         },
         "devAlias": {
             "puerh": "popomore/puerh/0.1.0/puerh",
-            "select": "alice/select/1.0.0/select.css"
+            "select": "alice/select/1.0.1/select.css"
         },
         "output": [
             "autocomplete.js",
