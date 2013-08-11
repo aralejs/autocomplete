@@ -145,7 +145,8 @@ define(function(require, exports, module) {
       // 渲染下拉
       this.set("model", {
         items: data,
-        query: this.input.get('query')
+        query: this.input.get('query'),
+        length: data.length
       });
 
       this.renderPartial();
