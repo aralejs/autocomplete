@@ -104,7 +104,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 });
 ````
 
-## 处理复杂数据的数据结构
+## 处理复杂数据结构
 
 数据不是字符串而是复杂结构
 
