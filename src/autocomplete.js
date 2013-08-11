@@ -57,7 +57,8 @@ define(function(require, exports, module) {
 
     templateHelpers: {
       // 将匹配的高亮文字加上 hl 的样式
-      highlightItem: highlightItem
+      highlightItem: highlightItem,
+      include: include
     },
 
     parseElement: function() {
@@ -428,8 +429,19 @@ define(function(require, exports, module) {
     return filter;
   }
 
-  function highlightItem(label, classPrefix) {
+  function include(options) {
+    var context = {},
+        mergeContext = function(obj) {
+            for(var k in obj)context[k]=obj[k];
+        };
+    mergeContext(this);
+    mergeContext(options.hash);
+    return options.fn(context);
+  }
+
+  function highlightItem(label) {
     var index = this.highlightIndex,
+      classPrefix = this.parent ? this.parent.classPrefix : '',
       cursor = 0,
       v = label || this.label || '',
       h = '';

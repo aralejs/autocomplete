@@ -82,3 +82,22 @@ seajs.use('autocomplete', function(AutoComplete) {
     }).render();
 });
 ````
+
+## 高亮匹配值
+
+<style>
+.ui-select-item-hl {background: yellow;}
+</style>
+
+<input id="acTrigger6" type="text" value="" />
+
+````javascript
+seajs.use('autocomplete', function(AutoComplete) {
+    new AutoComplete({
+        trigger: '#acTrigger6',
+        html: '{{{highlightItem label}}}',
+        dataSource: ['abc', 'abd', 'abe', 'acd'],
+        width: 150
+    }).render();
+});
+````
