@@ -140,7 +140,7 @@ define(function(require, exports, module) {
 
     // 通过数据渲染模板
     _onRenderData: function(data) {
-      if (!data.length) return;
+      data || (data = []);
 
       // 渲染下拉
       this.set("model", {
