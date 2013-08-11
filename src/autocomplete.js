@@ -42,7 +42,7 @@ define(function(require, exports, module) {
       template: template,
       footer: '',
       header: '',
-      html: '<a href="javascript:\'\'">{{label}}</a>',
+      html: '{{{label}}}',
       // 以下仅为组件使用
       selectedIndex: null,
       data: []

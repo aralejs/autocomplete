@@ -25,7 +25,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
         trigger: '#acTrigger1',
         header: '<div class="{{classPrefix}}-header">筛选省市：</div>',
         footer: '<div class="{{classPrefix}}-footer">搜索 {{query}} 的{{length}}个结果</div>',
-        html: '<a href="javascript:\'\'"><strong>{{city}}</strong><span>{{prov}}</span></a>',
+        html: '<strong>{{city}}</strong><span>{{prov}}</span>',
         dataSource: [
           {city: '上海', prov: '上海', label: '上海', value: 'shanghai', alias: ['上海']},
           {city: '苏州', prov: '江苏', label: '苏州', value: 'suzhou', alias: ['苏州']},
