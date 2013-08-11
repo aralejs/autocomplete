@@ -17,7 +17,7 @@ define(function(require) {
       ]);
     });
 
-    it('#55 dont\'t change selectedIndex when hover', function() {
+    xit('#55 dont\'t change selectedIndex when hover', function() {
       var ac, input = $('<input id="test" type="text" value="" />')
         .appendTo(document.body);
 
