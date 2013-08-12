@@ -1,6 +1,6 @@
 define(function(require) {
 
-    var expect = require('puerh');
+    var expect = require('expect');
     var Filter = require('filter');
 
     describe('Filter', function() {

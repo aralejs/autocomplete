@@ -25,7 +25,6 @@
             "overlay": "arale/overlay/1.1.2/overlay"
         },
         "devAlias": {
-            "puerh": "popomore/puerh/0.1.0/puerh",
             "select": "alice/select/1.0.1/select.css"
         },
         "output": [

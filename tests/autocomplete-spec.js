@@ -1,7 +1,7 @@
 define(function(require) {
 
     var sinon = require('sinon');
-    var expect = require('puerh');
+    var expect = require('expect');
     var Filter = require('filter');
     var AutoComplete = require('autocomplete');
     var $ = require('$');
@@ -312,7 +312,7 @@ define(function(require) {
 
                 ac.setInputValue('a');
                 var data = [{label: 'abc', value: 'abc', alias: []}];
-                expect(spy).to.be.called.withArgs(data, 'a');
+                expect(spy.withArgs(data, 'a').called).to.be.ok();
             });
         });
 

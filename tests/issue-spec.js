@@ -1,6 +1,6 @@
 define(function(require) {
 
-  var expect = require('puerh');
+  var expect = require('expect');
   var $ = require('$');
   var Filter = require('filter');
   var AutoComplete = require('autocomplete');

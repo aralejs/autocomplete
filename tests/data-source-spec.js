@@ -1,7 +1,7 @@
 define(function(require) {
 
     var sinon = require('sinon');
-    var expect = require('puerh');
+    var expect = require('expect');
     var DataSource = require('data-source');
     var $ = require('$');
 
@@ -57,7 +57,7 @@ define(function(require) {
             var source = new DataSource({
                 source: param
             }).on('data', spy).getData();
-            expect(spy).to.be.called.withArgs(param);
+            expect(spy.withArgs(param).called).to.be.ok();
         });
 
         it('type is object', function() {
@@ -68,7 +68,7 @@ define(function(require) {
             var source = new DataSource({
                 source: param
             }).on('data', spy).getData();
-            expect(spy).to.be.called.withArgs(param);
+            expect(spy.withArgs(param).called).to.be.ok();
         });
 
         it('type is function', function() {
@@ -80,7 +80,7 @@ define(function(require) {
                     ];
                 }
             }).on('data', spy).getData('a');
-            expect(spy).to.be.called.withArgs(['a@163.com']);
+            expect(spy.withArgs(['a@163.com']).called).to.be.ok();
         });
 
         it('type is function return false', function() {
@@ -90,7 +90,7 @@ define(function(require) {
                     return false;
                 }
             }).on('data', spy).getData('a');
-            expect(spy).not.to.be.called();
+            expect(spy.called).not.to.be.ok();
         });
 
         it('type is function async', function(done) {
@@ -105,7 +105,7 @@ define(function(require) {
             }).on('data', spy).getData('a');
 
             setTimeout(function() {
-                expect(spy).to.be.called();
+                expect(spy.called).to.be.ok();
                 done();
             }, 500);
         });
@@ -124,8 +124,8 @@ define(function(require) {
             var source = new DataSource({
                 source: './test.json?q={{query}}'
             }).on('data', spy).getData('a');
-            expect(stub).to.be.called.match('./test.json?q=a');
-            expect(spy).to.be.called.withArgs([1, 2, 3]);
+            expect(stub.calledWithMatch('./test.json?q=a')).to.be.ok();
+            expect(spy.withArgs([1, 2, 3]).called).to.be.ok();
             stub.restore();
         });
 
@@ -144,7 +144,7 @@ define(function(require) {
             var source = new DataSource({
                 source: './test.json?q={{query}}'
             }).on('data', spy).getData('a');
-            expect(spy).to.be.called.withArgs({});
+            expect(spy.withArgs({}).called).to.be.ok();
             stub.restore();
         });
         it('abort', function(done) {
@@ -178,7 +178,7 @@ define(function(require) {
             expect(source.callbacks.length).to.be(1);
 
             setTimeout(function() {
-                expect(spy).to.be.called.once();
+                expect(spy.calledOnce).to.be.ok();
                 stub.restore();
                 done();
             }, 500);
