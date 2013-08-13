@@ -170,41 +170,9 @@ dataSource: [
 
 #### filter *function*
 
-输出值的过滤器，用于筛选 dataSource，默认方法为 `startsWith`。
+过滤器用于筛选 dataSource，最后输出给模板进行渲染，默认方法为 `startsWith`。
 
-**过滤器支持类型**
-
- -  字符串
-
-    可指定内置的 filter，查看[过滤器章节](http://aralejs.org/autocomplete/docs/filter.html)。
- 
-    如不设置此属性会调用默认的 `startsWith` 方法，从头开始匹配
-
- -  空字符串、null、false
-
-    什么都不处理，返回原来的 dataSource
-
-    **注意：如果 `dataSource` 为 url，默认值为空，一般异步场景不需要 filter** 
-
- -  函数
-
-    通过自定义函数去筛选 dataSource，要注意数据转换。
-
-    如：筛选出包含输入值的数据
-
-    ```
-    filter: function(data, query) {
-      var result = [];
-      $.each(data, function(index, item) {
-        if (item.value.indexOf(query) > -1) {
-          result.push({matchKey: value});
-        }
-      });
-      return result;
-    }
-    ```
-
-想了解更多可查看[过滤器章节](http://aralejs.org/autocomplete/docs/filter.html)和[设计章节](http://aralejs.org/autocomplete/docs/design.html)
+使用方式可查看[过滤器章节](http://aralejs.org/autocomplete/docs/filter.html)。
 
 #### submitOnEnter *boolean*
 
