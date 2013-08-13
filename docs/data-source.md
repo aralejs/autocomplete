@@ -4,7 +4,7 @@
 
 ----
 
-数据源是 autocomplete 的基础，数据可以是静态的也可以是动态的。
+数据源是 autocomplete 的基础，数据可以是静态的也可以是动态的，可通过 this.dataSource 获取该实例。
 
 只提供 `.getData` 的方法获取数据，通过 data 事件异步返回。
 
