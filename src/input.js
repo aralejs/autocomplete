@@ -1,5 +1,4 @@
 define(function(require, exports, module) {
-
   var $ = require('$');
   var Base = require('base');
 
@@ -58,10 +57,10 @@ define(function(require, exports, module) {
       var timer, input = this.get('element');
 
       input
-      .attr('autocomplete', 'off')
-      .on('focus.autocomplete', wrapFn(this._handleFocus, this))
-      .on('blur.autocomplete', wrapFn(this._handleBlur, this))
-      .on('keydown.autocomplete', wrapFn(this._handleKeydown, this));
+        .attr('autocomplete', 'off')
+        .on('focus.autocomplete', wrapFn(this._handleFocus, this))
+        .on('blur.autocomplete', wrapFn(this._handleBlur, this))
+        .on('keydown.autocomplete', wrapFn(this._handleKeydown, this));
 
       // IE678 don't support input event
       // IE 9 does not fire an input event when the user removes characters from input filled by keyboard, cut, or drag operations.

@@ -1,5 +1,4 @@
 define(function(require) {
-
   var $ = require('$');
   var expect = require('expect');
   var Input = require('input');

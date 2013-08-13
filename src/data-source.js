@@ -1,5 +1,4 @@
 define(function(require, exports, module) {
-
   var Base = require('base');
   var $ = require('$');
 
