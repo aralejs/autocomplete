@@ -355,22 +355,21 @@ define(function(require, exports, module) {
   // 最后的返回值为 c
 
   function locateResult(locator, data) {
-    if (!locator) {
-      return data;
-    }
-    if ($.isFunction(locator)) {
-      return locator.call(this, data);
-    } else if (isString(locator)) {
-      var s = locator.split('.'),
-        p = data;
-      while (s.length) {
-        var v = s.shift();
-        if (!p[v]) {
-          break;
+    if (locator) {
+      if ($.isFunction(locator)) {
+        return locator.call(this, data);
+      } else if (!$.isArray(data) && isString(locator)) {
+        var s = locator.split('.'),
+          p = data;
+        while (s.length) {
+          var v = s.shift();
+          if (!p[v]) {
+            break;
+          }
+          p = p[v];
         }
-        p = p[v];
+        return p;
       }
-      return p;
     }
     return data;
   }

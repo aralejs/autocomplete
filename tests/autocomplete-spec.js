@@ -123,6 +123,20 @@ define(function(require) {
                     {label: 'abd', value: 'abd', alias: [], highlightIndex: [[0, 1]]}
                 ]);
             });
+
+            it('wrong locator', function() {
+                var input = $('#test');
+                ac = new AutoComplete({
+                    trigger: '#test',
+                    dataSource: {
+                        test: ['abc', 'abd', 'cbd']
+                    },
+                    locator: 'wrong'
+                }).render();
+
+                ac.setInputValue('a');
+                expect(ac.get('data')).to.eql([]);
+            });
         });
 
         it('should be hide when trigger blur #26', function() {
@@ -288,7 +302,6 @@ define(function(require) {
                 .find('.ui-select-item-hl');
             expect(item.length).to.be(1);
             expect(item.eq(0).text()).to.be('a');
-            delete ac.oldInput;
 
             ac.set('data', [
                 {label: 'abcdefg', highlightIndex: [[1, 2], [3, 4]]}
@@ -299,7 +312,6 @@ define(function(require) {
             expect(item.length).to.be(2);
             expect(item.eq(0).text()).to.be('b');
             expect(item.eq(1).text()).to.be('d');
-            delete ac.oldInput;
 
             ac.set('data', [
                 {label: 'abcdefg', highlightIndex: [[0, 1], [3, 7], [8, 9]]}
@@ -310,7 +322,6 @@ define(function(require) {
             expect(item.length).to.be(2);
             expect(item.eq(0).text()).to.be('a');
             expect(item.eq(1).text()).to.be('defg');
-            delete ac.oldInput;
 
             ac.set('data', [
                 {label: 'abcdefg', highlightIndex: [1, 4]}
@@ -321,7 +332,6 @@ define(function(require) {
             expect(item.length).to.be(2);
             expect(item.eq(0).text()).to.be('b');
             expect(item.eq(1).text()).to.be('e');
-            delete ac.oldInput;
 
             ac.set('data', [
                 {label: 'abcdefg', highlightIndex: [6, 8]}
@@ -331,7 +341,12 @@ define(function(require) {
                 .find('.ui-select-item-hl');
             expect(item.length).to.be(1);
             expect(item.eq(0).text()).to.be('g');
-            delete ac.oldInput;
+
+            ac.set('data', [
+                {label: 'abcdefg', highlightIndex: 0}
+            ]);
+            item = ac.$('.ui-select-item-hl');
+            expect(item.length).to.be(0);
         });
 
         it('clear', function() {
@@ -436,7 +451,46 @@ define(function(require) {
                 {label: 'ae', value: 'ae', alias:['be']}
             ]);
         });
+
+        it('should step', function() {
+            ac = new AutoComplete({
+                trigger: '#test',
+                dataSource: ['abc', 'abd', 'cbd']
+            }).render();
+
+            ac.setInputValue('a');
+
+            ac.items.eq(1).mouseenter();
+            expect(ac.get('selectedIndex')).to.be(1);
+
+            triggerKeyEvent(input, 40);
+            expect(ac.get('selectedIndex')).to.be(-1);
+
+            triggerKeyEvent(input, 40);
+            expect(ac.get('selectedIndex')).to.be(0);
+
+            triggerKeyEvent(input, 38);
+            expect(ac.get('selectedIndex')).to.be(-1);
+
+            triggerKeyEvent(input, 38);
+            expect(ac.get('selectedIndex')).to.be(1);
+        });
+
+        it('input focus', function() {
+            ac = new AutoComplete({
+                trigger: '#test',
+                dataSource: ['abc', 'abd', 'cbd']
+            }).render();
+
+            input.focus();
+            expect(ac._isOpen).to.be.ok();
+        });
     });
 
+  function triggerKeyEvent(el, keyCode) {
+    var e = jQuery.Event("keydown.autocomplete");
+    e.which = keyCode;
+    el.trigger(e);
+  }
 });
 
