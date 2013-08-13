@@ -54,24 +54,6 @@ define(function(require) {
             expect(ac.input.getValue()).to.be('');
         });
 
-        xit('should not call "getData" when empty', function() {
-            var input = $('#test');
-            input.val('a');
-            ac = new AutoComplete({
-                trigger: '#test',
-                dataSource: ['abc', 'abd', 'cbd']
-            }).render();
-
-            var getData = sinon.spy(ac.dataSource, 'getData');
-
-            ac.setInputValue('');
-            expect(getData).not.to.be.called();
-
-            ac.setInputValue('a');
-            expect(getData).to.be.called();
-            getData.restore();
-        });
-
         it('render', function() {
             ac = new AutoComplete({
                 trigger: '#test',
@@ -83,55 +65,6 @@ define(function(require) {
             expect(ac.items.length).to.be(2);
             expect(ac.items.eq(0).text().replace(/\s/g, '')).to.be('abc');
             expect(ac.items.eq(1).text().replace(/\s/g, '')).to.be('abd');
-        });
-
-        xdescribe('inputValue', function() {
-            it('should be called when value changed', function() {
-                var input = $('#test');
-                ac = new AutoComplete({
-                    trigger: '#test',
-                    dataSource: ['abc', 'abd', 'cbd']
-                }).render();
-
-                var spy = sinon.spy(ac, '_onRenderInputValue');
-
-                ac.setInputValue('a');
-                expect(spy).to.be.called.withArgs('a');
-                expect(spy).to.be.called.once();
-
-                ac._keyupEvent.call(ac);
-                expect(spy).to.be.called.once();
-
-                ac.setInputValue('ab');
-                expect(spy).to.be.called.withArgs('ab');
-                expect(spy).to.be.called.twice();
-
-                ac.setInputValue('a');
-                expect(spy).to.be.called.withArgs('a');
-                expect(spy).to.be.called.thrice();
-                spy.restore();
-            });
-
-            it('should filter the input', function() {
-                var input = $('#test');
-                ac = new AutoComplete({
-                    trigger: '#test',
-                    inputFilter: function(val) {
-                        return 'filter-' + val;
-                    },
-                    dataSource: ['abc', 'abd', 'cbd']
-                }).render();
-
-                var spy = sinon.spy(ac.dataSource, 'getData');
-
-                ac.setInputValue('a');
-                expect(spy).to.be.called.withArgs('filter-a');
-                expect(spy).to.be.called.once();
-
-                ac.setInputValue('');
-                expect(spy).to.be.called.once();
-                spy.restore();
-            });
         });
 
         describe('data locator', function() {
@@ -205,7 +138,7 @@ define(function(require) {
             expect(ac.get('visible')).not.to.be.ok();
         });
 
-        xit('should be hide when mousedown #26', function() {
+        it('should be hide when mousedown #26', function() {
             var input = $('#test');
             ac = new AutoComplete({
                 trigger: '#test',
@@ -325,12 +258,18 @@ define(function(require) {
 
             ac.setInputValue('a');
             ac.set('selectedIndex', 0);
-
             ac.selectItem();
             expect(ac.get('visible')).to.be(false);
             expect(input.val()).to.be('abc');
             expect(ac.input.getValue()).to.be('abc');
             expect(spy.called).to.be.ok();
+
+            ac.setInputValue('ab');
+            ac.selectItem(1);
+            expect(ac.get('visible')).to.be(false);
+            expect(input.val()).to.be('abd');
+            expect(ac.input.getValue()).to.be('abd');
+            expect(spy.calledTwice).to.be.ok();
         });
 
         it('highlight item', function() {
