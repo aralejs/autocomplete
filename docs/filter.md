@@ -84,7 +84,7 @@
 
 过滤器处理的数据类型为数组，也就是说输入和输出都为数组。
 
-输入的数组是符合 dataSource 数据格式的。
+输入的数组是符合 [dataSource 数据格式](http://aralejs.org/autocomplete/#datasource-array-object-string-function)的。
 
 输出的对象也该保持一样的数据格式，如果想使用 highlightItem 的话，需要提供 highlightIndex。
 
