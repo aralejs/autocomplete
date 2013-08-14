@@ -51,7 +51,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
     {{#if items}}
     <ul class="{{classPrefix}}-content" data-role="items">
       {{#each items}}
-      <li data-role="item" class="{{../classPrefix}}-item">{{> html}}</li>
+      <li data-role="item" class="{{../classPrefix}}-item"><a href="javascript:''">{{> html}}</a></li>
       {{/each}}
     </ul>
     {{else}}
