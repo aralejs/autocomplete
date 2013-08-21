@@ -5,7 +5,7 @@
 ---
 
 <script>
-seajs.use('select');
+seajs.use('select.css');
 </script>
 
 在使用前先看下数据源的文档

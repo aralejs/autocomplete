@@ -5,7 +5,7 @@
 ----
 
 <script>
-seajs.use('select');
+seajs.use('select.css');
 </script>
 
 最简单的方式只需要提供 trigger 和 datasource。

@@ -5,7 +5,7 @@
 ----
 
 <script>
-seajs.use('select');
+seajs.use('select.css');
 </script>
 
 ## 使用参数来自定义模板

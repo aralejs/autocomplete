@@ -4,6 +4,7 @@ define(function(require) {
   var Filter = require('filter');
   var AutoComplete = require('autocomplete');
   var $ = require('$');
+  require('select.css');
 
   Filter.test = function() {
     return [];

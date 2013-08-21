@@ -5,7 +5,7 @@
 ----
 
 <script>
-seajs.use('select');
+seajs.use('select.css');
 </script>
 
 ## 输出过滤
