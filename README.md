@@ -234,7 +234,7 @@ dataSource: [
  - item：选中项对应的 DOM
 
 ```
-.on('itemSelect', function(data, item){
+.on('itemSelected', function(data, item){
     console.log(data.label);
 });
 ```
@@ -248,7 +248,7 @@ dataSource: [
  -  previousIndex: 切换前的索引值
 
 ```
-.on('indexChange', function(current, prev){
+.on('indexChanged', function(current, prev){
     console.log(this.items[current])
 });
 ```
