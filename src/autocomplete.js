@@ -248,6 +248,15 @@ define(function(require, exports, module) {
 
             this.trigger('indexChange', index, this.lastIndex);
             this.lastIndex = index;
+
+            // scroll current item into view
+            //this.currentItem.scrollIntoView();
+            var containerHeight = parseInt(this.get('height'));
+            if (!containerHeight) return;
+
+            var itemHeight = this.currentItem.parent().height() / this.items.length,
+                itemTop = Math.max(0, itemHeight * (index + 1) - containerHeight);
+            this.element.scrollTop(itemTop);
         },
 
         _initFilter: function() {

@@ -1,6 +1,9 @@
 # History
 
 ---
+## 1.2.3
+
+`tag:fixed` [#82](https://github.com/aralejs/autocomplete/issues/82)
 
 ## 1.2.2
 

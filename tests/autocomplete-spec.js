@@ -500,6 +500,31 @@ define(function(require) {
             ac.setInputValue('a');
             expect(ac.get('visible')).to.be.ok();
         });
+
+        it('should auto scroll #82', function() {
+            ac = new AutoComplete({
+                trigger: '#test',
+                dataSource: ['abc', 'abd', 'abe', 'acd', 'ace', 'acf', 'acg', 'ach', 'aci', 'acj', 'ack'],
+                style: {
+                    'overflow': 'scroll'
+                },
+                height: 120
+            }).render();
+
+            ac.setInputValue('a');
+            expect(ac.get('visible')).to.be.ok();
+
+            ac._step(1);
+            expect(ac.element.scrollTop()).to.be(0);
+            ac._step(1);
+            expect(ac.element.scrollTop()).to.be(0);
+            ac._step(1);
+            expect(ac.element.scrollTop()).to.be(0);
+            ac._step(1);
+            expect(ac.element.scrollTop()).to.be(0);
+            ac._step(1);
+            expect(ac.element.scrollTop()).to.be(30);
+        });
     });
 
 });
