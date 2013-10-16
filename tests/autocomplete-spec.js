@@ -586,6 +586,28 @@ define(function(require) {
       ac.setInputValue('a');
       expect(spy.calledOn(ac)).to.be.ok();
     });
+
+    it('should auto scroll #82', function() {
+      ac = new AutoComplete({
+        trigger: '#test',
+        dataSource: ['abc', 'abd', 'abe', 'acd', 'ace', 'acf', 'acg', 'ach', 'aci', 'acj', 'ack'],
+        height: 123
+      }).render();
+      ac.element.children().css('overflow', 'scroll');
+
+      ac.setInputValue('a');
+      expect(ac.get('visible')).to.be.ok();
+
+      var content = ac.element.children();
+      ac._step(1);
+      expect(content.scrollTop()).to.be(0);
+      ac._step(1);
+      expect(content.scrollTop()).to.be(0);
+      ac._step(1);
+      expect(content.scrollTop()).to.be(0);
+      ac._step(1);
+      expect(content.scrollTop()).to.be(41);
+    });
   });
 
   function triggerKeyEvent(el, keyCode) {

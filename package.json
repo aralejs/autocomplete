@@ -7,7 +7,8 @@
   "homepage": "http://aralejs.org/autocomplete/",
   "author": "popomore <sakura9515@gmail.com>",
   "maintainers": [
-    "贯高 <guangao@alipay.com>"
+    "贯高 <sakura9515@gmail.com>",
+    "乔花 <shengyan1985@gmail.com>"
   ],
   "repository": {
     "type": "git",
@@ -28,8 +29,7 @@
       "select.css": "alice/select/1.0.1/select.css"
     },
     "output": [
-      "autocomplete.js",
-      "textarea-complete.js"
+      "autocomplete.js"
     ]
   },
   "scripts": {

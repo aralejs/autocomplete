@@ -64,7 +64,7 @@ define(function(require, exports, module) {
   module.exports = Filter;
 
   // 转义正则关键字
-  var keyword = /(\[|\[|\]|\^|\$|\||\(|\)|\{|\}|\+|\*|\?)/g;
+  var keyword = /(\[|\[|\]|\^|\$|\||\(|\)|\{|\}|\+|\*|\?|\\)/g;
 
   function escapeKeyword(str) {
     return (str || '').replace(keyword, '\\$1');

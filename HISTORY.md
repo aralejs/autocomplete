@@ -1,6 +1,13 @@
 # History
 
 ---
+## 1.2.3
+
+`tag:fixed` [#82](https://github.com/aralejs/autocomplete/issues/82)
+
+## 1.2.2
+
+`tag:improved` 升级 base 到 1.1.1, templatable 到 0.9.1, overlay 到 1.1.1
 
 ## 1.2.1
 
@@ -8,6 +15,8 @@
 
 `tag:improved` 升级 handlebars 为 1.0.2 , 升级 base 为 1.1.0,
 升级 templateable 为 0.9.0, 升级 overlay 为 1.1.0
+
+`tag:fixed` #72 修复输入特殊字符报错的问题
 
 ## 1.2.0
 

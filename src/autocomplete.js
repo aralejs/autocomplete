@@ -90,6 +90,17 @@ define(function(require, exports, module) {
       this._bindHandle(); // 绑定事件
       this._blurHide([$(this.get('trigger'))]);
       this._tweakAlignDefaultValue();
+
+      this.on('indexChanged', function(index) {
+        // scroll current item into view
+        //this.currentItem.scrollIntoView();
+        var containerHeight = parseInt(this.get('height'), 10);
+        if (!containerHeight) return;
+
+        var itemHeight = this.items.parent().height() / this.items.length,
+          itemTop = Math.max(0, itemHeight * (index + 1) - containerHeight);
+        this.element.children().scrollTop(itemTop);
+      });
     },
 
     show: function() {

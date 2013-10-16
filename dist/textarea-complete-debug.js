@@ -1,4 +1,4 @@
-define("arale/autocomplete/1.2.1/textarea-complete-debug", [ "$-debug", "gallery/selection/0.9.0/selection-debug", "./autocomplete-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.handlebars" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.3/textarea-complete-debug", [ "$-debug", "gallery/selection/0.9.0/selection-debug", "./autocomplete-debug", "arale/overlay/1.1.1/overlay-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.1/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./data-source-debug", "./filter-debug", "./autocomplete-debug.handlebars" ], function(require, exports, module) {
     var $ = require("$-debug");
     var selection = require("gallery/selection/0.9.0/selection-debug");
     var AutoComplete = require("./autocomplete-debug");
@@ -125,13 +125,14 @@ define("arale/autocomplete/1.2.1/textarea-complete-debug", [ "$-debug", "gallery
     module.exports = TextareaComplete;
 });
 
-define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.0/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "arale/autocomplete/1.2.1/data-source-debug", "arale/autocomplete/1.2.1/filter-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.3/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.1/overlay-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.1/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "arale/autocomplete/1.2.3/data-source-debug", "arale/autocomplete/1.2.3/filter-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
-    var Overlay = require("arale/overlay/1.1.0/overlay-debug");
-    var Templatable = require("arale/templatable/0.9.0/templatable-debug");
-    var DataSource = require("arale/autocomplete/1.2.1/data-source-debug");
-    var Filter = require("arale/autocomplete/1.2.1/filter-debug");
-    var template = require("arale/autocomplete/1.2.1/autocomplete-debug.handlebars");
+    var Overlay = require("arale/overlay/1.1.1/overlay-debug");
+    var Templatable = require("arale/templatable/0.9.1/templatable-debug");
+    var DataSource = require("arale/autocomplete/1.2.3/data-source-debug");
+    var Filter = require("arale/autocomplete/1.2.3/filter-debug");
+    var template = require("arale/autocomplete/1.2.3/autocomplete-debug.handlebars");
+    var isIE = (window.navigator.userAgent || "").toLowerCase().indexOf("msie") !== -1;
     // keyCode
     var KEY = {
         UP: 38,
@@ -160,6 +161,8 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             template: template,
             submitOnEnter: true,
             // 回车是否会提交表单
+            selectItem: true,
+            // 选中时是否调用 selectItem 方法
             dataSource: [],
             //数据源，支持 Array, URL, Object, Function
             locator: "data",
@@ -184,11 +187,19 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             "mousedown [data-role=item]": function(e) {
                 var i = this.items.index(e.currentTarget);
                 this.set("selectedIndex", i);
-                this.selectItem();
-                this._firstMousedown = true;
+                if (this.get("selectItem")) {
+                    this.selectItem();
+                    this._firstMousedown = true;
+                }
             },
             mousedown: function() {
                 this._secondMousedown = true;
+            },
+            "click [data-role=item]": function() {
+                // 在非 selectItem 时隐藏浮层 
+                if (!this.get("selectItem")) {
+                    this.hide();
+                }
             },
             "mouseenter [data-role=item]": function(e) {
                 var className = this.get("classPrefix") + "-item-hover";
@@ -252,7 +263,9 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             if (item) {
                 var matchKey = item.attr("data-value");
                 this.get("trigger").val(matchKey);
-                this.set("inputValue", matchKey);
+                this.set("inputValue", matchKey, {
+                    silent: true
+                });
                 this.trigger("itemSelect", data);
                 this._clear();
             }
@@ -331,6 +344,12 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             this.currentItem = this.items.eq(index).addClass(className);
             this.trigger("indexChange", index, this.lastIndex);
             this.lastIndex = index;
+            // scroll current item into view
+            //this.currentItem.scrollIntoView();
+            var containerHeight = parseInt(this.get("height"));
+            if (!containerHeight) return;
+            var itemHeight = this.currentItem.parent().height() / this.items.length, itemTop = Math.max(0, itemHeight * (index + 1) - containerHeight);
+            this.element.scrollTop(itemTop);
         },
         _initFilter: function() {
             var filter = this.get("filter");
@@ -390,7 +409,7 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             this.set("filter", filter);
         },
         _blurEvent: function() {
-            if ($.browser.msie) return;
+            if (isIE) return;
             // https://github.com/aralejs/autocomplete/issues/26
             if (!this._secondMousedown) {
                 this.hide();
@@ -507,6 +526,8 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
             this.set("align", align);
         }
     });
+    // 以便写测试用例
+    AutoComplete._filter = Filter;
     module.exports = AutoComplete;
     function isString(str) {
         return Object.prototype.toString.call(str) === "[object String]";
@@ -572,8 +593,8 @@ define("arale/autocomplete/1.2.1/autocomplete-debug", [ "$-debug", "arale/overla
     }
 });
 
-define("arale/autocomplete/1.2.1/data-source-debug", [ "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "$-debug" ], function(require, exports, module) {
-    var Base = require("arale/base/1.1.0/base-debug");
+define("arale/autocomplete/1.2.3/data-source-debug", [ "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "$-debug" ], function(require, exports, module) {
+    var Base = require("arale/base/1.1.1/base-debug");
     var $ = require("$-debug");
     var DataSource = Base.extend({
         attrs: {
@@ -674,7 +695,7 @@ define("arale/autocomplete/1.2.1/data-source-debug", [ "arale/base/1.1.0/base-de
     }
 });
 
-define("arale/autocomplete/1.2.1/filter-debug", [ "$-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.3/filter-debug", [ "$-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Filter = {
         "default": function(data, query, options) {
@@ -763,13 +784,13 @@ define("arale/autocomplete/1.2.1/filter-debug", [ "$-debug" ], function(require,
         return r;
     }
     // 转义正则关键字
-    var keyword = /(\[|\[|\]|\^|\$|\||\(|\)|\{|\}|\+|\*|\?)/g;
+    var keyword = /(\[|\[|\]|\^|\$|\||\(|\)|\{|\}|\+|\*|\?|\\)/g;
     function escapeKeyword(str) {
         return (str || "").replace(keyword, "\\$1");
     }
 });
 
-define("arale/autocomplete/1.2.1/autocomplete-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.2.3/autocomplete-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
     var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
     var template = Handlebars.template;
     module.exports = template(function(Handlebars, depth0, helpers, partials, data) {

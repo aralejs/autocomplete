@@ -1,8 +1,8 @@
 define(function(require) {
   var expect = require('expect');
   var $ = require('$');
-  var Filter = require('filter');
   var AutoComplete = require('autocomplete');
+  var Filter = require('filter');
 
   describe('Issue', function() {
     it('#56 start with (', function() {
@@ -29,7 +29,27 @@ define(function(require) {
       var item = ac.$('li').eq(1);
       item.mouseenter();
       expect(item.hasClass('ui-autocomplete-item-hover')).to.be.ok();
+      item.mouseleave();
+      expect(item.hasClass('ui-autocomplete-item-hover')).not.to.be.ok();
+
       expect(ac.get('selectedIndex')).to.be(-1);
+
+      input.remove();
+      ac.destroy();
+    });
+
+    it('#72 start with \\', function() {
+      var ac, input = $('<input id="test" type="text" value="" />')
+        .appendTo(document.body);
+
+      ac = new AutoComplete({
+          trigger: '#test',
+          dataSource: []
+      }).render();
+
+      expect(function() {
+        ac.setInputValue('\\');
+      }).not.to.throwError();
 
       input.remove();
       ac.destroy();

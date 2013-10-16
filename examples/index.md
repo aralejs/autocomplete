@@ -110,7 +110,7 @@ seajs.use('autocomplete', function(AutoComplete) {
 seajs.use('autocomplete', function(AutoComplete) {
     var ac = new AutoComplete({
         trigger: '#scroll',
-        dataSource: ['abc', 'abd', 'abe', 'acd', 'ace', 'acf', 'acg', 'ach', 'aci', acj', 'ack'],
+        dataSource: ['abc', 'abd', 'abe', 'acd', 'ace', 'acf', 'acg', 'ach', 'aci', 'acj', 'ack'],
         height: 120
     }).render();
     ac.element.children().css('overflow', 'scroll');
