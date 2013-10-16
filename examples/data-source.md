@@ -74,7 +74,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 });
 ````
 
-## 处理复杂数据
+## 处理嵌套结构
 
 如果数据结构很复杂，你可以通过 `locator` 找到你要的数据
 

@@ -55,7 +55,11 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
       {{/each}}
     </ul>
     {{else}}
-    没有匹配任何数据
+    <ul class="{{classPrefix}}-content">
+      <li class="{{../classPrefix}}-item">
+      没有匹配任何数据
+      </li>
+    </ul>
     {{/if}}
   </div>
 </script>

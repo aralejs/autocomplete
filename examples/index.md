@@ -101,3 +101,18 @@ seajs.use('autocomplete', function(AutoComplete) {
     }).render();
 });
 ````
+
+## 下拉框高度固定, 出现滚动条时, 键盘上下选中项时跟随
+
+<input id="scroll" type="text" value="" />
+
+````javascript
+seajs.use('autocomplete', function(AutoComplete) {
+    var ac = new AutoComplete({
+        trigger: '#scroll',
+        dataSource: ['abc', 'abd', 'abe', 'acd', 'ace', 'acf', 'acg', 'ach', 'aci', acj', 'ack'],
+        height: 120
+    }).render();
+    ac.element.children().css('overflow', 'scroll');
+});
+````
