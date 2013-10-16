@@ -21,7 +21,18 @@ define(function(require, exports, module) {
         baseXY: [0, '100%']
       },
       submitOnEnter: true, // 回车是否会提交表单
-      dataSource: [], //数据源，支持 Array, URL, Object, Function
+      dataSource: { //数据源，支持 Array, URL, Object, Function
+        value: [],
+        getter: function(val) {
+          var that = this;
+          if ($.isFunction(val)) {
+            return function() {
+              val.apply(that, arguments);
+            };
+          }
+          return val;
+        }
+      },
       locator: 'data',
       // 输出过滤
       filter: null,

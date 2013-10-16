@@ -576,6 +576,16 @@ define(function(require) {
       input.focus();
       expect(ac._isOpen).to.be.ok();
     });
+
+    it('dataSource should call on ac', function() {
+      var spy = sinon.spy();
+      ac = new AutoComplete({
+        trigger: '#test',
+        dataSource: spy
+      }).render();
+      ac.setInputValue('a');
+      expect(spy.calledOn(ac)).to.be.ok();
+    });
   });
 
   function triggerKeyEvent(el, keyCode) {
