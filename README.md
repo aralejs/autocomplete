@@ -280,3 +280,7 @@ new AutoComplete({
     console.log(this.items[currentIndex])
 });
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/aralejs/autocomplete/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
