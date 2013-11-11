@@ -38,7 +38,7 @@ seajs.use(['textarea-complete', '$'], function(TextareaComplete, $) {
     $('.acTrigger').each(function(idx, elem) {
         new TextareaComplete({
             trigger: elem,
-            cursor: [5, 15],
+            cursor: [14, 2],
             dataSource: [
               {nickName:'popomore', realName: 'Haoliang Gao'},
               {nickName:'lepture', realName: 'Hsaoming Yang'},

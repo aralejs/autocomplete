@@ -21,7 +21,7 @@ define(function(require, exports, module) {
       });
 
       if (this.get('cursor')) {
-        this.mirror = Mirror.init(this.get('trigger'));
+        this.mirror = new Mirror(this.get('trigger'));
         this.dataSource.before('getData', function() {
           that.mirror.setContent(
             that.get('inputValue'),
@@ -107,26 +107,26 @@ define(function(require, exports, module) {
 
   // 计算光标位置
   // MIT https://github.com/ichord/At.js/blob/master/js/jquery.atwho.js
-  var Mirror = {
-    mirror: null,
+
+  var Mirror = function(origin) {
+    origin = $(origin);
+    var css = {
+      position: 'absolute',
+      left: -9999,
+      top: 0,
+      zIndex: -20000,
+      'white-space': 'pre-wrap'
+    };
+    $.each(this.css, function(i, p) {
+      return css[p] = origin.css(p);
+    });
+    this.mirror = $('<div><span></span></div>')
+      .css(css)
+      .insertAfter(origin);
+  };
+
+  Mirror.prototype = {
     css: ["overflowY", "height", "width", "paddingTop", "paddingLeft", "paddingRight", "paddingBottom", "marginTop", "marginLeft", "marginRight", "marginBottom", 'fontFamily', 'borderStyle', 'borderWidth', 'wordWrap', 'fontSize', 'lineHeight', 'overflowX'],
-    init: function(origin) {
-      origin = $(origin);
-      var css = {
-        position: 'absolute',
-        left: -9999,
-        top: 0,
-        zIndex: -20000,
-        'white-space': 'pre-wrap'
-      };
-      $.each(this.css, function(i, p) {
-        return css[p] = origin.css(p);
-      });
-      this.mirror = $('<div><span></span></div>')
-        .css(css)
-        .insertAfter(origin);
-      return this;
-    },
     setContent: function(content, query, cursor) {
       var left = query ? (cursor[1] - query.length) : cursor[1];
       var right = cursor[1];
