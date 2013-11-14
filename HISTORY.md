@@ -3,7 +3,9 @@
 ---
 ## 1.2.3
 
-`tag:fixed` [#82](https://github.com/aralejs/autocomplete/issues/82)
+`tag:fixed` [#82](https://github.com/aralejs/autocomplete/issues/82) 当浮层设置高度, 出现滚动条时, 按上下键选中项需要在可视范围内
+
+`tag:fixed` 页面上多个 textarea-complete 时, 修复 mirror 的引用 bug
 
 ## 1.2.2
 
