@@ -52,7 +52,7 @@ define(function(require, exports, module) {
                 timestamp: new Date().getTime()
             };
             var url = this.get('source')
-                .replace(/{{(.*?)}}/g, function(all, match) {
+                .replace(/\{\{(.*?)\}\}/g, function(all, match) {
                     return obj[match];
                 });
 
