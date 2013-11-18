@@ -66,11 +66,7 @@ define(function(require, exports, module) {
     show: function() {
       var cursor = this.get('cursor');
       if (cursor) {
-        if ($.isArray(cursor)) {
-          var offset = cursor;
-        } else {
-          var offset = [0, 0];
-        }
+        var offset = $.isArray(cursor) ? cursor : [0, 0];
         var pos = this.mirror.getFlagRect();
         var align = this.get('align');
         align.baseXY = [pos.left + offset[0], pos.bottom + offset[1]];
