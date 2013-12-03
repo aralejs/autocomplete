@@ -254,3 +254,7 @@ dataSource: [
     console.log(this.items[current])
 });
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/aralejs/autocomplete/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
