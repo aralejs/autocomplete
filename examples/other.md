@@ -26,14 +26,10 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
     new AutoComplete({
         trigger: '#example',
         dataSource: function(query) {
-            var a = $.map(data, function(v, i) {
+            query = query.replace(/^(.*)@.*$/,'$1');
+            return JQ.map(data, function(v) {
                 return query + '@' + v;
             });
-            return a;
-        },
-        filter: '',
-        inputFilter: function(v){
-            return v.replace(/^(.*)@.*$/,'$1');
         }
     }).render();
 });
