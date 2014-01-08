@@ -53,7 +53,7 @@ define(function(require) {
     it('type is array', function() {
       var spy = sinon.spy();
       var param = [1, 2, 3];
-      var source = new DataSource({
+      new DataSource({
         source: param
       }).on('data', spy).getData();
       expect(spy.withArgs(param).called).to.be.ok();
@@ -64,7 +64,7 @@ define(function(require) {
       var param = {
         data: 1
       };
-      var source = new DataSource({
+      new DataSource({
         source: param
       }).on('data', spy).getData();
       expect(spy.withArgs(param).called).to.be.ok();
@@ -72,7 +72,7 @@ define(function(require) {
 
     it('type is function', function() {
       var spy = sinon.spy();
-      var source = new DataSource({
+      new DataSource({
         source: function(q) {
           return [
             q + '@163.com'
@@ -84,8 +84,8 @@ define(function(require) {
 
     it('type is function return false', function() {
       var spy = sinon.spy();
-      var source = new DataSource({
-        source: function(q) {
+      new DataSource({
+        source: function() {
           return false;
         }
       }).on('data', spy).getData('a');
@@ -94,7 +94,7 @@ define(function(require) {
 
     it('type is function async', function(done) {
       var spy = sinon.spy();
-      var source = new DataSource({
+      new DataSource({
         source: function(q, done) {
           setTimeout(function() {
             done();
@@ -116,10 +116,10 @@ define(function(require) {
           callback([1, 2, 3]);
           return this;
         },
-        error: function(callback) {}
+        error: function() {}
       });
 
-      var source = new DataSource({
+      new DataSource({
         source: './test.json?q={{query}}'
       }).on('data', spy).getData('a');
       expect(stub.calledWithMatch('./test.json?q=a')).to.be.ok();
@@ -130,7 +130,7 @@ define(function(require) {
     it('type is url when error', function() {
       var spy = sinon.spy();
       var stub = sinon.stub($, 'ajax').returns({
-        success: function(callback) {
+        success: function() {
           return this;
         },
         error: function(callback) {
@@ -139,7 +139,7 @@ define(function(require) {
         }
       });
 
-      var source = new DataSource({
+      new DataSource({
         source: './test.json?q={{query}}'
       }).on('data', spy).getData('a');
       expect(spy.withArgs({}).called).to.be.ok();
@@ -153,7 +153,7 @@ define(function(require) {
           }, 10);
           return this;
         },
-        error: function(callback) {
+        error: function() {
           return this;
         }
       });

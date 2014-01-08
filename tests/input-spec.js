@@ -2,6 +2,7 @@ define(function(require) {
   var $ = require('$');
   var expect = require('expect');
   var Input = require('input');
+  var sinon = require('sinon');
 
   describe('Input', function() {
     it('should trigger events when query changed', function() {
@@ -80,7 +81,7 @@ define(function(require) {
   });
 
   function triggerKeyEvent(el, keyCode) {
-    var e = jQuery.Event("keydown.autocomplete");
+    var e = jQuery.Event('keydown.autocomplete');
     e.which = keyCode;
     el.trigger(e);
   }

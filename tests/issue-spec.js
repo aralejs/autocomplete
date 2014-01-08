@@ -21,8 +21,8 @@ define(function(require) {
         .appendTo(document.body);
 
       ac = new AutoComplete({
-          trigger: '#test',
-          dataSource: ['abc', 'abd', 'cbd']
+        trigger: '#test',
+        dataSource: ['abc', 'abd', 'cbd']
       }).render();
 
       ac.setInputValue('a');
@@ -43,8 +43,8 @@ define(function(require) {
         .appendTo(document.body);
 
       ac = new AutoComplete({
-          trigger: '#test',
-          dataSource: []
+        trigger: '#test',
+        dataSource: []
       }).render();
 
       expect(function() {

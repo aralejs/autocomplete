@@ -134,7 +134,7 @@ define(function(require, exports, module) {
       if (this.items) {
         if (index &&
           this.items.length > index && index >= -1) {
-        this.set('selectedIndex', index);
+          this.set('selectedIndex', index);
         }
         this._handleSelection();
       }
@@ -167,7 +167,7 @@ define(function(require, exports, module) {
       data || (data = []);
 
       // 渲染下拉
-      this.set("model", {
+      this.set('model', {
         items: data,
         query: this.input.get('query'),
         length: data.length
@@ -289,12 +289,12 @@ define(function(require, exports, module) {
 
     _handleMouseDown: function(e) {
       if (IE678) {
-          var trigger = this.input.get('element')[0];
-          trigger.onbeforedeactivate = function() {
-            window.event.returnValue = false;
-            trigger.onbeforedeactivate = null;
-          };
-        }
+        var trigger = this.input.get('element')[0];
+        trigger.onbeforedeactivate = function() {
+          window.event.returnValue = false;
+          trigger.onbeforedeactivate = null;
+        };
+      }
       e.preventDefault();
     },
 
@@ -452,13 +452,15 @@ define(function(require, exports, module) {
   }
 
   function include(options) {
-    var context = {},
-        mergeContext = function(obj) {
-            for(var k in obj)context[k]=obj[k];
-        };
+    var context = {};
+      
     mergeContext(this);
     mergeContext(options.hash);
     return options.fn(context);
+
+    function mergeContext(obj) {
+      for(var k in obj) context[k] = obj[k];
+    }
   }
 
   function highlightItem(label) {

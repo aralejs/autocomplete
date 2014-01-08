@@ -80,7 +80,6 @@ define(function(require) {
 
     describe('data locator', function() {
       it('should support string', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           dataSource: {
@@ -108,7 +107,6 @@ define(function(require) {
       });
 
       it('should support dot string', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           dataSource: {
@@ -138,7 +136,6 @@ define(function(require) {
       });
 
       it('should support function', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           dataSource: {
@@ -169,7 +166,6 @@ define(function(require) {
       });
 
       it('wrong locator', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           dataSource: {
@@ -197,7 +193,6 @@ define(function(require) {
     });
 
     it('should be hide when mousedown #26', function() {
-      var input = $('#test');
       ac = new AutoComplete({
         trigger: '#test',
         dataSource: ['abc']
@@ -209,7 +204,6 @@ define(function(require) {
     });
 
     it('should not be hide when mousedown #26', function() {
-      var input = $('#test');
       ac = new AutoComplete({
         trigger: '#test',
         template: '<div><p data-role="other">a</p><ul data-role="items">{{#each items}}<li data-role="item">{{label}}</li>{{/each}}</ul></div>',
@@ -224,7 +218,6 @@ define(function(require) {
 
     describe('filter', function() {
       it('should be "startsWith" by default', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           dataSource: []
@@ -232,7 +225,6 @@ define(function(require) {
         expect(ac.get('filter')).to.eql(Filter['startsWith']);
       });
       it('should be "default" when ajax by default', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           dataSource: './data.json'
@@ -240,7 +232,6 @@ define(function(require) {
         expect(ac.get('filter')).to.eql(Filter['default']);
       });
       it('should be "default" when "", null, false', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           filter: '',
@@ -250,7 +241,6 @@ define(function(require) {
         expect(ac.get('filter')).to.eql(Filter['default']);
       });
       it('should support string', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           filter: 'test',
@@ -261,7 +251,6 @@ define(function(require) {
       });
 
       it('should support string but not exist', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           filter: 'notExist',
@@ -271,7 +260,6 @@ define(function(require) {
         expect(ac.get('filter')).to.eql(Filter['default']);
       });
       it('should support function', function() {
-        var input = $('#test');
         var func = function() {};
         ac = new AutoComplete({
           trigger: '#test',
@@ -282,7 +270,6 @@ define(function(require) {
         expect(ac.get('filter')).to.eql(func);
       });
       it('should support object but not exist', function() {
-        var input = $('#test');
         ac = new AutoComplete({
           trigger: '#test',
           filter: 'notExist',
@@ -292,7 +279,6 @@ define(function(require) {
         expect(ac.get('filter')).to.eql(Filter['default']);
       });
       it('should be called with 3 param', function() {
-        var input = $('#test');
         var spy = sinon.spy();
         Filter.filter = spy;
         ac = new AutoComplete({
@@ -336,8 +322,7 @@ define(function(require) {
     });
 
     it('highlight item', function() {
-      var input = $('#test'),
-        item;
+      var item;
       ac = new AutoComplete({
         trigger: '#test',
         html: '{{{highlightItem label}}}',
@@ -415,7 +400,6 @@ define(function(require) {
     });
 
     it('clear', function() {
-      var input = $('#test');
       ac = new AutoComplete({
         trigger: '#test',
         dataSource: ['abc', 'abd', 'cbd']
@@ -432,7 +416,6 @@ define(function(require) {
     });
 
     it('do not show when async #14', function(done) {
-      var input = $('#test');
       ac = new AutoComplete({
         trigger: '#test',
         dataSource: 'http://baidu.com'
@@ -445,10 +428,8 @@ define(function(require) {
           }, 50);
           return this;
         },
-        error: function(callback) {}
+        error: function() {}
       });
-
-      var t = ac.element.html();
 
       ac.setInputValue('a');
 
@@ -611,7 +592,7 @@ define(function(require) {
   });
 
   function triggerKeyEvent(el, keyCode) {
-    var e = jQuery.Event("keydown.autocomplete");
+    var e = jQuery.Event('keydown.autocomplete');
     e.which = keyCode;
     el.trigger(e);
   }
