@@ -383,7 +383,8 @@ define(function(require, exports, module) {
 
         _keyUp: function(e) {
             e.preventDefault();
-            if (this.get('data').length) {
+            var data = this.get('data');
+            if (data && data.length) {
                 if (!this.get('visible')) {
                     this.show();
                     return;
@@ -394,7 +395,8 @@ define(function(require, exports, module) {
 
         _keyDown: function(e) {
             e.preventDefault();
-            if (this.get('data').length) {
+            var data = this.get('data');
+            if (data && data.length) {
                 if (!this.get('visible')) {
                     this.show();
                     return;
@@ -416,6 +418,7 @@ define(function(require, exports, module) {
 
         // 选项上下移动
         _step: function(direction) {
+            if (!this.items) return;
             var currentIndex = this.get('selectedIndex');
             if (direction === -1) { // 反向
                 if (currentIndex > 0) {
