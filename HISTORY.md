@@ -2,6 +2,10 @@
 
 ---
 
+## 1.3.0
+
+`tag:changed` 大范围的重构，很多细节有变化，可以按照新文档开发。
+
 ## 1.2.3
 
 `tag:fixed` [#82](https://github.com/aralejs/autocomplete/issues/82) 当浮层设置高度, 出现滚动条时, 按上下键选中项需要在可视范围内

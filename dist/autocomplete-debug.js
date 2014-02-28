@@ -377,12 +377,13 @@ define("arale/autocomplete/1.3.0/autocomplete-debug", [ "$-debug", "arale/overla
         return filter;
     }
     function include(options) {
-        var context = {}, mergeContext = function(obj) {
-            for (var k in obj) context[k] = obj[k];
-        };
+        var context = {};
         mergeContext(this);
         mergeContext(options.hash);
         return options.fn(context);
+        function mergeContext(obj) {
+            for (var k in obj) context[k] = obj[k];
+        }
     }
     function highlightItem(label) {
         var index = this.highlightIndex, classPrefix = this.parent ? this.parent.classPrefix : "", cursor = 0, v = label || this.label || "", h = "";
