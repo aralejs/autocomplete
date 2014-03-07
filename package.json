@@ -1,7 +1,7 @@
 {
     "family": "arale",
     "name": "autocomplete",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "description": "自动补全组件",
     "keywords": ["widget"],
     "homepage": "http://aralejs.org/autocomplete/",
