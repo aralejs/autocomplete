@@ -72,11 +72,11 @@ define(function(require, exports, module) {
     },
 
     parseElement: function() {
-      var t = ['header', 'footer', 'html'];
-      for (var i in t) {
-        this.templatePartials || (this.templatePartials = {});
-        this.templatePartials[t[i]] = this.get(t[i]);
-      }
+      var that = this;
+      this.templatePartials || (this.templatePartials = {});
+      $.each(['header', 'footer', 'html'], function( index, item ) {
+        that.templatePartials[item] = that.get(item);
+      });
       AutoComplete.superclass.parseElement.call(this);
     },
 
