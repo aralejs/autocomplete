@@ -82,5 +82,9 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
         dataSource: ['abc', 'abd', 'abe', 'acd'],
         width: 150
     }).render();
+
+    ac.input.on('focus', function() {
+      ac.show();
+    });
 });
 ````
