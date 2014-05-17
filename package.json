@@ -1,9 +1,10 @@
 {
-  "family": "arale",
-  "name": "autocomplete",
-  "version": "1.3.0",
+  "name": "arale-autocomplete",
+  "version": "1.4.0",
   "description": "自动补全组件",
-  "keywords": ["widget"],
+  "keywords": [
+    "widget"
+  ],
   "homepage": "http://aralejs.org/autocomplete/",
   "author": "popomore <sakura9515@gmail.com>",
   "maintainers": [
@@ -19,18 +20,24 @@
   },
   "license": "MIT",
   "spm": {
-    "alias": {
-      "$": "$",
-      "templatable": "arale/templatable/0.9.2/templatable",
-      "base": "arale/base/1.1.1/base",
-      "overlay": "arale/overlay/1.1.2/overlay"
+    "main": "autocomplete.js",
+    "dependencies": {
+      "jquery": "1.7.2",
+      "arale-templatable": "0.10.0",
+      "arale-base": "1.2.0",
+      "arale-overlay": "1.2.0",
+      "handlebars-runtime": "1.3.0"
     },
-    "devAlias": {
-      "select.css": "alice/select/1.0.1/select.css"
+    "devDependencies": {
+      "alice-select": "1.1.0",
+      "expect.js": "0.3.1",
+      "sinon": "1.6.0"
     },
-    "output": [
-      "autocomplete.js"
-    ]
+    "engines": {
+      "seajs": "2.2.1",
+      "seajs-text": "1.1.0"
+    },
+    "buildArgs": "--ignore jquery"
   },
   "scripts": {
     "test": "make test"
