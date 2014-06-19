@@ -5,7 +5,7 @@
 ----
 
 <script>
-seajs.use('select.css');
+seajs.use('alice-select');
 </script>
 
 ## 使用参数来自定义模板
@@ -20,7 +20,7 @@ seajs.use('select.css');
 </style>
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
     var ac = new AutoComplete({
         trigger: '#acTrigger1',
         header: '<div class="{{classPrefix}}-header">筛选省市：</div>',
@@ -70,7 +70,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 <input id="acTrigger4" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
     var AutoCompleteX = AutoComplete.extend({
         _isEmpty: function() {
           return false;

@@ -5,7 +5,7 @@
 ----
 
 <script>
-seajs.use('select.css');
+seajs.use('alice-select');
 </script>
 
 最简单的方式只需要提供 trigger 和 datasource。
@@ -52,7 +52,7 @@ seajs.use('autocomplete', function(AutoComplete) {
 状态：<a href="#" id="acTrigger3-extra" data-status="on">开启</a>
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
     var ac = new AutoComplete({
         trigger: '#acTrigger3',
         dataSource: ['abc', 'abd', 'abe', 'acd'],

@@ -5,7 +5,7 @@
 ---
 
 <script>
-seajs.use('select.css');
+seajs.use('alice-select');
 </script>
 
 ## Email 自动补全
@@ -17,7 +17,7 @@ seajs.use('select.css');
 <input id="example" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
     var data = [
         '163.com',
         '126.com',
@@ -27,7 +27,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
         trigger: '#example',
         dataSource: function(query) {
             query = query.replace(/^(.*)@.*$/,'$1');
-            return JQ.map(data, function(v) {
+            return $.map(data, function(v) {
                 return query + '@' + v;
             });
         }

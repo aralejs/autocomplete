@@ -5,7 +5,7 @@
 ---
 
 <script>
-seajs.use('select.css');
+seajs.use('alice-select');
 </script>
 
 在使用前先看下数据源的文档
@@ -53,7 +53,7 @@ seajs.use('autocomplete', function(AutoComplete) {
 <input id="acTrigger3" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
     var local = ['ade', 'adf'];
     new AutoComplete({
         trigger: '#acTrigger3',
@@ -81,7 +81,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 <input id="acTrigger4" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
     new AutoComplete({
         trigger: '#acTrigger4',
         locator: 'my.mother.father.brothers',
@@ -111,7 +111,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 <input id="acTrigger5" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
+seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
     new AutoComplete({
         trigger: '#acTrigger5',
         dataSource: [
