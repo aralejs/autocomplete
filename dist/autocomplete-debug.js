@@ -1,4 +1,4 @@
-define("arale/autocomplete/1.3.0/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.2/overlay-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.2/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./data-source-debug", "./filter-debug", "./input-debug", "./autocomplete-debug.handlebars" ], function(require, exports, module) {
+define("arale/autocomplete/1.3.1/autocomplete-debug", [ "$-debug", "arale/overlay/1.1.2/overlay-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.2/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./data-source-debug", "./filter-debug", "./input-debug", "./autocomplete-debug.handlebars" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Overlay = require("arale/overlay/1.1.2/overlay-debug");
     var Templatable = require("arale/templatable/0.9.2/templatable-debug");
@@ -67,11 +67,11 @@ define("arale/autocomplete/1.3.0/autocomplete-debug", [ "$-debug", "arale/overla
             include: include
         },
         parseElement: function() {
-            var t = [ "header", "footer", "html" ];
-            for (var i in t) {
-                this.templatePartials || (this.templatePartials = {});
-                this.templatePartials[t[i]] = this.get(t[i]);
-            }
+            var that = this;
+            this.templatePartials || (this.templatePartials = {});
+            $.each([ "header", "footer", "html" ], function(index, item) {
+                that.templatePartials[item] = that.get(item);
+            });
             AutoComplete.superclass.parseElement.call(this);
         },
         setup: function() {
@@ -418,7 +418,7 @@ define("arale/autocomplete/1.3.0/autocomplete-debug", [ "$-debug", "arale/overla
     }
 });
 
-define("arale/autocomplete/1.3.0/data-source-debug", [ "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "$-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.3.1/data-source-debug", [ "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "$-debug" ], function(require, exports, module) {
     var Base = require("arale/base/1.1.1/base-debug");
     var $ = require("$-debug");
     var DataSource = Base.extend({
@@ -520,7 +520,7 @@ define("arale/autocomplete/1.3.0/data-source-debug", [ "arale/base/1.1.1/base-de
     }
 });
 
-define("arale/autocomplete/1.3.0/filter-debug", [ "$-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.3.1/filter-debug", [ "$-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Filter = {
         "default": function(data) {
@@ -593,7 +593,7 @@ define("arale/autocomplete/1.3.0/filter-debug", [ "$-debug" ], function(require,
     }
 });
 
-define("arale/autocomplete/1.3.0/input-debug", [ "$-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.3.1/input-debug", [ "$-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Base = require("arale/base/1.1.1/base-debug");
     var lteIE9 = /\bMSIE [6789]\.0\b/.test(navigator.userAgent);
@@ -698,7 +698,7 @@ define("arale/autocomplete/1.3.0/input-debug", [ "$-debug", "arale/base/1.1.1/ba
     }
 });
 
-define("arale/autocomplete/1.3.0/autocomplete-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+define("arale/autocomplete/1.3.1/autocomplete-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
     var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
     var template = Handlebars.template;
     module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
@@ -713,7 +713,7 @@ define("arale/autocomplete/1.3.0/autocomplete-debug.handlebars", [ "gallery/hand
         function program1(depth0, data, depth1) {
             var buffer = "", stack1, stack2, options;
             buffer += '\n      <li data-role="item" class="' + escapeExpression((stack1 = depth1.classPrefix, 
-            typeof stack1 === functionType ? stack1.apply(depth0) : stack1)) + '-item">\n        <a href="javascript:\\\'\\\'">\n        ';
+            typeof stack1 === functionType ? stack1.apply(depth0) : stack1)) + '-item">\n        <a href="javascript:\'\'">\n        ';
             options = {
                 hash: {
                     parent: depth1
