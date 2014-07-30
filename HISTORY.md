@@ -6,6 +6,8 @@
 
 `tag:fixed` 修复 for/in 数组的 bug
 
+`tag:fixed` #98 模板中不应该使用 javascript:\'\'
+
 ## 1.3.0
 
 `tag:changed` 大范围的重构，很多细节有变化，可以按照新文档开发。
@@ -86,7 +88,7 @@
 `tag:new` [#11](https://github.com/aralejs/autocomplete/issues/11) 控制按键频率。
 
 `tag:new` [#13](https://github.com/aralejs/autocomplete/issues/13) dataSource 支持 ajax。
- 
+
 `tag:new` [#15](https://github.com/aralejs/autocomplete/issues/15) 提供 selectFirst 参数。
 
 `tag:new` [#16](https://github.com/aralejs/autocomplete/issues/16) dataSource 支持复杂的结构。
