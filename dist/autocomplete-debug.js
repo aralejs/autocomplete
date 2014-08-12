@@ -208,7 +208,7 @@ define("arale/autocomplete/1.3.1/autocomplete-debug", [ "$-debug", "arale/overla
             var index = isMouse ? this.items.index(e.currentTarget) : this.get("selectedIndex");
             var item = this.items.eq(index);
             var data = this.get("data")[index];
-            if (index >= 0 && item) {
+            if (index >= 0 && item && data) {
                 this.input.setValue(data.label);
                 this.set("selectedIndex", index, {
                     silent: true

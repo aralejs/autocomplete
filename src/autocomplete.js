@@ -260,7 +260,7 @@ define(function(require, exports, module) {
       var item = this.items.eq(index);
       var data = this.get('data')[index];
 
-      if (index >= 0 && item) {
+      if (index >= 0 && item && data) {
         this.input.setValue(data.label);
         this.set('selectedIndex', index, {silent: true});
 
@@ -453,7 +453,7 @@ define(function(require, exports, module) {
 
   function include(options) {
     var context = {};
-      
+
     mergeContext(this);
     mergeContext(options.hash);
     return options.fn(context);

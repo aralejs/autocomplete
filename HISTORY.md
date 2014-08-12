@@ -8,6 +8,8 @@
 
 `tag:fixed` #98 模板中不应该使用 javascript:\'\'
 
+`tag:fixed` _handleSelection 中 data 为空的情况
+
 ## 1.3.0
 
 `tag:changed` 大范围的重构，很多细节有变化，可以按照新文档开发。
