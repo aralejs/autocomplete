@@ -4,9 +4,7 @@
     <ul data-role="items">
     {{#each items}}
       <li data-role="item" class="{{../classPrefix}}-item">
-        <a href="javascript:\'\'">
         {{#include parent=.. }}{{> html}}{{/include}}
-        </a>
       </li>
     {{/each}}
     </ul>

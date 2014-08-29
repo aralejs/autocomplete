@@ -42,12 +42,12 @@ seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
 </form>
 
 ````javascript
-seajs.use('../src/autocomplete.css');
+seajs.use('select.css');
 seajs.use(['autocomplete', './other.handlebars'], function(AutoComplete, template) {
   ac = new AutoComplete({
     trigger: '#acTrigger',
     template: template,
-    selectItem: false,
+    width: '200'
     dataSource: [
       '信用卡',
       '信息 '
