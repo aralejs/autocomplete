@@ -590,13 +590,13 @@ define(function(require) {
       expect(content.scrollTop()).to.be(41);
     });
 
-    it('should not contain javascript:\'\' #98', function() {
+    it('should not contain a #98', function() {
       ac = new AutoComplete({
         trigger: '#test',
         dataSource: ['abc', 'abd', 'abe']
       }).render();
       ac.setInputValue('a');
-      expect(ac.items.eq(0).find('a').attr('href')).to.be('javascript:\'\'');
+      expect(ac.items.eq(0).find('a')[0]).to.be(undefined);
     });
   });
 

@@ -257,6 +257,7 @@ define(function(require, exports, module) {
     _handleSelection: function(e) {
       var isMouse = e ? e.type === 'click' : false;
       var index = isMouse ? this.items.index(e.currentTarget) : this.get('selectedIndex');
+      if (!this.items) return;
       var item = this.items.eq(index);
       var data = this.get('data')[index];
 
