@@ -57,17 +57,15 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
     var local = ['ade', 'adf'];
     new AutoComplete({
         trigger: '#acTrigger3',
-        dataSource: function(value) {
+        dataSource: function(value, done) {
             var that = this;
             $.ajax('./data.json', {
                 dataType: 'json'
             })
             .success(function(data) {
-                that.trigger('data', data.concat(local));
+                done(data.concat(local));
             })
-            .error(function(data) {
-                that.trigger('data', {});
-            });
+            .error(done);
         },
         width: 150
     }).render();
