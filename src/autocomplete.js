@@ -255,9 +255,9 @@ define(function(require, exports, module) {
     // 2. 回车触发
     // 3. selectItem 触发
     _handleSelection: function(e) {
+      if (!this.items) return;
       var isMouse = e ? e.type === 'click' : false;
       var index = isMouse ? this.items.index(e.currentTarget) : this.get('selectedIndex');
-      if (!this.items) return;
       var item = this.items.eq(index);
       var data = this.get('data')[index];
 
