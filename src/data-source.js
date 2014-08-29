@@ -98,14 +98,15 @@ define(function(require, exports, module) {
     _getFunctionData: function(query) {
       var that = this,
         func = this.get('source');
-      // 如果返回 false 可阻止执行
 
-      function done(data) {
-        that._done(data);
-      }
+      // 如果返回 false 可阻止执行
       var data = func.call(this, query, done);
       if (data) {
         this._done(data);
+      }
+
+      function done(data) {
+        that._done(data);
       }
     }
   });

@@ -27,7 +27,7 @@ define(function(require, exports, module) {
           var that = this;
           if ($.isFunction(val)) {
             return function() {
-              val.apply(that, arguments);
+              return val.apply(that, arguments);
             };
           }
           return val;

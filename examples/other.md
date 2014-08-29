@@ -27,7 +27,7 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
         trigger: '#example',
         dataSource: function(query) {
             query = query.replace(/^(.*)@.*$/,'$1');
-            return JQ.map(data, function(v) {
+            return $.map(data, function(v) {
                 return query + '@' + v;
             });
         }

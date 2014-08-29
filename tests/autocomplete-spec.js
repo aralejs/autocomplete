@@ -29,7 +29,9 @@ define(function(require) {
     it('normal usage', function() {
       ac = new AutoComplete({
         trigger: '#test',
-        dataSource: ['abc', 'abd', 'cbd']
+        dataSource: function() {
+          return ['abc', 'abd', 'cbd'];
+        }
       }).render();
 
       ac.setInputValue('a');
