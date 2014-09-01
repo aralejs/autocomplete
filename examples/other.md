@@ -47,7 +47,7 @@ seajs.use(['autocomplete', './other.handlebars'], function(AutoComplete, templat
   ac = new AutoComplete({
     trigger: '#acTrigger',
     template: template,
-    width: '200'
+    width: '200',
     dataSource: [
       '信用卡',
       '信息 '
