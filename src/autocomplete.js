@@ -27,7 +27,7 @@ var AutoComplete = Overlay.extend({
         var that = this;
         if ($.isFunction(val)) {
           return function () {
-            val.apply(that, arguments);
+            return val.apply(that, arguments);
           };
         }
         return val;
@@ -239,12 +239,13 @@ var AutoComplete = Overlay.extend({
   // 2. 回车触发
   // 3. selectItem 触发
   _handleSelection: function (e) {
+    if (!this.items) return;
     var isMouse = e ? e.type === 'click' : false;
     var index = isMouse ? this.items.index(e.currentTarget) : this.get('selectedIndex');
     var item = this.items.eq(index);
     var data = this.get('data')[index];
 
-    if (index >= 0 && item) {
+    if (index >= 0 && item && data) {
       this.input.setValue(data.label);
       this.set('selectedIndex', index, {
         silent: true
