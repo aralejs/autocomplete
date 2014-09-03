@@ -2,6 +2,14 @@
 
 ---
 
+## 1.4.1
+
+`tag:fixed` 修复 for/in 数组的 bug
+
+`tag:fixed` #98 模板中不应该使用 javascript:\'\'
+
+`tag:fixed` _handleSelection 中 data 为空的情况
+
 ## 1.4.0
 
 迁移 spm@3.x
