@@ -2,6 +2,14 @@
 
 ---
 
+## 1.3.2
+
+`tag:fixed` 修复 this.items 可能不存着的情况
+
+`tag:fixed` 修复 dataSource 没有返回
+
+`tag:fixed` 去掉模板中的 a，无用
+
 ## 1.3.1
 
 `tag:fixed` 修复 for/in 数组的 bug
