@@ -111,8 +111,12 @@ seajs.use('autocomplete', function(AutoComplete) {
     var ac = new AutoComplete({
         trigger: '#scroll',
         dataSource: ['abc', 'abd', 'abe', 'acd', 'ace', 'acf', 'acg', 'ach', 'aci', 'acj', 'ack'],
-        height: 120
+        height: 120,
+        width: 200
     }).render();
+    // 如果出现滚动条，点击滚动条会自动隐藏，因为触发了 input 的 blur
+    // 如果对 blur 要求不多，可以去除
+    // ac.input.off('blur');
     ac.element.children().css('overflow', 'scroll');
 });
 ````
