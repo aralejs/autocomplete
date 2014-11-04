@@ -37,6 +37,7 @@ describe('Autocomplete', function () {
     expect(ac.get('data')).to.eql([{
       label: 'abc',
       value: 'abc',
+      target: 'abc',
       alias: [],
       highlightIndex: [
         [0, 1]
@@ -45,6 +46,7 @@ describe('Autocomplete', function () {
     {
       label: 'abd',
       value: 'abd',
+      target: 'abd',
       alias: [],
       highlightIndex: [
         [0, 1]
@@ -93,6 +95,7 @@ describe('Autocomplete', function () {
       expect(ac.get('data')).to.eql([{
         label: 'abc',
         value: 'abc',
+        target: 'abc',
         alias: [],
         highlightIndex: [
           [0, 1]
@@ -101,6 +104,7 @@ describe('Autocomplete', function () {
       {
         label: 'abd',
         value: 'abd',
+        target: 'abd',
         alias: [],
         highlightIndex: [
           [0, 1]
@@ -123,6 +127,7 @@ describe('Autocomplete', function () {
       expect(ac.get('data')).to.eql([{
         label: 'abc',
         value: 'abc',
+        target: 'abc',
         alias: [],
         highlightIndex: [
           [0, 1]
@@ -131,6 +136,7 @@ describe('Autocomplete', function () {
       {
         label: 'abd',
         value: 'abd',
+        target: 'abd',
         alias: [],
         highlightIndex: [
           [0, 1]
@@ -154,6 +160,7 @@ describe('Autocomplete', function () {
       expect(ac.get('data')).to.eql([{
         label: 'abc',
         value: 'abc',
+        target: 'abc',
         alias: [],
         highlightIndex: [
           [0, 1]
@@ -162,6 +169,7 @@ describe('Autocomplete', function () {
       {
         label: 'abd',
         value: 'abd',
+        target: 'abd',
         alias: [],
         highlightIndex: [
           [0, 1]
@@ -282,7 +290,7 @@ describe('Autocomplete', function () {
 
       expect(ac.get('filter')).to.eql(Filter['default']);
     });
-    it('should be called with 3 param', function () {
+    it('should be called with 4 param', function () {
       var spy = sinon.spy();
       Filter.filter = spy;
       ac = new AutoComplete({
@@ -295,6 +303,7 @@ describe('Autocomplete', function () {
       var data = [{
         label: 'abc',
         value: 'abc',
+        target: 'abc',
         alias: []
       }];
       expect(spy.withArgs(data, 'a').called).to.be.ok();
@@ -323,6 +332,25 @@ describe('Autocomplete', function () {
     expect(input.val()).to.be('abd');
     expect(ac.input.getValue()).to.be('abd');
     expect(spy.calledTwice).to.be.ok();
+  });
+
+  it('specify final input-value individually', function () {
+    var input = $('#test'),
+    ac = new AutoComplete({
+      trigger: '#test',
+      filter: 'stringMatch',
+      dataSource: ['abc', 'abd', 'cbd', {
+          value: '天弘增利宝货币 000198 TIANHONGZENGLIBAO',
+          label: '天弘增利宝货币 000198',
+          target: '000198'
+      }]
+    }).render();
+
+    ac.setInputValue('TIAN');
+    ac.set('selectedIndex', 0);
+    ac.selectItem();
+    expect(input.val()).to.be('000198');
+    expect(ac.input.getValue()).to.be('000198');
   });
 
   it('highlight item', function () {
@@ -495,32 +523,38 @@ describe('Autocomplete', function () {
     expect(ac.get('data')).to.eql([{
       label: 'aa',
       value: 'aa',
+      target: 'aa',
       alias: []
     },
     {
       label: 'ba',
       value: 'ba',
+      target: 'ba',
       alias: []
     },
     {
       label: 'ac',
       value: 'ac',
+      target: 'ac',
       alias: []
     },
     {
       label: 'bc',
       value: 'bc',
+      target: 'bc',
       alias: [],
       other: 'bc'
     },
     {
       label: 'ad',
       value: 'ad',
+      target: 'ad',
       alias: []
     },
     {
       label: 'ae',
       value: 'ae',
+      target: 'ae',
       alias: ['be']
     }]);
   });
