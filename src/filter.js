@@ -57,6 +57,33 @@ var Filter = {
       }
     });
     return result;
+  },
+
+  'iStringMatch': function (data, query) {
+    query = (query || '').toUpperCase();
+    var result = [],
+        l = query.length;
+
+    if (!l) return [];
+
+    $.each(data, function (index, item) {
+      var a, matchKeys = $.map([item.value].concat(item.alias), function(v){
+        return v.toUpperCase();
+      });
+
+      // 匹配 value 和 alias 中的
+      while (a = matchKeys.shift()) {
+        if (a.indexOf(query) > -1) {
+          // 匹配和显示相同才有必要高亮
+          if (item.label === a) {
+            item.highlightIndex = stringMatch(a, query);
+          }
+          result.push(item);
+          break;
+        }
+      }
+    });
+    return result;
   }
 };
 
