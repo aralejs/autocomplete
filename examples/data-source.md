@@ -122,3 +122,39 @@ seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
     }).render();
 });
 ````
+
+## 单独指定最终表单值
+
+利用复杂结构，可以指定与选项文本不同的值作为最终表单值。
+
+在下面的示例中，数据项的 `value` 属性用来匹配，
+`label` 属性用于选项展示，`target` 作为最终用来提交的表单值。
+
+<input id="acTrigger6" type="text" value="" />
+
+````javascript
+seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
+    new AutoComplete({
+        trigger: '#acTrigger6',
+        filter: 'stringMatch',
+        dataSource: [
+            {
+                value: '天弘增利宝货币 000198 TIANHONGZENGLIBAO',
+                label: '天弘增利宝货币 000198',
+                target: '000198'
+            },
+            {
+                value: '交银21天 519716 JYLC21TZQA',
+                label: '交银21天 519716',
+                target: '519716'
+            },
+            {
+                value: '招商理财7天B 217026 ZSLC7TZQB',
+                label: '招商理财7天B 217026',
+                target: '217026'
+            }
+        ],
+        width: 200
+    }).render();
+});
+````

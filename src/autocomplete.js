@@ -246,7 +246,7 @@ var AutoComplete = Overlay.extend({
     var data = this.get('data')[index];
 
     if (index >= 0 && item && data) {
-      this.input.setValue(data.label);
+      this.input.setValue(data.target);
       this.set('selectedIndex', index, {
         silent: true
       });
@@ -386,6 +386,7 @@ function locateResult(locator, data) {
 //   {
 //     label: '', 显示的字段
 //     value: '', 匹配的字段
+//     target: '', input的最终值
 //     alias: []  其他匹配的字段
 //   }
 
@@ -396,12 +397,14 @@ function normalize(data) {
       result.push({
         label: item,
         value: item,
+        target: item,
         alias: []
       });
     } else if (isObject(item)) {
       if (!item.value && !item.label) return;
       item.value || (item.value = item.label);
       item.label || (item.label = item.value);
+      item.target || (item.target = item.label);
       item.alias || (item.alias = []);
       result.push(item);
     }
