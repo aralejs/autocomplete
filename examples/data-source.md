@@ -40,7 +40,7 @@ seajs.use('autocomplete', function(AutoComplete) {
 seajs.use('autocomplete', function(AutoComplete) {
     new AutoComplete({
         trigger: '#acTrigger2',
-        dataSource: './data.json?q={{query}}',
+        dataSource: './data.json?q={{query}}&nowrap',
         width: 150
     }).render();
 });
@@ -59,7 +59,7 @@ seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
         trigger: '#acTrigger3',
         dataSource: function(value, done) {
             var that = this;
-            $.ajax('./data.json', {
+            $.ajax('./data.json?nowrap', {
                 dataType: 'json'
             })
             .success(function(data) {
