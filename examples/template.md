@@ -4,10 +4,6 @@
 
 ----
 
-<script>
-seajs.use('../src/autocomplete.css');
-</script>
-
 ## 自定义模板
 
 默认的模板可以查看 `src/autocomplete.tpl`，如果有修改模板的操作可如下自己定义
@@ -42,11 +38,12 @@ seajs.use('../src/autocomplete.css');
 <input id="acTrigger4" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
-    var ac = new AutoComplete({
-        trigger: '#acTrigger4',
-        template: $('#acTrigger4-template').html(),
-        dataSource: ['abc', 'abd', 'abe', 'acd']
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+var ac = new AutoComplete({
+    trigger: '#acTrigger4',
+    template: $('#acTrigger4-template').html(),
+    dataSource: ['abc', 'abd', 'abe', 'acd']
+}).render();
 ````

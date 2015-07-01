@@ -12,7 +12,6 @@ textarea {
 </style>
 
 <script>
-seajs.use('../src/autocomplete.css');
 </script>
 
 输入 @ 可自动补全用户名
@@ -32,38 +31,41 @@ seajs.use('../src/autocomplete.css');
 </script>
 
 ````javascript
-seajs.use(['textarea-complete', '$'], function(TextareaComplete, $) {
-    new TextareaComplete({
-        trigger: '#acTrigger',
-        cursor: [15, 5],
-        dataSource: [
-          {nickName:'popomore', realName: 'Haoliang Gao'},
-          {nickName:'lepture', realName: 'Hsaoming Yang'},
-          {nickName:'afc163', realName: 'Xingmin Zhu'},
-          {nickName:'shawn', realName: 'Shuai Shao'}
-        ],
-        submitOnEnter: false,
-        selectFirst: true,
-        template: $('#acTriggerTemplte').html(),
-        inputFilter: function(q) {
-            var m = q.match(/@[^@]*$/);
-            return (m && m.length) ? m[0] : '';
-        },
-        filter: function(data, query) {
-            var result = [], self = this;
-            if (!query) return result;
-            query = query.substring(1);
-            var reg = new RegExp('^' + query);
-            $.each(data, function(index, item) {
-                if (reg.test(item.nickName) || reg.test(item.realName)) {
-                    result.push({
-                        value: item.nickName,
-                        text: item.nickName + ' (' + item.realName + ')'
-                    });
-                }
-            });
-            return result;
-        }
-    }).render();
-});
+require('../src/autocomplete.css');
+
+var TextareaComplete = require('../src/textarea-complete');
+var $ = require('jquery');
+
+new TextareaComplete({
+    trigger: '#acTrigger',
+    cursor: [15, 5],
+    dataSource: [
+      {nickName:'popomore', realName: 'Haoliang Gao'},
+      {nickName:'lepture', realName: 'Hsaoming Yang'},
+      {nickName:'afc163', realName: 'Xingmin Zhu'},
+      {nickName:'shawn', realName: 'Shuai Shao'}
+    ],
+    submitOnEnter: false,
+    selectFirst: true,
+    template: $('#acTriggerTemplte').html(),
+    inputFilter: function(q) {
+        var m = q.match(/@[^@]*$/);
+        return (m && m.length) ? m[0] : '';
+    },
+    filter: function(data, query) {
+        var result = [], self = this;
+        if (!query) return result;
+        query = query.substring(1);
+        var reg = new RegExp('^' + query);
+        $.each(data, function(index, item) {
+            if (reg.test(item.nickName) || reg.test(item.realName)) {
+                result.push({
+                    value: item.nickName,
+                    text: item.nickName + ' (' + item.realName + ')'
+                });
+            }
+        });
+        return result;
+    }
+}).render();
 ````

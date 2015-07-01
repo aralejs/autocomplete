@@ -4,10 +4,6 @@
 
 ----
 
-<script>
-seajs.use('../src/autocomplete.css');
-</script>
-
 ## 输出过滤
 
 输出过滤将数据源的值通过一定规则过滤后输出，下面的规则为“只要包涵输入值”
@@ -15,21 +11,22 @@ seajs.use('../src/autocomplete.css');
 <input id="acTrigger1" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger1',
-        dataSource: ['abc', 'abd', 'abe', 'acd'],
-        filter: function(data, query) {
-            var result = [];
-            $.each(data, function(index, value) {
-                if (value.indexOf(query) > -1) {
-                    result.push({matchKey: value});
-                }
-            });
-            return result;
-        }
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger1',
+    dataSource: ['abc', 'abd', 'abe', 'acd'],
+    filter: function(data, query) {
+        var result = [];
+        $.each(data, function(index, value) {
+            if (value.indexOf(query) > -1) {
+                result.push({matchKey: value});
+            }
+        });
+        return result;
+    }
+}).render();
 ````
 
 ## 输入过滤
@@ -41,20 +38,21 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 <input id="acTrigger2" type="text" value="a@gmail.com" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger2',
-        dataSource: [
-            'abc@gmail.com',
-            'abd@gmail.com',
-            'abe@gmail.com',
-            'acd@gmail.com'
-        ],
-        inputFilter: function(value) {
-            return value.split('@')[0];
-        }
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger2',
+    dataSource: [
+        'abc@gmail.com',
+        'abd@gmail.com',
+        'abe@gmail.com',
+        'acd@gmail.com'
+    ],
+    inputFilter: function(value) {
+        return value.split('@')[0];
+    }
+}).render();
 ````
 
 ## 全字符匹配
@@ -62,11 +60,13 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 <input id="acTrigger3" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger3',
-        dataSource: ['abc abd', 'bcd tcd', 'cbdc abdc'],
-        filter: 'stringMatch'
-    }).render();
-});
+
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger3',
+    dataSource: ['abc abd', 'bcd tcd', 'cbdc abdc'],
+    filter: 'stringMatch'
+}).render();
 ````

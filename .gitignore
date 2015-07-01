@@ -20,5 +20,7 @@ build
 _site
 node_modules
 sea-modules
+spm_modules
 tests/coverage.html
 .cache
+dist

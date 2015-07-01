@@ -4,10 +4,6 @@
 
 ---
 
-<script>
-seajs.use('../src/autocomplete.css');
-</script>
-
 在使用前先看下数据源的文档
 
 ## 使用对象
@@ -19,14 +15,15 @@ seajs.use('../src/autocomplete.css');
 <input id="acTrigger1" type="text" value="" />
 
 ````javascript
-seajs.use('autocomplete', function(AutoComplete) {
-    new AutoComplete({
-        trigger: '#acTrigger1',
-        dataSource: {
-            data: ['abc', 'abd', 'abe', 'acd']
-        }
-    }).render();
-});
+require('../src/autocomplete.css');
+
+var AutoComplete = require('arale-autocomplete');
+new AutoComplete({
+    trigger: '#acTrigger1',
+    dataSource: {
+        data: ['abc', 'abd', 'abe', 'acd']
+    }
+}).render();
 ````
 
 ## 使用异步数据
@@ -36,12 +33,11 @@ seajs.use('autocomplete', function(AutoComplete) {
 <input id="acTrigger2" type="text" value="" />
 
 ````javascript
-seajs.use('autocomplete', function(AutoComplete) {
-    new AutoComplete({
-        trigger: '#acTrigger2',
-        dataSource: './data.json?q={{query}}'
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+new AutoComplete({
+    trigger: '#acTrigger2',
+    dataSource: './data.json?q={{query}}'
+}).render();
 ````
 
 ## 自定义数据源
@@ -51,24 +47,25 @@ seajs.use('autocomplete', function(AutoComplete) {
 <input id="acTrigger3" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
-    var local = ['ade', 'adf'];
-    new AutoComplete({
-        trigger: '#acTrigger3',
-        dataSource: function(value) {
-            var that = this;
-            $.ajax('./data.json', {
-                dataType: 'json'
-            })
-            .success(function(data) {
-                that.trigger('data', data.concat(local));
-            })
-            .error(function(data) {
-                that.trigger('data', {});
-            });
-        }
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+var local = ['ade', 'adf'];
+new AutoComplete({
+    trigger: '#acTrigger3',
+    dataSource: function(value) {
+        var that = this;
+        $.ajax('./data.json', {
+            dataType: 'json'
+        })
+        .success(function(data) {
+            that.trigger('data', data.concat(local));
+        })
+        .error(function(data) {
+            that.trigger('data', {});
+        });
+    }
+}).render();
 ````
 
 ## 处理复杂数据
@@ -78,26 +75,27 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 <input id="acTrigger4" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger4',
-        locator: 'my.mother.father.brothers',
-        dataSource: {
-            my: {
-                mother: {
-                    father: {
-                        brothers: [
-                            'abc',
-                            'abd',
-                            'abe',
-                            'acd'
-                        ]
-                    }
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger4',
+    locator: 'my.mother.father.brothers',
+    dataSource: {
+        my: {
+            mother: {
+                father: {
+                    brothers: [
+                        'abc',
+                        'abd',
+                        'abe',
+                        'acd'
+                    ]
                 }
             }
         }
-    }).render();
-});
+    }
+}).render();
 ````
 
 ## 处理复杂数据的数据结构
@@ -107,21 +105,22 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 <input id="acTrigger5" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger5',
-        filter: {
-            name: 'startsWith',
-            options: {
-                key: 'title'
-            }
-        },
-        dataSource: [
-          {title: 'abc', myprop: '123'},
-          {title: 'abd', myprop: '124'},
-          {title: 'abe', myprop: '125'},
-          {title: 'acd', myprop: '134'}
-        ]
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger5',
+    filter: {
+        name: 'startsWith',
+        options: {
+            key: 'title'
+        }
+    },
+    dataSource: [
+      {title: 'abc', myprop: '123'},
+      {title: 'abd', myprop: '124'},
+      {title: 'abe', myprop: '125'},
+      {title: 'acd', myprop: '134'}
+    ]
+}).render();
 ````

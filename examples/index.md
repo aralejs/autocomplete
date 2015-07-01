@@ -5,7 +5,6 @@
 ----
 
 <script>
-seajs.use('../src/autocomplete.css');
 </script>
 
 最简单的方式只需要提供 trigger 和 datasource。
@@ -13,12 +12,12 @@ seajs.use('../src/autocomplete.css');
 <input id="acTrigger1" type="text" value="" />
 
 ````javascript
-seajs.use('autocomplete', function(AutoComplete) {
-    new AutoComplete({
-        trigger: '#acTrigger1',
-        dataSource: ['abc', 'abd', 'abe', 'acd']
-    }).render();
-});
+require('../src/autocomplete.css');
+var AutoComplete = require('arale-autocomplete');
+new AutoComplete({
+    trigger: '#acTrigger1',
+    dataSource: ['abc', 'abd', 'abe', 'acd']
+}).render();
 ````
 
 ## 阻止回车事件
@@ -32,13 +31,12 @@ seajs.use('autocomplete', function(AutoComplete) {
 ````
 
 ````javascript
-seajs.use('autocomplete', function(AutoComplete) {
-    new AutoComplete({
-        trigger: '#acTrigger2',
-        submitOnEnter: false,
-        dataSource: ['abc', 'abd', 'abe', 'acd']
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+new AutoComplete({
+    trigger: '#acTrigger2',
+    submitOnEnter: false,
+    dataSource: ['abc', 'abd', 'abe', 'acd']
+}).render();
 ````
 
 ## 动态设置是否提示
@@ -50,18 +48,19 @@ seajs.use('autocomplete', function(AutoComplete) {
 状态：<a href="#" id="acTrigger3-extra" data-status="on">开启</a>
 
 ````javascript
-seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
-    var ac = new AutoComplete({
-        trigger: '#acTrigger3',
-        dataSource: ['abc', 'abd', 'abe', 'acd']
-    }).render();
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
 
-    $('#acTrigger3-extra').click(function(e) {
-        e.preventDefault();
-        var o = $(this), status = (o.html() === '开启');
-        o.html(status? '关闭' : '开启')
-        ac.set('disabled', status);
-    });
+var ac = new AutoComplete({
+    trigger: '#acTrigger3',
+    dataSource: ['abc', 'abd', 'abe', 'acd']
+}).render();
+
+$('#acTrigger3-extra').click(function(e) {
+    e.preventDefault();
+    var o = $(this), status = (o.html() === '开启');
+    o.html(status? '关闭' : '开启')
+    ac.set('disabled', status);
 });
 ````
 
@@ -72,11 +71,10 @@ seajs.use(['autocomplete', '$'], function(AutoComplete, $) {
 <input id="acTrigger5" type="text" value="" />
 
 ````javascript
-seajs.use('autocomplete', function(AutoComplete) {
-    new AutoComplete({
-        trigger: '#acTrigger5',
-        selectFirst: true,
-        dataSource: ['abc', 'abd', 'abe', 'acd']
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+new AutoComplete({
+    trigger: '#acTrigger5',
+    selectFirst: true,
+    dataSource: ['abc', 'abd', 'abe', 'acd']
+}).render();
 ````
