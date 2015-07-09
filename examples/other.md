@@ -4,8 +4,8 @@
 
 ---
 
-<script>
-seajs.use('alice-select');
+<script type="text/spm">
+require('alice-select');
 </script>
 
 ## Email 自动补全
@@ -17,22 +17,23 @@ seajs.use('alice-select');
 <input id="example" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
-    var data = [
-        '163.com',
-        '126.com',
-        'gmail.com'
-    ];
-    new AutoComplete({
-        trigger: '#example',
-        dataSource: function(query) {
-            query = query.replace(/^(.*)@.*$/,'$1');
-            return $.map(data, function(v) {
-                return query + '@' + v;
-            });
-        }
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+var data = [
+    '163.com',
+    '126.com',
+    'gmail.com'
+];
+new AutoComplete({
+    trigger: '#example',
+    dataSource: function(query) {
+        query = query.replace(/^(.*)@.*$/,'$1');
+        return $.map(data, function(v) {
+            return query + '@' + v;
+        });
+    }
+}).render();
 ````
 
 ## 选中后新开窗口
@@ -42,16 +43,15 @@ seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
 </form>
 
 ````javascript
-seajs.use('select.css');
-seajs.use(['autocomplete', './other.handlebars'], function(AutoComplete, template) {
-  ac = new AutoComplete({
-    trigger: '#acTrigger',
-    template: template,
-    width: '200'
-    dataSource: [
-      '信用卡',
-      '信息 '
-    ]
-  }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var template = require('./other.handlebars');
+var ac = new AutoComplete({
+  trigger: '#acTrigger',
+  template: template,
+  width: '200',
+  dataSource: [
+    '信用卡',
+    '信息 '
+  ]
+}).render();
 ````

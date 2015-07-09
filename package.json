@@ -21,6 +21,11 @@
   "license": "MIT",
   "spm": {
     "main": "autocomplete.js",
+    "build": {
+      "loader": {
+        ".handlebars": "spmhandlebars-loader"
+      }
+    },
     "dependencies": {
       "jquery": "1.7.2",
       "arale-templatable": "0.10.0",
@@ -41,5 +46,9 @@
   },
   "scripts": {
     "test": "make test"
+  },
+  "devDependencies": {
+    "handlebars": "~3.0.3",
+    "spmhandlebars-loader": "~0.1.0"
   }
 }

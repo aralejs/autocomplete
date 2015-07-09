@@ -4,8 +4,8 @@
 
 ----
 
-<script>
-seajs.use('alice-select');
+<script type="text/spm">
+require('alice-select');
 </script>
 
 ## 输出过滤
@@ -15,24 +15,25 @@ seajs.use('alice-select');
 <input id="acTrigger1" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger1',
-        dataSource: ['abc', 'abd', 'abe', 'acd'],
-        filter: function(data, query) {
-            var result = [];
-            if (!query) return result;
-            $.each(data, function(index, item) {
-                var value = item.value;
-                if (new RegExp('\\w+'+query+'\\w+').test(value)) {
-                    result.push(item);
-                }
-            });
-            return result;
-        },
-        width: 150
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger1',
+    dataSource: ['abc', 'abd', 'abe', 'acd'],
+    filter: function(data, query) {
+        var result = [];
+        if (!query) return result;
+        $.each(data, function(index, item) {
+            var value = item.value;
+            if (new RegExp('\\w+'+query+'\\w+').test(value)) {
+                result.push(item);
+            }
+        });
+        return result;
+    },
+    width: 150
+}).render();
 ````
 
 ## 全字符匹配
@@ -40,12 +41,13 @@ seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
 <input id="acTrigger3" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger3',
-        dataSource: ['abc abd', 'bcd tcd', 'cbdc abdc'],
-        filter: 'stringMatch',
-        width: 150
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger3',
+    dataSource: ['abc abd', 'bcd tcd', 'cbdc abdc'],
+    filter: 'stringMatch',
+    width: 150
+}).render();
 ````

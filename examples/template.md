@@ -4,8 +4,8 @@
 
 ----
 
-<script>
-seajs.use('alice-select');
+<script type="text/spm">
+require('alice-select');
 </script>
 
 ## 使用参数来自定义模板
@@ -20,24 +20,25 @@ seajs.use('alice-select');
 </style>
 
 ````javascript
-seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
-    var ac = new AutoComplete({
-        trigger: '#acTrigger1',
-        header: '<div class="{{classPrefix}}-header">筛选省市：</div>',
-        footer: '<div class="{{classPrefix}}-footer">搜索 {{query}} 的{{length}}个结果</div>',
-        html: '<strong>{{city}}</strong><span>{{prov}}</span>',
-        dataSource: [
-          {city: '上海', prov: '上海', label: '上海', value: 'shanghai', alias: ['上海']},
-          {city: '苏州', prov: '江苏', label: '苏州', value: 'suzhou', alias: ['苏州']},
-          {city: '深圳', prov: '广州', label: '深圳', value: 'shenzhen', alias: ['深圳']},
-          {city: '沈阳', prov: '辽宁', label: '沈阳', value: 'shenyang', alias: ['沈阳']}
-        ],
-        width: 150
-    }).render();
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
 
-    ac.element.on('click', '#xxx', function() {
-      //alert(1);
-    })
+var ac = new AutoComplete({
+    trigger: '#acTrigger1',
+    header: '<div class="{{classPrefix}}-header">筛选省市：</div>',
+    footer: '<div class="{{classPrefix}}-footer">搜索 {{query}} 的{{length}}个结果</div>',
+    html: '<strong>{{city}}</strong><span>{{prov}}</span>',
+    dataSource: [
+      {city: '上海', prov: '上海', label: '上海', value: 'shanghai', alias: ['上海']},
+      {city: '苏州', prov: '江苏', label: '苏州', value: 'suzhou', alias: ['苏州']},
+      {city: '深圳', prov: '广州', label: '深圳', value: 'shenzhen', alias: ['深圳']},
+      {city: '沈阳', prov: '辽宁', label: '沈阳', value: 'shenyang', alias: ['沈阳']}
+    ],
+    width: 150
+}).render();
+
+ac.element.on('click', '#xxx', function() {
+  //alert(1);
 });
 ````
 
@@ -70,21 +71,22 @@ seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
 <input id="acTrigger4" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
-    var AutoCompleteX = AutoComplete.extend({
-        _isEmpty: function() {
-          return false;
-        }
-    });
-    var ac = new AutoCompleteX({
-        trigger: '#acTrigger4',
-        template: $('#acTrigger4-template').html(),
-        dataSource: ['abc', 'abd', 'abe', 'acd'],
-        width: 150
-    }).render();
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
 
-    ac.input.on('focus', function() {
-      ac.show();
-    });
+var AutoCompleteX = AutoComplete.extend({
+    _isEmpty: function() {
+      return false;
+    }
+});
+var ac = new AutoCompleteX({
+    trigger: '#acTrigger4',
+    template: $('#acTrigger4-template').html(),
+    dataSource: ['abc', 'abd', 'abe', 'acd'],
+    width: 150
+}).render();
+
+ac.input.on('focus', function() {
+  ac.show();
 });
 ````

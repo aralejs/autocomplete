@@ -4,8 +4,8 @@
 
 ---
 
-<script>
-seajs.use('alice-select');
+<script type="text/spm">
+require('alice-select');
 </script>
 
 在使用前先看下数据源的文档
@@ -19,15 +19,14 @@ seajs.use('alice-select');
 <input id="acTrigger1" type="text" value="" />
 
 ````javascript
-seajs.use('autocomplete', function(AutoComplete) {
-    new AutoComplete({
-        trigger: '#acTrigger1',
-        dataSource: {
-            data: ['abc', 'abd', 'abe', 'acd']
-        },
-        width: 150
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+new AutoComplete({
+    trigger: '#acTrigger1',
+    dataSource: {
+        data: ['abc', 'abd', 'abe', 'acd']
+    },
+    width: 150
+}).render();
 ````
 
 ## 使用异步数据
@@ -37,13 +36,12 @@ seajs.use('autocomplete', function(AutoComplete) {
 <input id="acTrigger2" type="text" value="" />
 
 ````javascript
-seajs.use('autocomplete', function(AutoComplete) {
-    new AutoComplete({
-        trigger: '#acTrigger2',
-        dataSource: './data.json?q={{query}}&nowrap',
-        width: 150
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+new AutoComplete({
+    trigger: '#acTrigger2',
+    dataSource: './data.json?q={{query}}&nowrap',
+    width: 150
+}).render();
 ````
 
 ## 自定义数据源
@@ -53,23 +51,24 @@ seajs.use('autocomplete', function(AutoComplete) {
 <input id="acTrigger3" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
-    var local = ['ade', 'adf'];
-    new AutoComplete({
-        trigger: '#acTrigger3',
-        dataSource: function(value, done) {
-            var that = this;
-            $.ajax('./data.json?nowrap', {
-                dataType: 'json'
-            })
-            .success(function(data) {
-                done(data.concat(local));
-            })
-            .error(done);
-        },
-        width: 150
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+var local = ['ade', 'adf'];
+new AutoComplete({
+    trigger: '#acTrigger3',
+    dataSource: function(value, done) {
+        var that = this;
+        $.ajax('./data.json?nowrap', {
+            dataType: 'json'
+        })
+        .success(function(data) {
+            done(data.concat(local));
+        })
+        .error(done);
+    },
+    width: 150
+}).render();
 ````
 
 ## 处理嵌套结构
@@ -79,27 +78,28 @@ seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
 <input id="acTrigger4" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger4',
-        locator: 'my.mother.father.brothers',
-        dataSource: {
-            my: {
-                mother: {
-                    father: {
-                        brothers: [
-                            'abc',
-                            'abd',
-                            'abe',
-                            'acd'
-                        ]
-                    }
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger4',
+    locator: 'my.mother.father.brothers',
+    dataSource: {
+        my: {
+            mother: {
+                father: {
+                    brothers: [
+                        'abc',
+                        'abd',
+                        'abe',
+                        'acd'
+                    ]
                 }
             }
-        },
-        width: 150
-    }).render();
-});
+        }
+    },
+    width: 150
+}).render();
 ````
 
 ## 处理复杂数据结构
@@ -109,18 +109,19 @@ seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
 <input id="acTrigger5" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger5',
-        dataSource: [
-          {value: 'abc', myprop: '123'},
-          {value: 'abd', myprop: '124'},
-          {value: 'abe', myprop: '125'},
-          {value: 'acd', myprop: '134'}
-        ],
-        width: 150
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger5',
+    dataSource: [
+      {value: 'abc', myprop: '123'},
+      {value: 'abd', myprop: '124'},
+      {value: 'abe', myprop: '125'},
+      {value: 'acd', myprop: '134'}
+    ],
+    width: 150
+}).render();
 ````
 
 ## 单独指定最终表单值
@@ -133,28 +134,29 @@ seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
 <input id="acTrigger6" type="text" value="" />
 
 ````javascript
-seajs.use(['autocomplete', 'jquery'], function(AutoComplete, $) {
-    new AutoComplete({
-        trigger: '#acTrigger6',
-        filter: 'stringMatch',
-        dataSource: [
-            {
-                value: '天弘增利宝货币 000198 TIANHONGZENGLIBAO',
-                label: '天弘增利宝货币 000198',
-                target: '000198'
-            },
-            {
-                value: '交银21天 519716 JYLC21TZQA',
-                label: '交银21天 519716',
-                target: '519716'
-            },
-            {
-                value: '招商理财7天B 217026 ZSLC7TZQB',
-                label: '招商理财7天B 217026',
-                target: '217026'
-            }
-        ],
-        width: 200
-    }).render();
-});
+var AutoComplete = require('arale-autocomplete');
+var $ = require('jquery');
+
+new AutoComplete({
+    trigger: '#acTrigger6',
+    filter: 'stringMatch',
+    dataSource: [
+        {
+            value: '天弘增利宝货币 000198 TIANHONGZENGLIBAO',
+            label: '天弘增利宝货币 000198',
+            target: '000198'
+        },
+        {
+            value: '交银21天 519716 JYLC21TZQA',
+            label: '交银21天 519716',
+            target: '519716'
+        },
+        {
+            value: '招商理财7天B 217026 ZSLC7TZQB',
+            label: '招商理财7天B 217026',
+            target: '217026'
+        }
+    ],
+    width: 200
+}).render();
 ````
